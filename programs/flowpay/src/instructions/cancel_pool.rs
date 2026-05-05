@@ -19,8 +19,14 @@ pub fn handler(ctx: Context<CancelPool>) -> Result<()> {
     require!(!ctx.accounts.config.paused, FlowPayError::PlatformPaused);
 
     let pool = &mut ctx.accounts.pool;
-    require!(pool.status == PoolStatus::Funding, FlowPayError::PoolNotFunding);
-    require!(pool.funded_amount < pool.advance_amount, FlowPayError::FundingStillOpen);
+    require!(
+        pool.status == PoolStatus::Funding,
+        FlowPayError::PoolNotFunding
+    );
+    require!(
+        pool.funded_amount < pool.advance_amount,
+        FlowPayError::FundingStillOpen
+    );
 
     let authority_key = ctx.accounts.authority.key();
     require!(

@@ -45,7 +45,10 @@ pub fn handler(ctx: Context<Invest>, amount: u64) -> Result<()> {
     require!(amount > 0, FlowPayError::InvalidAmount);
 
     let pool = &mut ctx.accounts.pool;
-    require!(pool.status == PoolStatus::Funding, FlowPayError::PoolNotFunding);
+    require!(
+        pool.status == PoolStatus::Funding,
+        FlowPayError::PoolNotFunding
+    );
 
     let new_total = pool
         .funded_amount

@@ -41,7 +41,10 @@ pub struct WithdrawCancelled<'info> {
 
 pub fn handler(ctx: Context<WithdrawCancelled>) -> Result<()> {
     let pool = &mut ctx.accounts.pool;
-    require!(pool.status == PoolStatus::Cancelled, FlowPayError::AlreadyCancelled);
+    require!(
+        pool.status == PoolStatus::Cancelled,
+        FlowPayError::AlreadyCancelled
+    );
 
     let investment = &mut ctx.accounts.investment;
     let claimable = investment

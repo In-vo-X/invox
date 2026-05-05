@@ -36,7 +36,10 @@ pub fn handler(ctx: Context<AdvanceToIssuer>) -> Result<()> {
     require!(!ctx.accounts.config.paused, FlowPayError::PlatformPaused);
 
     let pool = &mut ctx.accounts.pool;
-    require!(pool.status == PoolStatus::Funded, FlowPayError::PoolNotFunded);
+    require!(
+        pool.status == PoolStatus::Funded,
+        FlowPayError::PoolNotFunded
+    );
     require!(
         ctx.accounts.authority.key() == ctx.accounts.config.admin
             || ctx.accounts.authority.key() == pool.originator,

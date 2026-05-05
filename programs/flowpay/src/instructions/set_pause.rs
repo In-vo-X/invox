@@ -10,7 +10,10 @@ pub struct SetPause<'info> {
 }
 
 pub fn handler(ctx: Context<SetPause>, paused: bool) -> Result<()> {
-    require!(ctx.accounts.admin.key() == ctx.accounts.config.admin, FlowPayError::Unauthorized);
+    require!(
+        ctx.accounts.admin.key() == ctx.accounts.config.admin,
+        FlowPayError::Unauthorized
+    );
     ctx.accounts.config.paused = paused;
     Ok(())
 }

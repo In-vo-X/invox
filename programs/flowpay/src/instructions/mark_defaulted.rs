@@ -25,10 +25,16 @@ pub fn handler(ctx: Context<MarkDefaulted>) -> Result<()> {
         FlowPayError::Unauthorized
     );
     require!(
-        matches!(pool.status, PoolStatus::Advanced | PoolStatus::PartiallyRepaid),
+        matches!(
+            pool.status,
+            PoolStatus::Advanced | PoolStatus::PartiallyRepaid
+        ),
         FlowPayError::InvalidStatusTransition
     );
-    require!(Clock::get()?.unix_timestamp > pool.due_ts, FlowPayError::DefaultNotReached);
+    require!(
+        Clock::get()?.unix_timestamp > pool.due_ts,
+        FlowPayError::DefaultNotReached
+    );
 
     pool.status = PoolStatus::Defaulted;
     Ok(())
