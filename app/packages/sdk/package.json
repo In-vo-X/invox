@@ -1,0 +1,11 @@
+{
+  "name": "@flowpay/sdk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@anchor-lang/core": "^1.0.2",
+    "@solana/web3.js": "^1.98.4"
+  }
+}
