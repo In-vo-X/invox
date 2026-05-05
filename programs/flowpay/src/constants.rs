@@ -6,3 +6,7 @@ pub const INVESTMENT_SEED: &[u8] = b"investment";
 pub const BPS_DENOMINATOR: u64 = 10_000;
 pub const MAX_FEE_BPS: u16 = 1_000;
 pub const MAX_METADATA_URI_LEN: usize = 200;
+pub const SERVICING_STATUS_ACTIVE: u8 = 0;
+pub const SERVICING_STATUS_DISPUTED: u8 = 1;
+pub const SERVICING_STATUS_IMPAIRED: u8 = 2;
+pub const MAX_SERVICING_STATUS: u8 = SERVICING_STATUS_IMPAIRED;

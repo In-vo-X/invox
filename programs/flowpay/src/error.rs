@@ -44,4 +44,6 @@ pub enum FlowPayError {
     FundingStillOpen,
     #[msg("Default conditions are not met")]
     DefaultNotReached,
+    #[msg("Invalid servicing status")]
+    InvalidServicingStatus,
 }

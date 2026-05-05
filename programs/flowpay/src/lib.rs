@@ -15,10 +15,7 @@ declare_id!("EjfVxrCATPwhbEKEcMAamkZaMabRaYStprDmAFu5TQFB");
 pub mod flowpay {
     use super::*;
 
-    pub fn initialize_platform(
-        ctx: Context<InitializePlatform>,
-        fee_bps: u16,
-    ) -> Result<()> {
+    pub fn initialize_platform(ctx: Context<InitializePlatform>, fee_bps: u16) -> Result<()> {
         initialize_platform::handler(ctx, fee_bps)
     }
 
@@ -28,6 +25,7 @@ pub mod flowpay {
         advance_amount: u64,
         due_ts: i64,
         risk_score: u8,
+        legal_asset_hash: [u8; 32],
         metadata_uri: String,
     ) -> Result<()> {
         create_pool::handler(
@@ -36,8 +34,18 @@ pub mod flowpay {
             advance_amount,
             due_ts,
             risk_score,
+            legal_asset_hash,
             metadata_uri,
         )
+    }
+
+    pub fn update_pool_servicing(
+        ctx: Context<UpdatePoolServicing>,
+        risk_score: u8,
+        servicing_status: u8,
+        metadata_uri: String,
+    ) -> Result<()> {
+        update_pool_servicing::handler(ctx, risk_score, servicing_status, metadata_uri)
     }
 
     pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {

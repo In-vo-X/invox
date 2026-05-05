@@ -40,8 +40,10 @@ pub struct InvoicePool {
     pub pool_id: u64,
     pub issuer: Pubkey,
     pub originator: Pubkey,
+    pub spv: Pubkey,
     pub usdc_mint: Pubkey,
     pub vault: Pubkey,
+    pub legal_asset_hash: [u8; 32],
     pub invoice_face_value: u64,
     pub advance_amount: u64,
     pub funded_amount: u64,
@@ -49,10 +51,13 @@ pub struct InvoicePool {
     pub fee_owed_amount: u64,
     pub fee_collected_amount: u64,
     pub claimed_amount: u64,
+    pub fee_bps: u16,
     pub due_ts: i64,
     pub created_ts: i64,
     pub status: PoolStatus,
     pub risk_score: u8,
+    pub servicing_status: u8,
+    pub servicing_updated_ts: i64,
     pub metadata_uri: String,
     pub bump: u8,
     pub vault_authority_bump: u8,
@@ -65,6 +70,8 @@ impl InvoicePool {
         + 32
         + 32
         + 32
+        + 32
+        + 32
         + 8
         + 8
         + 8
@@ -72,10 +79,13 @@ impl InvoicePool {
         + 8
         + 8
         + 8
+        + 2
         + 8
         + 8
         + PoolStatus::LEN
         + 1
+        + 1
+        + 8
         + 4
         + MAX_METADATA_URI_LEN
         + 1

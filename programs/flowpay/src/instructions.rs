@@ -8,6 +8,7 @@ pub mod invest;
 pub mod mark_defaulted;
 pub mod repay;
 pub mod set_pause;
+pub mod update_pool_servicing;
 pub mod withdraw_cancelled;
 
 pub use advance_to_issuer::*;
@@ -20,4 +21,5 @@ pub use invest::*;
 pub use mark_defaulted::*;
 pub use repay::*;
 pub use set_pause::*;
+pub use update_pool_servicing::*;
 pub use withdraw_cancelled::*;

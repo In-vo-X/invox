@@ -5,7 +5,9 @@ use anchor_spl::{
 };
 
 use crate::{
-    constants::{CONFIG_SEED, MAX_METADATA_URI_LEN, POOL_SEED, VAULT_AUTHORITY_SEED},
+    constants::{
+        CONFIG_SEED, MAX_METADATA_URI_LEN, POOL_SEED, SERVICING_STATUS_ACTIVE, VAULT_AUTHORITY_SEED,
+    },
     error::FlowPayError,
     state::{InvoicePool, PlatformConfig, PoolStatus},
 };
@@ -16,6 +18,10 @@ pub struct CreatePool<'info> {
     pub authority: Signer<'info>,
     /// CHECK: Used only as a stored identity key; no data is read from this account.
     pub issuer: UncheckedAccount<'info>,
+    /// CHECK: Used only as a stored identity key; no data is read from this account.
+    pub originator: UncheckedAccount<'info>,
+    /// CHECK: Used only as a stored identity key; no data is read from this account.
+    pub spv: UncheckedAccount<'info>,
     #[account(mut, seeds = [CONFIG_SEED], bump = config.bump)]
     pub config: Account<'info, PlatformConfig>,
     #[account(
@@ -49,19 +55,29 @@ pub fn handler(
     advance_amount: u64,
     due_ts: i64,
     risk_score: u8,
+    legal_asset_hash: [u8; 32],
     metadata_uri: String,
 ) -> Result<()> {
     let config = &mut ctx.accounts.config;
     require!(!config.paused, FlowPayError::PlatformPaused);
-    require!(invoice_face_value > advance_amount, FlowPayError::InvalidAmount);
+    require!(
+        invoice_face_value > advance_amount,
+        FlowPayError::InvalidAmount
+    );
     require!(advance_amount > 0, FlowPayError::InvalidAmount);
     require!(risk_score <= 100, FlowPayError::InvalidRiskScore);
-    require!(metadata_uri.len() <= MAX_METADATA_URI_LEN, FlowPayError::InvalidMetadataUri);
+    require!(
+        metadata_uri.len() <= MAX_METADATA_URI_LEN,
+        FlowPayError::InvalidMetadataUri
+    );
 
     let authority_key = ctx.accounts.authority.key();
     let issuer_key = ctx.accounts.issuer.key();
+    let originator_key = ctx.accounts.originator.key();
     require!(
-        authority_key == issuer_key || authority_key == config.admin,
+        authority_key == issuer_key
+            || authority_key == originator_key
+            || authority_key == config.admin,
         FlowPayError::Unauthorized
     );
 
@@ -71,9 +87,11 @@ pub fn handler(
     let pool = &mut ctx.accounts.pool;
     pool.pool_id = config.next_pool_id;
     pool.issuer = issuer_key;
-    pool.originator = config.admin;
+    pool.originator = originator_key;
+    pool.spv = ctx.accounts.spv.key();
     pool.usdc_mint = ctx.accounts.usdc_mint.key();
     pool.vault = ctx.accounts.vault.key();
+    pool.legal_asset_hash = legal_asset_hash;
     pool.invoice_face_value = invoice_face_value;
     pool.advance_amount = advance_amount;
     pool.funded_amount = 0;
@@ -81,10 +99,13 @@ pub fn handler(
     pool.fee_owed_amount = 0;
     pool.fee_collected_amount = 0;
     pool.claimed_amount = 0;
+    pool.fee_bps = config.fee_bps;
     pool.due_ts = due_ts;
     pool.created_ts = now;
     pool.status = PoolStatus::Funding;
     pool.risk_score = risk_score;
+    pool.servicing_status = SERVICING_STATUS_ACTIVE;
+    pool.servicing_updated_ts = now;
     pool.metadata_uri = metadata_uri;
     pool.bump = ctx.bumps.pool;
     pool.vault_authority_bump = ctx.bumps.vault_authority;
