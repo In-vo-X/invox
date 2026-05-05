@@ -17,6 +17,7 @@ const VAULT_AUTHORITY_SEED = Buffer.from("vault_authority");
 const INVESTMENT_SEED = Buffer.from("investment");
 const DECIMALS = 6;
 const ONE_USDC = 10 ** DECIMALS;
+const LEGAL_ASSET_HASH = Array.from(Buffer.alloc(32, 7));
 
 const airdrop = async (provider, pubkey) => {
   const sig = await provider.connection.requestAirdrop(pubkey, 2 * LAMPORTS_PER_SOL);
@@ -38,6 +39,8 @@ describe("flowpay", () => {
   let investorTwoAta;
 
   const issuer = Keypair.generate();
+  const originator = Keypair.generate();
+  const spv = Keypair.generate();
   const treasuryOwner = Keypair.generate();
   const investorOne = Keypair.generate();
   const investorTwo = Keypair.generate();
@@ -47,6 +50,8 @@ describe("flowpay", () => {
   before(async () => {
     await Promise.all([
       airdrop(provider, issuer.publicKey),
+      airdrop(provider, originator.publicKey),
+      airdrop(provider, spv.publicKey),
       airdrop(provider, treasuryOwner.publicKey),
       airdrop(provider, investorOne.publicKey),
       airdrop(provider, investorTwo.publicKey),
@@ -90,10 +95,12 @@ describe("flowpay", () => {
     const vault = getAssociatedTokenAddressSync(usdcMint, vaultAuthority, true);
 
     await program.methods
-      .createPool(new BN(10_000 * ONE_USDC), new BN(9_500 * ONE_USDC), new BN(Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 60), 78, "demo://pool-1")
+      .createPool(new BN(10_000 * ONE_USDC), new BN(9_500 * ONE_USDC), new BN(Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 60), 78, LEGAL_ASSET_HASH, "demo://pool-1")
       .accountsPartial({
         authority: provider.wallet.publicKey,
         issuer: issuer.publicKey,
+        originator: originator.publicKey,
+        spv: spv.publicKey,
         config: configPda,
         pool: poolPda,
         vaultAuthority,
@@ -102,6 +109,27 @@ describe("flowpay", () => {
         tokenProgram: TOKEN_PROGRAM_ID,
       })
       .rpc();
+
+    let pool = await program.account.invoicePool.fetch(poolPda);
+    expect(pool.originator.toBase58()).to.equal(originator.publicKey.toBase58());
+    expect(pool.spv.toBase58()).to.equal(spv.publicKey.toBase58());
+    expect(pool.feeBps).to.equal(50);
+    expect(pool.legalAssetHash).to.deep.equal(LEGAL_ASSET_HASH);
+
+    await program.methods
+      .updatePoolServicing(72, 1, "demo://pool-1-servicing")
+      .accountsPartial({
+        authority: originator.publicKey,
+        config: configPda,
+        pool: poolPda,
+      })
+      .signers([originator])
+      .rpc();
+
+    pool = await program.account.invoicePool.fetch(poolPda);
+    expect(pool.riskScore).to.equal(72);
+    expect(pool.servicingStatus).to.equal(1);
+    expect(pool.metadataUri).to.equal("demo://pool-1-servicing");
 
     const [investmentOnePda] = PublicKey.findProgramAddressSync([INVESTMENT_SEED, poolPda.toBuffer(), investorOne.publicKey.toBuffer()], program.programId);
     const [investmentTwoPda] = PublicKey.findProgramAddressSync([INVESTMENT_SEED, poolPda.toBuffer(), investorTwo.publicKey.toBuffer()], program.programId);
@@ -138,7 +166,7 @@ describe("flowpay", () => {
       .signers([investorTwo])
       .rpc();
 
-    let pool = await program.account.invoicePool.fetch(poolPda);
+    pool = await program.account.invoicePool.fetch(poolPda);
     expect(pool.status).to.deep.equal({ funded: {} });
 
     await program.methods
@@ -235,10 +263,12 @@ describe("flowpay", () => {
     const [investmentPda] = PublicKey.findProgramAddressSync([INVESTMENT_SEED, poolPda.toBuffer(), investorOne.publicKey.toBuffer()], program.programId);
 
     await program.methods
-      .createPool(new BN(5_000 * ONE_USDC), new BN(4_800 * ONE_USDC), new BN(Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30), 65, "demo://pool-2")
+      .createPool(new BN(5_000 * ONE_USDC), new BN(4_800 * ONE_USDC), new BN(Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30), 65, LEGAL_ASSET_HASH, "demo://pool-2")
       .accountsPartial({
         authority: provider.wallet.publicKey,
         issuer: issuer.publicKey,
+        originator: originator.publicKey,
+        spv: spv.publicKey,
         config: configPda,
         pool: poolPda,
         vaultAuthority,
