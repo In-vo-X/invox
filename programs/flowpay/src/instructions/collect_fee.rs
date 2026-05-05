@@ -34,10 +34,19 @@ pub struct CollectFee<'info> {
 
 pub fn handler(ctx: Context<CollectFee>) -> Result<()> {
     require!(!ctx.accounts.config.paused, FlowPayError::PlatformPaused);
-    require!(ctx.accounts.authority.key() == ctx.accounts.config.admin, FlowPayError::Unauthorized);
+    require!(
+        ctx.accounts.authority.key() == ctx.accounts.config.admin,
+        FlowPayError::Unauthorized
+    );
 
     let pool = &mut ctx.accounts.pool;
-    require!(pool.status == PoolStatus::Repaid, FlowPayError::PoolNotRepaid);
+    require!(
+        matches!(
+            pool.status,
+            PoolStatus::PartiallyRepaid | PoolStatus::Repaid | PoolStatus::Defaulted
+        ),
+        FlowPayError::PoolNotRepaid
+    );
 
     let fee_to_collect = pool
         .fee_owed_amount

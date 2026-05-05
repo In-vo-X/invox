@@ -50,7 +50,7 @@ pub fn handler(ctx: Context<Repay>, amount: u64) -> Result<()> {
         amount,
     )?;
 
-    let fee = (u128::from(amount) * u128::from(ctx.accounts.config.fee_bps))
+    let fee = (u128::from(amount) * u128::from(pool.fee_bps))
         .checked_div(u128::from(BPS_DENOMINATOR))
         .ok_or(FlowPayError::MathOverflow)? as u64;
 
