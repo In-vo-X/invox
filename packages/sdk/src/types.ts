@@ -2,20 +2,73 @@ export type FlowPayPool = {
   poolId: bigint;
   issuer: string;
   originator: string;
+  spv: string;
+  usdcMint: string;
+  vault: string;
+  legalAssetHash: number[];
   invoiceFaceValue: bigint;
   advanceAmount: bigint;
   fundedAmount: bigint;
   repaidAmount: bigint;
+  feeOwedAmount: bigint;
+  feeCollectedAmount: bigint;
   claimedAmount: bigint;
+  feeBps: number;
   dueTs: bigint;
+  createdTs: bigint;
+  status: string;
   riskScore: number;
+  servicingStatus: number;
+  servicingUpdatedTs: bigint;
   metadataUri: string;
 };
 
 export type CreatePoolParams = {
+  poolId: bigint;
+  issuer: string;
+  originator: string;
+  spv: string;
   invoiceFaceValue: bigint;
   advanceAmount: bigint;
   dueTs: bigint;
   riskScore: number;
+  legalAssetHash: number[];
   metadataUri: string;
 };
+
+export type UpdatePoolServicingParams = {
+  poolId: bigint;
+  riskScore: number;
+  servicingStatus: number;
+  metadataUri: string;
+};
+
+export type PoolActionParams = {
+  poolId: bigint;
+};
+
+export type InvestParams = PoolActionParams & {
+  investor: string;
+  investorTokenAccount: string;
+  amount: bigint;
+};
+
+export type RepayParams = PoolActionParams & {
+  payerTokenAccount: string;
+  amount: bigint;
+};
+
+export type ClaimParams = PoolActionParams & {
+  investor: string;
+  investorTokenAccount: string;
+};
+
+export type AdvanceToIssuerParams = PoolActionParams & {
+  issuerTokenAccount: string;
+};
+
+export type CollectFeeParams = PoolActionParams & {
+  treasury: string;
+};
+
+export type WithdrawCancelledParams = ClaimParams;

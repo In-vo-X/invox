@@ -358,6 +358,12 @@
           "name": "issuer"
         },
         {
+          "name": "originator"
+        },
+        {
+          "name": "spv"
+        },
+        {
           "name": "config",
           "writable": true,
           "pda": {
@@ -550,6 +556,70 @@
         },
         {
           "name": "risk_score",
+          "type": "u8"
+        },
+        {
+          "name": "legal_asset_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "metadata_uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "update_pool_servicing",
+      "discriminator": [
+        25,
+        17,
+        107,
+        87,
+        118,
+        29,
+        32,
+        168
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "risk_score",
+          "type": "u8"
+        },
+        {
+          "name": "servicing_status",
           "type": "u8"
         },
         {
@@ -1103,6 +1173,11 @@
       "code": 6020,
       "name": "DefaultNotReached",
       "msg": "Default conditions are not met"
+    },
+    {
+      "code": 6021,
+      "name": "InvalidServicingStatus",
+      "msg": "Invalid servicing status"
     }
   ],
   "types": [
@@ -1156,12 +1231,25 @@
             "type": "pubkey"
           },
           {
+            "name": "spv",
+            "type": "pubkey"
+          },
+          {
             "name": "usdc_mint",
             "type": "pubkey"
           },
           {
             "name": "vault",
             "type": "pubkey"
+          },
+          {
+            "name": "legal_asset_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
           },
           {
             "name": "invoice_face_value",
@@ -1192,6 +1280,10 @@
             "type": "u64"
           },
           {
+            "name": "fee_bps",
+            "type": "u16"
+          },
+          {
             "name": "due_ts",
             "type": "i64"
           },
@@ -1210,6 +1302,14 @@
           {
             "name": "risk_score",
             "type": "u8"
+          },
+          {
+            "name": "servicing_status",
+            "type": "u8"
+          },
+          {
+            "name": "servicing_updated_ts",
+            "type": "i64"
           },
           {
             "name": "metadata_uri",
