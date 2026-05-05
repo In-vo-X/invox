@@ -32,3 +32,5 @@ pnpm --dir apps/web dev
 - Program ID: `EjfVxrCATPwhbEKEcMAamkZaMabRaYStprDmAFu5TQFB`
 - Wallet provider defaults to Solana Devnet in the web app.
 - Prisma stores metadata and demo indexing only; balances and claims remain on-chain.
+- Contract pools store issuer, originator, SPV, legal asset hash, fee snapshot, servicing status, and metadata URI.
+- Open legal/product questions are tracked in `docs/AMBIGUITIES.md`.
