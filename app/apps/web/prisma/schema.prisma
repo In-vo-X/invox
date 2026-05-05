@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model InvoiceMetadata {
+  id               String   @id @default(cuid())
+  poolId           String?  @unique
+  issuerName       String
+  issuerWallet     String
+  debtorName       String
+  invoiceNumber    String
+  invoiceFaceValue Float
+  advanceAmount    Float
+  dueDate          DateTime
+  paymentTerms     String
+  description      String
+  proofDocumentUrl String?
+  riskScore        Int
+  riskGrade        String
+  status           String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model RiskAssessment {
+  id              String   @id @default(cuid())
+  invoiceId       String
+  score           Int
+  grade           String
+  summary         String
+  positiveFactors String
+  riskFactors     String
+  createdAt       DateTime @default(now())
+}
+
+model DemoEventLog {
+  id        String   @id @default(cuid())
+  type      String
+  message   String
+  txSig     String?
+  poolId    String?
+  createdAt DateTime @default(now())
+}
