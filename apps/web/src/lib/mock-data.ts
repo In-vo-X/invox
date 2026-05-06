@@ -1,10 +1,21 @@
-export type PoolStatus = "Funding" | "Funded" | "Advanced" | "PartiallyRepaid" | "Repaid" | "Defaulted";
+export type PoolStatus =
+  | "Funding"
+  | "Funded"
+  | "Advanced"
+  | "PartiallyRepaid"
+  | "Repaid"
+  | "Defaulted";
 export type RiskGrade = "A" | "B" | "C" | "D";
 
 export type PoolRecord = {
   id: string;
   issuer: string;
+  originator: string;
+  spv: string;
   debtor: string;
+  legalAssetHash: string;
+  servicingStatus: "Active" | "Disputed" | "Impaired";
+  servicingUpdated: string;
   invoiceValue: number;
   advanceAmount: number;
   grossYieldPct: number;
@@ -22,7 +33,13 @@ export const demoPools: PoolRecord[] = [
   {
     id: "1",
     issuer: "Manila Design Studio",
+    originator: "FlowPay Originator PH",
+    spv: "FlowPay SPV Alpha",
     debtor: "Acme Retail Group",
+    legalAssetHash:
+      "0707070707070707070707070707070707070707070707070707070707070707",
+    servicingStatus: "Active",
+    servicingUpdated: "Today",
     invoiceValue: 10000,
     advanceAmount: 9500,
     grossYieldPct: 5.26,
@@ -38,7 +55,13 @@ export const demoPools: PoolRecord[] = [
   {
     id: "2",
     issuer: "Jakarta Logistics Co.",
+    originator: "FlowPay Originator ID",
+    spv: "FlowPay SPV Beta",
     debtor: "Pacific Foods Ltd.",
+    legalAssetHash:
+      "1111111111111111111111111111111111111111111111111111111111111111",
+    servicingStatus: "Active",
+    servicingUpdated: "Yesterday",
     invoiceValue: 25000,
     advanceAmount: 23750,
     grossYieldPct: 5.26,
@@ -47,14 +70,21 @@ export const demoPools: PoolRecord[] = [
     riskGrade: "A",
     status: "Advanced",
     fundedPct: 100,
-    description: "Completed logistics delivery invoice for a verified enterprise debtor.",
+    description:
+      "Completed logistics delivery invoice for a verified enterprise debtor.",
     dueLabel: "45 days",
     txSig: "3KF9q2...Flow2",
   },
   {
     id: "3",
     issuer: "Cebu SaaS Agency",
+    originator: "FlowPay Originator PH",
+    spv: "FlowPay SPV Gamma",
     debtor: "Northstar Software",
+    legalAssetHash:
+      "2222222222222222222222222222222222222222222222222222222222222222",
+    servicingStatus: "Impaired",
+    servicingUpdated: "3 days ago",
     invoiceValue: 5000,
     advanceAmount: 4800,
     grossYieldPct: 4.17,
@@ -70,7 +100,25 @@ export const demoPools: PoolRecord[] = [
 ];
 
 export const portfolioRows = [
-  { pool: "Manila Design Studio", invested: 950, claimable: 0, claimed: 0, status: "Funding" as PoolStatus },
-  { pool: "Jakarta Logistics Co.", invested: 2375, claimable: 0, claimed: 0, status: "Advanced" as PoolStatus },
-  { pool: "Cebu SaaS Agency", invested: 480, claimable: 499, claimed: 0, status: "Repaid" as PoolStatus },
+  {
+    pool: "Manila Design Studio",
+    invested: 950,
+    claimable: 0,
+    claimed: 0,
+    status: "Funding" as PoolStatus,
+  },
+  {
+    pool: "Jakarta Logistics Co.",
+    invested: 2375,
+    claimable: 0,
+    claimed: 0,
+    status: "Advanced" as PoolStatus,
+  },
+  {
+    pool: "Cebu SaaS Agency",
+    invested: 480,
+    claimable: 499,
+    claimed: 0,
+    status: "Repaid" as PoolStatus,
+  },
 ];
