@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { BriefcaseBusiness, CircleDollarSign, FileStack, LayoutDashboard, ShieldEllipsis, Wallet } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  CircleDollarSign,
+  FileStack,
+  LayoutDashboard,
+  ShieldEllipsis,
+  Wallet,
+} from "lucide-react";
 
 const items = [
   { href: "/marketplace", label: "Marketplace", icon: LayoutDashboard },
@@ -17,7 +24,9 @@ export function Sidebar() {
         </div>
         <div>
           <p className="text-sm font-semibold text-[var(--ink-900)]">FlowPay</p>
-          <p className="text-xs text-[var(--ink-500)]">Invoice cashflow protocol</p>
+          <p className="text-xs text-[var(--ink-500)]">
+            Invoice cashflow protocol
+          </p>
         </div>
       </div>
 
@@ -40,7 +49,8 @@ export function Sidebar() {
         </div>
         <p className="mt-4 text-base font-semibold">Hackathon mode</p>
         <p className="mt-2 text-sm leading-6 text-[var(--ink-500)]">
-          Mock USDC, demo originators, and claim-based settlement running on Solana Devnet or Localnet.
+          Mock USDC, demo originators, and claim-based settlement running on
+          Solana Devnet or Localnet.
         </p>
       </div>
     </aside>

@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { ArrowRight, BadgeDollarSign, ChartColumnIncreasing, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeDollarSign,
+  ChartColumnIncreasing,
+  ShieldCheck,
+} from "lucide-react";
 
 const highlights = [
   {
@@ -33,7 +38,10 @@ export default function Home() {
               Turn unpaid invoices into on-chain cashflows.
             </h1>
           </div>
-          <Link className="pill text-sm font-semibold text-[var(--ink-700)]" href="/marketplace">
+          <Link
+            className="pill text-sm font-semibold text-[var(--ink-700)]"
+            href="/marketplace"
+          >
             Solana Devnet MVP
           </Link>
         </header>
@@ -45,10 +53,10 @@ export default function Home() {
               No token, USDC only, claim-based settlement
             </div>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--ink-600)]">
-              FlowPay keeps legal invoice ownership off-chain while moving investment,
-              advances, repayments, and investor claims onto Solana. Investors evaluate
-              short-duration cashflows like a clean wealth dashboard instead of a noisy
-              crypto trading screen.
+              FlowPay keeps legal invoice ownership off-chain while moving
+              investment, advances, repayments, and investor claims onto Solana.
+              Investors evaluate short-duration cashflows like a clean wealth
+              dashboard instead of a noisy crypto trading screen.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link className="btn-primary" href="/marketplace">
@@ -66,7 +74,9 @@ export default function Home() {
                     <Icon className="h-5 w-5" />
                   </div>
                   <h2 className="mt-4 text-base font-semibold">{title}</h2>
-                  <p className="mt-2 text-sm leading-6 text-[var(--ink-500)]">{copy}</p>
+                  <p className="mt-2 text-sm leading-6 text-[var(--ink-500)]">
+                    {copy}
+                  </p>
                 </div>
               ))}
             </div>
@@ -79,32 +89,44 @@ export default function Home() {
             <div className="grid gap-4 md:grid-cols-2">
               <div className="stat-card stat-card--lavender md:col-span-2">
                 <span className="eyebrow">Working balance</span>
-                <h3 className="mt-8 text-4xl font-semibold tracking-tight">$9,500</h3>
-                <p className="mt-2 text-sm text-[var(--ink-500)]">Current funding target</p>
+                <h3 className="mt-8 text-4xl font-semibold tracking-tight">
+                  $9,500
+                </h3>
+                <p className="mt-2 text-sm text-[var(--ink-500)]">
+                  Current funding target
+                </p>
               </div>
               <div className="stat-card stat-card--coral">
                 <span className="eyebrow">Expected gross yield</span>
                 <h3 className="mt-7 text-3xl font-semibold">4.28%</h3>
-                <p className="mt-2 text-sm text-[var(--ink-500)]">Your spending increased</p>
+                <p className="mt-2 text-sm text-[var(--ink-500)]">
+                  Your spending increased
+                </p>
               </div>
               <div className="stat-card stat-card--mint">
                 <span className="eyebrow">Risk grade</span>
                 <h3 className="mt-7 text-3xl font-semibold">B</h3>
-                <p className="mt-2 text-sm text-[var(--ink-500)]">Originator verified</p>
+                <p className="mt-2 text-sm text-[var(--ink-500)]">
+                  Originator verified
+                </p>
               </div>
             </div>
             <div className="mt-6 rounded-[1.5rem] border border-[var(--line)] bg-white/80 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="eyebrow">Demo journey</p>
-                  <h3 className="mt-2 text-lg font-semibold">Submit → Fund → Repay → Claim</h3>
+                  <h3 className="mt-2 text-lg font-semibold">
+                    Submit → Fund → Repay → Claim
+                  </h3>
                 </div>
                 <Link className="btn-secondary h-10 px-4 text-sm" href="/admin">
                   Open admin
                 </Link>
               </div>
               <p className="mt-4 text-sm leading-6 text-[var(--ink-500)]">
-                This is a hackathon MVP running on Devnet or Localnet. It does not represent a public securities offering, lending service, or legal claim to real-world invoices.
+                This is a hackathon MVP running on Devnet or Localnet. It does
+                not represent a public securities offering, lending service, or
+                legal claim to real-world invoices.
               </p>
             </div>
           </div>

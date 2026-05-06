@@ -1,6 +1,18 @@
 import { MiniBarChart } from "@/components/ui/mini-bar-chart";
 
-export function KpiCard({ eyebrow, value, note, accent, chart }: { eyebrow: string; value: string; note: string; accent: string; chart: number[] }) {
+export function KpiCard({
+  eyebrow,
+  value,
+  note,
+  accent,
+  chart,
+}: {
+  eyebrow: string;
+  value: string;
+  note: string;
+  accent: string;
+  chart: number[];
+}) {
   return (
     <div className="soft-card p-5">
       <p className="eyebrow">{eyebrow}</p>

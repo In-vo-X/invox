@@ -23,6 +23,10 @@ export function riskGradeFromScore(score: number) {
   return "D";
 }
 
-export function buildRiskSummary(score: number, grade: string, durationDays: number) {
+export function buildRiskSummary(
+  score: number,
+  grade: string,
+  durationDays: number,
+) {
   return `This invoice cashflow is scored ${score}/100 and graded ${grade}. The current demo underwriting assumes standard documentation quality, verified delivery, and a ${durationDays}-day repayment window with concentration risk centered on payment delay.`;
 }

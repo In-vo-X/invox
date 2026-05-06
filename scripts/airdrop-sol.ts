@@ -7,7 +7,10 @@ async function main() {
   }
 
   const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
-  const signature = await connection.requestAirdrop(new PublicKey(pubkey), 2_000_000_000);
+  const signature = await connection.requestAirdrop(
+    new PublicKey(pubkey),
+    2_000_000_000,
+  );
   await connection.confirmTransaction(signature, "confirmed");
   console.log(signature);
 }

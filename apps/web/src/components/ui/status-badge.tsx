@@ -10,5 +10,14 @@ const tones = {
 };
 
 export function StatusBadge({ status }: { status: keyof typeof tones }) {
-  return <span className={cn("rounded-full px-3 py-1 text-xs font-semibold", tones[status])}>{status}</span>;
+  return (
+    <span
+      className={cn(
+        "rounded-full px-3 py-1 text-xs font-semibold",
+        tones[status],
+      )}
+    >
+      {status}
+    </span>
+  );
 }

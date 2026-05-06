@@ -14,8 +14,20 @@ async function main() {
   const mint = new PublicKey(mintArg);
   const recipient = new PublicKey(recipientArg);
 
-  const ata = await getOrCreateAssociatedTokenAccount(connection, authority, mint, recipient);
-  const signature = await mintTo(connection, authority, mint, ata.address, authority, 10_000_000_000);
+  const ata = await getOrCreateAssociatedTokenAccount(
+    connection,
+    authority,
+    mint,
+    recipient,
+  );
+  const signature = await mintTo(
+    connection,
+    authority,
+    mint,
+    ata.address,
+    authority,
+    10_000_000_000,
+  );
   console.log(signature);
 }
 

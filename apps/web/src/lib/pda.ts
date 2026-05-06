@@ -8,15 +8,24 @@ const encodeU64 = (value: bigint) => {
 };
 
 export function getConfigPda() {
-  return PublicKey.findProgramAddressSync([Buffer.from("config")], FLOWPAY_PROGRAM_ID)[0];
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("config")],
+    FLOWPAY_PROGRAM_ID,
+  )[0];
 }
 
 export function getPoolPda(poolId: bigint) {
-  return PublicKey.findProgramAddressSync([Buffer.from("pool"), encodeU64(poolId)], FLOWPAY_PROGRAM_ID)[0];
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("pool"), encodeU64(poolId)],
+    FLOWPAY_PROGRAM_ID,
+  )[0];
 }
 
 export function getVaultAuthorityPda(pool: PublicKey) {
-  return PublicKey.findProgramAddressSync([Buffer.from("vault_authority"), pool.toBuffer()], FLOWPAY_PROGRAM_ID)[0];
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("vault_authority"), pool.toBuffer()],
+    FLOWPAY_PROGRAM_ID,
+  )[0];
 }
 
 export function getInvestmentPda(pool: PublicKey, investor: PublicKey) {

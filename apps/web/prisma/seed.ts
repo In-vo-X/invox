@@ -19,7 +19,8 @@ async function main() {
         advanceAmount: 9500,
         dueDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
         paymentTerms: "Net 60",
-        description: "Completed brand design project with net-60 payment terms.",
+        description:
+          "Completed brand design project with net-60 payment terms.",
         proofDocumentUrl: "https://example.com/proof/manila-design.pdf",
         riskScore: 78,
         riskGrade: "B",
@@ -35,7 +36,8 @@ async function main() {
         advanceAmount: 23750,
         dueDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
         paymentTerms: "Net 45",
-        description: "Completed logistics delivery invoice for a verified enterprise debtor.",
+        description:
+          "Completed logistics delivery invoice for a verified enterprise debtor.",
         proofDocumentUrl: "https://example.com/proof/jakarta-logistics.pdf",
         riskScore: 91,
         riskGrade: "A",
@@ -63,7 +65,12 @@ async function main() {
   await prisma.demoEventLog.createMany({
     data: [
       { type: "seed", message: `Seeded ${pools.count} invoice metadata rows.` },
-      { type: "tx", message: "Demo repayment recorded", txSig: "5msuT3...Flow1", poolId: "1" },
+      {
+        type: "tx",
+        message: "Demo repayment recorded",
+        txSig: "5msuT3...Flow1",
+        poolId: "1",
+      },
     ],
   });
 }

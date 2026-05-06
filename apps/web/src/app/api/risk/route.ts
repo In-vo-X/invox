@@ -1,4 +1,8 @@
-import { buildRiskSummary, calculateRiskScore, riskGradeFromScore } from "@/lib/risk";
+import {
+  buildRiskSummary,
+  calculateRiskScore,
+  riskGradeFromScore,
+} from "@/lib/risk";
 
 export async function POST(request: Request) {
   const body = await request.json();

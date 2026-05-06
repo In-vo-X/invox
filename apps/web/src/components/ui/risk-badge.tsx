@@ -6,5 +6,11 @@ const tones = {
 };
 
 export function RiskBadge({ grade }: { grade: keyof typeof tones }) {
-  return <span className={`rounded-full px-3 py-1 text-xs font-semibold ${tones[grade]}`}>{grade}</span>;
+  return (
+    <span
+      className={`rounded-full px-3 py-1 text-xs font-semibold ${tones[grade]}`}
+    >
+      {grade}
+    </span>
+  );
 }
