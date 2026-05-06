@@ -1,3 +1,40 @@
+export type LegalAssetHash =
+  | Uint8Array
+  | readonly [
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+    ];
+
 export type FlowPayPool = {
   poolId: bigint;
   issuer: string;
@@ -5,7 +42,7 @@ export type FlowPayPool = {
   spv: string;
   usdcMint: string;
   vault: string;
-  legalAssetHash: number[];
+  legalAssetHash: LegalAssetHash;
   invoiceFaceValue: bigint;
   advanceAmount: bigint;
   fundedAmount: bigint;
@@ -24,7 +61,6 @@ export type FlowPayPool = {
 };
 
 export type CreatePoolParams = {
-  poolId: bigint;
   issuer: string;
   originator: string;
   spv: string;
@@ -32,8 +68,14 @@ export type CreatePoolParams = {
   advanceAmount: bigint;
   dueTs: bigint;
   riskScore: number;
-  legalAssetHash: number[];
+  legalAssetHash: LegalAssetHash;
   metadataUri: string;
+};
+
+export type CreatePoolResult = {
+  signature: string;
+  poolId: bigint;
+  pool: string;
 };
 
 export type UpdatePoolServicingParams = {
