@@ -1,16 +1,15 @@
 import Link from "next/link";
 import {
-  BriefcaseBusiness,
   CircleDollarSign,
   LayoutDashboard,
-  ShieldEllipsis,
+  Sparkles,
   Wallet,
 } from "lucide-react";
 
 const items = [
   { href: "/marketplace", label: "Marketplace", icon: LayoutDashboard },
   { href: "/portfolio", label: "Portfolio", icon: Wallet },
-  { href: "/admin", label: "Admin", icon: ShieldEllipsis },
+  { href: "/ai-assist", label: "AI Assist", icon: Sparkles },
 ];
 
 export function Sidebar() {
@@ -40,17 +39,6 @@ export function Sidebar() {
           </Link>
         ))}
       </nav>
-
-      <div className="mt-auto rounded-[1.75rem] bg-[linear-gradient(160deg,rgba(255,245,227,0.84),rgba(235,239,255,0.94))] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)]">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-[var(--coral-500)] shadow-sm">
-          <BriefcaseBusiness className="h-5 w-5" />
-        </div>
-        <p className="mt-4 text-base font-semibold">Hackathon mode</p>
-        <p className="mt-2 text-sm leading-6 text-[var(--ink-500)]">
-          Mock USDC, demo originators, and claim-based settlement running on
-          Solana Devnet or Localnet.
-        </p>
-      </div>
     </aside>
   );
 }

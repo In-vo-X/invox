@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { Bell, Search, Sparkles } from "lucide-react";
+import { Bell, Search } from "lucide-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 export function Topbar() {
@@ -12,10 +11,6 @@ export function Topbar() {
           <Search className="h-4 w-4" />
           Search pools, issuers, tx signatures
         </div>
-        <Link href="/marketplace" className="metric-chip hidden sm:inline-flex">
-          <Sparkles className="h-3.5 w-3.5 text-[var(--brand-500)]" />
-          RWA dashboard
-        </Link>
       </div>
       <div className="flex items-center gap-3">
         <button className="pill text-[var(--ink-600)]" type="button">
