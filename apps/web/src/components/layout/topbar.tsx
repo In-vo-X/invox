@@ -21,7 +21,7 @@ export function Topbar() {
   } as const;
 
   return (
-    <div className="flex flex-col gap-4 rounded-[2rem] border border-white/80 bg-white/88 px-5 py-4 shadow-[0_18px_48px_rgba(127,139,176,0.12)] backdrop-blur-xl lg:flex-row lg:items-center lg:justify-between">
+    <div className="relative z-30 flex flex-col gap-4 rounded-[2rem] border border-white/80 bg-white/88 px-5 py-4 shadow-[0_18px_48px_rgba(127,139,176,0.12)] backdrop-blur-xl lg:flex-row lg:items-center lg:justify-between">
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-3 text-sm text-[var(--ink-500)]">
           <Search className="h-4 w-4" />
@@ -43,7 +43,7 @@ export function Topbar() {
           </span>
         </button>
         {showAlerts ? (
-          <div className="absolute right-0 top-[calc(100%+0.75rem)] z-20 w-[22rem] rounded-[1.75rem] border border-white/90 bg-white/96 p-4 shadow-[0_24px_60px_rgba(127,139,176,0.18)] backdrop-blur-xl">
+          <div className="absolute right-0 top-[calc(100%+0.75rem)] z-[70] w-[22rem] rounded-[1.75rem] border border-white/90 bg-white/96 p-4 shadow-[0_24px_60px_rgba(127,139,176,0.18)] backdrop-blur-xl">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="eyebrow">Alerts</p>
