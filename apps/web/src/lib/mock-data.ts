@@ -122,3 +122,82 @@ export const portfolioRows = [
     status: "Repaid" as PoolStatus,
   },
 ];
+
+export type AssistProfile = {
+  label: string;
+  value: string;
+  note: string;
+};
+
+export type AssistChecklistItem = {
+  title: string;
+  description: string;
+};
+
+export type AssistRecommendation = {
+  title: string;
+  fit: string;
+  why: string;
+  watchouts: string;
+  poolId: string;
+  confidence: string;
+};
+
+export const assistProfiles: AssistProfile[] = [
+  {
+    label: "Investor style",
+    value: "Balanced income seeker",
+    note: "Prefers steady repayment visibility over aggressive yield chasing.",
+  },
+  {
+    label: "Suggested hold period",
+    value: "30-60 days",
+    note: "Short-duration invoice pools fit users who want frequent check-ins and faster liquidity cycles.",
+  },
+  {
+    label: "Comfort zone",
+    value: "Risk grade A-B",
+    note: "Higher-grade pools reduce underwriting complexity for first-time users.",
+  },
+];
+
+export const assistChecklist: AssistChecklistItem[] = [
+  {
+    title: "Start with the debtor, not the yield",
+    description:
+      "A strong enterprise debtor and clean payment history matter more than the highest displayed return.",
+  },
+  {
+    title: "Match duration to your cash needs",
+    description:
+      "Invoice pools are short-term, but funds are still locked until repayments or secondary exits happen.",
+  },
+  {
+    title: "Use servicing signals as your risk shortcut",
+    description:
+      "Active servicing, recent updates, and fully documented legal hashes are simpler trust anchors for non-experts.",
+  },
+];
+
+export const assistRecommendations: AssistRecommendation[] = [
+  {
+    title: "Core match: Jakarta Logistics Co.",
+    fit: "Best fit for cautious first-time investors",
+    why:
+      "This pool combines a top risk grade, verified enterprise counterparty context, and full funding progress, which makes the story easier to understand and monitor.",
+    watchouts:
+      "Yield is not the absolute highest, so it suits confidence-building more than return maximization.",
+    poolId: "2",
+    confidence: "92% match",
+  },
+  {
+    title: "Optional satellite: Manila Design Studio",
+    fit: "Good if you want a smaller, still-funding position",
+    why:
+      "The invoice size is moderate and the funding round is still open, which can help users learn how pool progress changes over time.",
+    watchouts:
+      "Risk grade B means you should review debtor quality and payment timing carefully before sizing up.",
+    poolId: "1",
+    confidence: "78% match",
+  },
+];
