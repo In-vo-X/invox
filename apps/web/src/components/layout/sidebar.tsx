@@ -2,7 +2,6 @@ import Link from "next/link";
 import {
   BriefcaseBusiness,
   CircleDollarSign,
-  FileStack,
   LayoutDashboard,
   ShieldEllipsis,
   Wallet,
@@ -11,7 +10,6 @@ import {
 const items = [
   { href: "/marketplace", label: "Marketplace", icon: LayoutDashboard },
   { href: "/portfolio", label: "Portfolio", icon: Wallet },
-  { href: "/create", label: "Create Pool", icon: FileStack },
   { href: "/admin", label: "Admin", icon: ShieldEllipsis },
 ];
 

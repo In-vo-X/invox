@@ -41,7 +41,7 @@ export default function MarketplacePage() {
             </h2>
           </div>
           <Link className="btn-primary" href="/create">
-            Create pool
+            More
           </Link>
         </div>
 
