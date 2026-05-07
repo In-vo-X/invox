@@ -24,7 +24,7 @@ export default function MarketplaceMorePage() {
           </Link>
         </div>
 
-        <div className="mt-6 grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
+        <div className="mt-6 space-y-4">
           <section className="rounded-[1.6rem] bg-[linear-gradient(160deg,rgba(244,247,255,0.96),rgba(255,247,236,0.92))] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
             <div className="flex items-end justify-between gap-4">
               <div>
@@ -33,33 +33,45 @@ export default function MarketplaceMorePage() {
                   Highest annualized invoice opportunities
                 </h3>
               </div>
-              <p className="text-sm text-[var(--ink-500)]">Updated from demo invoices</p>
+              <p className="text-sm text-[var(--ink-500)]">
+                Updated from demo invoices
+              </p>
             </div>
 
-            <div className="mt-5 space-y-3">
+            <div className="mt-5 grid gap-4 lg:grid-cols-3">
               {rankedPools.map((pool, index) => (
                 <Link
                   key={pool.id}
                   href={`/pools/${pool.id}`}
-                  className="flex items-start justify-between gap-4 rounded-[1.35rem] bg-white/82 p-4 transition hover:-translate-y-0.5"
+                  className="soft-card h-full p-5 transition hover:-translate-y-0.5"
                 >
-                  <div className="flex gap-4">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--brand-100)] text-sm font-semibold text-[var(--brand-600)]">
-                      #{index + 1}
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-[var(--ink-900)]">{pool.issuer}</p>
-                      <p className="mt-1 text-sm text-[var(--ink-500)]">Debtor · {pool.debtor}</p>
-                      <div className="mt-3 flex flex-wrap items-center gap-2">
-                        <RiskBadge grade={pool.riskGrade} />
-                        <StatusBadge status={pool.status} />
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex gap-4">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--brand-100)] text-sm font-semibold text-[var(--brand-600)]">
+                        #{index + 1}
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-[var(--ink-900)]">
+                          {pool.issuer}
+                        </p>
+                        <p className="mt-1 text-sm text-[var(--ink-500)]">
+                          Debtor · {pool.debtor}
+                        </p>
                       </div>
                     </div>
+                    <div className="text-right">
+                      <p className="eyebrow">Annualized</p>
+                      <p className="mt-2 text-xl font-semibold">
+                        {formatPercent(pool.annualizedYieldPct)}
+                      </p>
+                      <p className="mt-1 text-sm text-[var(--ink-500)]">
+                        Gross {formatPercent(pool.grossYieldPct)}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="eyebrow">Annualized</p>
-                    <p className="mt-2 text-xl font-semibold">{formatPercent(pool.annualizedYieldPct)}</p>
-                    <p className="mt-1 text-sm text-[var(--ink-500)]">Gross {formatPercent(pool.grossYieldPct)}</p>
+                  <div className="mt-4 flex flex-wrap items-center gap-2">
+                    <RiskBadge grade={pool.riskGrade} />
+                    <StatusBadge status={pool.status} />
                   </div>
                 </Link>
               ))}
@@ -74,11 +86,13 @@ export default function MarketplaceMorePage() {
                   Scrollable invoice card board
                 </h3>
               </div>
-              <p className="text-sm text-[var(--ink-500)]">{demoPools.length} invoices</p>
+              <p className="text-sm text-[var(--ink-500)]">
+                {demoPools.length} invoices
+              </p>
             </div>
 
             <div className="max-h-[58rem] overflow-y-auto pr-2">
-              <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-4 lg:grid-cols-3">
                 {demoPools.map((pool) => (
                   <Link
                     key={pool.id}
