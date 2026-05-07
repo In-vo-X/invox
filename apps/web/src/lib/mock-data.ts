@@ -97,6 +97,144 @@ export const demoPools: PoolRecord[] = [
     dueLabel: "30 days",
     txSig: "9HcP4w...Flow3",
   },
+  {
+    id: "4",
+    issuer: "Bangkok Parts Supply",
+    originator: "FlowPay Originator TH",
+    spv: "FlowPay SPV Delta",
+    debtor: "Siam Retail Network",
+    legalAssetHash:
+      "3333333333333333333333333333333333333333333333333333333333333333",
+    servicingStatus: "Active",
+    servicingUpdated: "Today",
+    invoiceValue: 18000,
+    advanceAmount: 17100,
+    grossYieldPct: 5.26,
+    annualizedYieldPct: 36.4,
+    durationDays: 53,
+    riskGrade: "A",
+    status: "Funding",
+    fundedPct: 81,
+    description:
+      "Manufacturing parts delivery invoice with repeat debtor payment history.",
+    dueLabel: "53 days",
+    txSig: "7Dkq21...Flow4",
+  },
+  {
+    id: "5",
+    issuer: "Ho Chi Minh Media Lab",
+    originator: "FlowPay Originator VN",
+    spv: "FlowPay SPV Epsilon",
+    debtor: "Vertex Consumer Brands",
+    legalAssetHash:
+      "4444444444444444444444444444444444444444444444444444444444444444",
+    servicingStatus: "Active",
+    servicingUpdated: "Yesterday",
+    invoiceValue: 14000,
+    advanceAmount: 13200,
+    grossYieldPct: 6.06,
+    annualizedYieldPct: 44.1,
+    durationDays: 50,
+    riskGrade: "B",
+    status: "Advanced",
+    fundedPct: 100,
+    description:
+      "Campaign production invoice backed by an enterprise marketing budget.",
+    dueLabel: "50 days",
+    txSig: "2Lvn66...Flow5",
+  },
+  {
+    id: "6",
+    issuer: "Kuala Lumpur Freight Ops",
+    originator: "FlowPay Originator MY",
+    spv: "FlowPay SPV Zeta",
+    debtor: "Peninsula Foods Group",
+    legalAssetHash:
+      "5555555555555555555555555555555555555555555555555555555555555555",
+    servicingStatus: "Disputed",
+    servicingUpdated: "Today",
+    invoiceValue: 22000,
+    advanceAmount: 20400,
+    grossYieldPct: 7.84,
+    annualizedYieldPct: 58.2,
+    durationDays: 49,
+    riskGrade: "C",
+    status: "Funding",
+    fundedPct: 52,
+    description:
+      "Cross-border logistics receivable with elevated servicing review requirements.",
+    dueLabel: "49 days",
+    txSig: "8Rmw44...Flow6",
+  },
+  {
+    id: "7",
+    issuer: "Seoul Device Assembly",
+    originator: "FlowPay Originator KR",
+    spv: "FlowPay SPV Eta",
+    debtor: "Han River Commerce",
+    legalAssetHash:
+      "6666666666666666666666666666666666666666666666666666666666666666",
+    servicingStatus: "Active",
+    servicingUpdated: "4 hours ago",
+    invoiceValue: 31000,
+    advanceAmount: 29000,
+    grossYieldPct: 4.83,
+    annualizedYieldPct: 29.4,
+    durationDays: 60,
+    riskGrade: "A",
+    status: "Funded",
+    fundedPct: 100,
+    description:
+      "Consumer electronics assembly invoice with conservative yield and strong debtor profile.",
+    dueLabel: "60 days",
+    txSig: "6Spd10...Flow7",
+  },
+  {
+    id: "8",
+    issuer: "Taipei Cloud Services",
+    originator: "FlowPay Originator TW",
+    spv: "FlowPay SPV Theta",
+    debtor: "Pacific Software Holdings",
+    legalAssetHash:
+      "7777777777777777777777777777777777777777777777777777777777777777",
+    servicingStatus: "Active",
+    servicingUpdated: "Today",
+    invoiceValue: 9000,
+    advanceAmount: 8550,
+    grossYieldPct: 6.43,
+    annualizedYieldPct: 47.6,
+    durationDays: 49,
+    riskGrade: "B",
+    status: "Funding",
+    fundedPct: 73,
+    description:
+      "Quarterly software implementation receivable with short duration and clean file package.",
+    dueLabel: "49 days",
+    txSig: "1Pfw88...Flow8",
+  },
+  {
+    id: "9",
+    issuer: "Manila Healthcare Supply",
+    originator: "FlowPay Originator PH",
+    spv: "FlowPay SPV Iota",
+    debtor: "Island Medical Network",
+    legalAssetHash:
+      "8888888888888888888888888888888888888888888888888888888888888888",
+    servicingStatus: "Active",
+    servicingUpdated: "2 days ago",
+    invoiceValue: 27000,
+    advanceAmount: 25650,
+    grossYieldPct: 5.26,
+    annualizedYieldPct: 38.9,
+    durationDays: 50,
+    riskGrade: "A",
+    status: "Advanced",
+    fundedPct: 100,
+    description:
+      "Medical supply receivable with recurring institutional buyer relationship.",
+    dueLabel: "50 days",
+    txSig: "4Umz52...Flow9",
+  },
 ];
 
 export const portfolioRows = [
@@ -141,6 +279,15 @@ export type AssistRecommendation = {
   watchouts: string;
   poolId: string;
   confidence: string;
+};
+
+export type AlertNotification = {
+  id: string;
+  title: string;
+  body: string;
+  timeLabel: string;
+  tone: "info" | "success" | "warning";
+  ctaLabel?: string;
 };
 
 export const assistProfiles: AssistProfile[] = [
@@ -199,5 +346,35 @@ export const assistRecommendations: AssistRecommendation[] = [
       "Risk grade B means you should review debtor quality and payment timing carefully before sizing up.",
     poolId: "1",
     confidence: "78% match",
+  },
+];
+
+export const alertNotifications: AlertNotification[] = [
+  {
+    id: "alert-1",
+    title: "Pool 2 reached full funding",
+    body:
+      "Jakarta Logistics Co. is now 100% funded. Review repayment timing and servicing updates before adding a similar position.",
+    timeLabel: "2 min ago",
+    tone: "success",
+    ctaLabel: "Review pool",
+  },
+  {
+    id: "alert-2",
+    title: "New AI Assist match available",
+    body:
+      "A lower-risk invoice profile has been highlighted for cautious first-time investors based on your current guidance view.",
+    timeLabel: "12 min ago",
+    tone: "info",
+    ctaLabel: "Open AI Assist",
+  },
+  {
+    id: "alert-3",
+    title: "Servicing watch on Pool 3",
+    body:
+      "Cebu SaaS Agency remains in an impaired servicing state. Treat it as a learning example, not a starter allocation.",
+    timeLabel: "Today",
+    tone: "warning",
+    ctaLabel: "Check risk",
   },
 ];
