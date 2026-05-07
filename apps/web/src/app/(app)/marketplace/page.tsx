@@ -6,13 +6,15 @@ import { demoPools } from "@/lib/mock-data";
 import { formatCurrency } from "@/lib/format";
 
 export default function MarketplacePage() {
+  const featuredPools = demoPools.slice(0, 3);
+
   return (
     <div className="space-y-6">
       <section className="grid gap-4 xl:grid-cols-3">
         <KpiCard
           eyebrow="Total RWA TVL"
           value="$38,050"
-          note="Across 3 demo invoice pools"
+          note={`Across ${featuredPools.length} featured invoice pools`}
           accent="linear-gradient(180deg,#7287ff,#5f72dd)"
           chart={[45, 32, 40, 72, 54]}
         />
@@ -40,13 +42,13 @@ export default function MarketplacePage() {
               Invoice cashflow opportunities
             </h2>
           </div>
-          <Link className="btn-primary" href="/create">
+          <Link className="btn-primary" href="/marketplace/more">
             More
           </Link>
         </div>
 
         <div className="mt-6 grid gap-4 xl:grid-cols-3">
-          {demoPools.map((pool) => (
+          {featuredPools.map((pool) => (
             <Link
               key={pool.id}
               href={`/pools/${pool.id}`}

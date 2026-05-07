@@ -63,8 +63,8 @@ export default function Home() {
                 Explore pools
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link className="btn-secondary" href="/create">
-                Create demo pool
+              <Link className="btn-secondary" href="/ai-assist">
+                Open AI Assist
               </Link>
             </div>
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
@@ -119,8 +119,8 @@ export default function Home() {
                     Submit → Fund → Repay → Claim
                   </h3>
                 </div>
-                <Link className="btn-secondary h-10 px-4 text-sm" href="/admin">
-                  Open admin
+                <Link className="btn-secondary h-10 px-4 text-sm" href="/marketplace#invoice-board">
+                  Open invoice board
                 </Link>
               </div>
               <p className="mt-4 text-sm leading-6 text-[var(--ink-500)]">
