@@ -81,10 +81,7 @@ export default function MarketplaceMorePage() {
           <section className="rounded-[1.6rem] border border-[var(--line)] bg-[var(--surface-soft)] p-4">
             <div className="flex items-end justify-between gap-4 px-2 pb-4">
               <div>
-                <p className="eyebrow">More invoices</p>
-                <h3 className="mt-2 text-xl font-semibold tracking-tight">
-                  Scrollable invoice card board
-                </h3>
+                <p className="eyebrow">추가 청구서</p>
               </div>
               <p className="text-sm text-[var(--ink-500)]">
                 {demoPools.length} invoices
