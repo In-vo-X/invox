@@ -32,7 +32,7 @@ export default function Home() {
         <header className="border-b border-[var(--line)] px-6 py-5 sm:px-8">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[var(--ink-500)]">
-              FlowPay
+              InvoX
             </p>
             <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-4xl">
               Turn unpaid invoices into on-chain cashflows.
