@@ -10,7 +10,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "FlowPay",
+  title: "InvoX",
   description: "On-chain invoice cashflow protocol on Solana",
 };
 
