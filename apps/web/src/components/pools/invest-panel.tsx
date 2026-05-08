@@ -207,6 +207,48 @@ export function InvestPanel({
   const parsedRepayAmount = useMemo(() => parseUsdcAmount(repayAmount), [repayAmount]);
   const isFundingOpen = (chainSnapshot?.statusLabel ?? status) === "Funding";
 
+  async function fetchChainSnapshot(): Promise<ChainSnapshot> {
+    const program = getProgram();
+    const config = await program.account.platformConfig.fetch(getConfigPda());
+    const poolAddress = getPoolPda(BigInt(poolId));
+    const pool = await program.account.invoicePool.fetch(poolAddress);
+
+    let investment: InvestmentAccount | null = null;
+    let claimable = new BN(0);
+
+    if (publicKey) {
+      try {
+        investment = await program.account.investment.fetch(
+          getInvestmentPda(poolAddress, publicKey),
+        );
+        const netRepaid = pool.repaidAmount.sub(pool.feeOwedAmount);
+        const entitlement = netRepaid.mul(investment.amount).div(pool.advanceAmount);
+        claimable = entitlement.sub(investment.claimedAmount);
+        if (claimable.isNeg()) {
+          claimable = new BN(0);
+        }
+      } catch {
+        investment = null;
+      }
+    }
+
+    return {
+      config,
+      poolAddress,
+      pool,
+      claimable,
+      investment,
+      statusLabel: decodeStatus(pool.status),
+    };
+  }
+
+  function applyChainSnapshot(snapshot: ChainSnapshot) {
+    setChainSnapshot(snapshot);
+    setRiskScore(String(snapshot.pool.riskScore));
+    setServicingValue(String(snapshot.pool.servicingStatus));
+    setMetadataUri(snapshot.pool.metadataUri || `ipfs://invox-demo-pool-${poolId}`);
+  }
+
   function getProgram(walletOverride?: WalletLike) {
     const provider = new AnchorProvider(
       connection,
@@ -239,41 +281,8 @@ export function InvestPanel({
 
   async function refreshChainSnapshot() {
     try {
-      const program = getProgram();
-      const config = await program.account.platformConfig.fetch(getConfigPda());
-      const poolAddress = getPoolPda(BigInt(poolId));
-      const pool = await program.account.invoicePool.fetch(poolAddress);
-
-      let investment: InvestmentAccount | null = null;
-      let claimable = new BN(0);
-
-      if (publicKey) {
-        try {
-          investment = await program.account.investment.fetch(
-            getInvestmentPda(poolAddress, publicKey),
-          );
-          const netRepaid = pool.repaidAmount.sub(pool.feeOwedAmount);
-          const entitlement = netRepaid.mul(investment.amount).div(pool.advanceAmount);
-          claimable = entitlement.sub(investment.claimedAmount);
-          if (claimable.isNeg()) {
-            claimable = new BN(0);
-          }
-        } catch {
-          investment = null;
-        }
-      }
-
-      setChainSnapshot({
-        config,
-        poolAddress,
-        pool,
-        claimable,
-        investment,
-        statusLabel: decodeStatus(pool.status),
-      });
-      setRiskScore(String(pool.riskScore));
-      setServicingValue(String(pool.servicingStatus));
-      setMetadataUri(pool.metadataUri || `ipfs://invox-demo-pool-${poolId}`);
+      const snapshot = await fetchChainSnapshot();
+      applyChainSnapshot(snapshot);
     } catch {
       setChainSnapshot(null);
     }
@@ -294,12 +303,8 @@ export function InvestPanel({
     setSignature(null);
 
     try {
-      await refreshChainSnapshot();
-      const snapshot = chainSnapshot;
-
-      if (!snapshot) {
-        throw new Error("이 풀의 온체인 계정을 찾을 수 없습니다. 데브넷에 아직 생성되지 않았을 수 있습니다.");
-      }
+      const snapshot = await fetchChainSnapshot();
+      applyChainSnapshot(snapshot);
 
       const txSignature = await callback(snapshot);
       await connection.confirmTransaction(txSignature, "confirmed");
