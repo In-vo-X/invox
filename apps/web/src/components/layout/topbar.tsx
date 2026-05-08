@@ -84,9 +84,9 @@ export function Topbar() {
 
   return (
     <div className="relative z-30 flex flex-col gap-4 rounded-[2rem] border border-white/80 bg-white/88 px-5 py-4 shadow-[0_18px_48px_rgba(127,139,176,0.12)] backdrop-blur-xl lg:flex-row lg:items-center lg:justify-between">
-      <div className="relative flex flex-1 items-center gap-4" ref={searchRef}>
+      <div className="relative flex min-w-0 flex-1 items-center gap-4" ref={searchRef}>
         <form
-          className="flex w-full items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-3 text-sm text-[var(--ink-500)] lg:max-w-[48rem]"
+          className="flex w-full items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-3 text-sm text-[var(--ink-500)]"
           onSubmit={handleSearchSubmit}
         >
           <Search className="h-4 w-4 shrink-0" />
@@ -110,7 +110,7 @@ export function Topbar() {
         </form>
 
         {showSearchResults ? (
-          <div className="absolute left-0 top-[calc(100%+0.75rem)] z-[70] w-full rounded-[1.75rem] border border-white/90 bg-white/96 p-4 shadow-[0_24px_60px_rgba(127,139,176,0.18)] backdrop-blur-xl lg:max-w-[48rem]">
+          <div className="absolute left-0 top-[calc(100%+0.75rem)] z-[70] w-full rounded-[1.75rem] border border-white/90 bg-white/96 p-4 shadow-[0_24px_60px_rgba(127,139,176,0.18)] backdrop-blur-xl">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="eyebrow">Search</p>
@@ -169,7 +169,7 @@ export function Topbar() {
           </div>
         ) : null}
       </div>
-      <div className="relative flex items-center gap-3">
+      <div className="relative flex shrink-0 items-center gap-3">
         <button
           aria-expanded={showAlerts}
           aria-haspopup="dialog"
