@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { InvestPanel } from "@/components/pools/invest-panel";
 import { RiskBadge } from "@/components/ui/risk-badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { demoPools } from "@/lib/mock-data";
@@ -110,32 +111,13 @@ export default async function PoolDetailPage(
       </section>
 
       <section className="space-y-6">
-        <div className="stat-card stat-card--lavender">
-          <p className="eyebrow">Invest panel</p>
-          <h2 className="mt-8 text-3xl font-semibold">Commit USDC</h2>
-          <p className="mt-3 text-sm leading-6 text-[var(--ink-500)]">
-            Funding progress {pool.fundedPct}% · expected settlement in{" "}
-            {pool.dueLabel}.
-          </p>
-          <div className="mt-6 h-3 rounded-full bg-white">
-            <div
-              className="h-full rounded-full bg-[linear-gradient(135deg,#5f72dd,#7287ff)]"
-              style={{ width: `${pool.fundedPct}%` }}
-            />
-          </div>
-          <div className="mt-6 rounded-[1.5rem] bg-white/74 p-4">
-            <label className="text-sm font-medium text-[var(--ink-600)]">
-              Investment amount
-              <input
-                className="mt-2 h-12 w-full rounded-2xl border border-[var(--line)] bg-[var(--surface-soft)] px-4 outline-none"
-                defaultValue="500"
-              />
-            </label>
-            <button className="btn-primary mt-4 w-full">
-              Invest with Solana wallet
-            </button>
-          </div>
-        </div>
+        <InvestPanel
+          poolId={pool.id}
+          fundedPct={pool.fundedPct}
+          dueLabel={pool.dueLabel}
+          advanceAmount={pool.advanceAmount}
+          status={pool.status}
+        />
 
         <div className="soft-card p-6">
           <p className="eyebrow">Admin actions</p>
