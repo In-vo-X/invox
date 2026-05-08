@@ -29,7 +29,7 @@ export default function Home() {
     <main className="relative isolate overflow-hidden px-6 py-8 sm:px-8 lg:px-12">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(149,171,255,0.24),_transparent_28%),radial-gradient(circle_at_top_right,_rgba(145,236,217,0.20),_transparent_24%),radial-gradient(circle_at_bottom_left,_rgba(255,212,177,0.22),_transparent_28%)]" />
       <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-7xl flex-col rounded-[2rem] border border-white/70 bg-white/86 shadow-[0_30px_80px_rgba(119,133,181,0.12)] backdrop-blur-xl">
-        <header className="flex items-center justify-between border-b border-[var(--line)] px-6 py-5 sm:px-8">
+        <header className="border-b border-[var(--line)] px-6 py-5 sm:px-8">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[var(--ink-500)]">
               FlowPay
@@ -38,19 +38,13 @@ export default function Home() {
               Turn unpaid invoices into on-chain cashflows.
             </h1>
           </div>
-          <Link
-            className="pill text-sm font-semibold text-[var(--ink-700)]"
-            href="/marketplace"
-          >
-            Solana Devnet MVP
-          </Link>
         </header>
 
         <section className="grid gap-10 px-6 py-10 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-16 lg:px-10">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-2 text-sm font-medium text-[var(--ink-600)]">
               <ShieldCheck className="h-4 w-4 text-[var(--brand-500)]" />
-              No token, USDC only, claim-based settlement
+              Solana 기반 빠른 정산 · 낮은 비용 · 투명한 거래 추적
             </div>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--ink-600)]">
               FlowPay keeps legal invoice ownership off-chain while moving
@@ -64,7 +58,7 @@ export default function Home() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link className="btn-secondary" href="/ai-assist">
-                Open AI Assist
+                AI Assist
               </Link>
             </div>
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
