@@ -117,26 +117,9 @@ export default async function PoolDetailPage(
           dueLabel={pool.dueLabel}
           advanceAmount={pool.advanceAmount}
           status={pool.status}
+          riskGrade={pool.riskGrade}
+          servicingStatus={pool.servicingStatus}
         />
-
-        <div className="soft-card p-6">
-          <p className="eyebrow">Admin actions</p>
-          <div className="mt-4 grid gap-3">
-            {[
-              "Advance to issuer",
-              "Repay from originator",
-              "Update servicing",
-              "Mark defaulted",
-            ].map((label) => (
-              <button
-                key={label}
-                className="btn-secondary justify-between text-sm"
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
       </section>
     </div>
   );
