@@ -1,6 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
-  CircleDollarSign,
   LayoutDashboard,
   Sparkles,
   Wallet,
@@ -15,12 +15,16 @@ const items = [
 export function Sidebar() {
   return (
     <aside className="flex h-full flex-col rounded-[2rem] border border-white/80 bg-white/88 p-5 shadow-[0_20px_55px_rgba(127,139,176,0.12)] backdrop-blur-xl">
-      <div className="flex items-center gap-3 rounded-[1.4rem] bg-[var(--surface-soft)] px-4 py-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--brand-100)] text-[var(--brand-600)]">
-          <CircleDollarSign className="h-5 w-5" />
-        </div>
+      <div className="rounded-[1.4rem] bg-[var(--surface-soft)] px-4 py-3">
         <div>
-          <p className="text-sm font-semibold text-[var(--ink-900)]">FlowPay</p>
+          <Image
+            src="/branding/logo-wordmark.jpg"
+            alt="InvoX logo"
+            width={1054}
+            height={332}
+            className="h-9 w-auto object-contain"
+            priority
+          />
           <p className="text-xs text-[var(--ink-500)]">
             Invoice cashflow protocol
           </p>
