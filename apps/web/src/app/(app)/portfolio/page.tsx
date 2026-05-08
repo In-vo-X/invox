@@ -21,9 +21,18 @@ export default function PortfolioPage() {
     })
     .filter((position) => position !== null);
 
-  const totalInvested = positions.reduce((sum, position) => sum + position.invested, 0);
-  const totalClaimable = positions.reduce((sum, position) => sum + position.claimable, 0);
-  const totalClaimed = positions.reduce((sum, position) => sum + position.claimed, 0);
+  const totalInvested = positions.reduce(
+    (sum, position) => sum + position.invested,
+    0,
+  );
+  const totalClaimable = positions.reduce(
+    (sum, position) => sum + position.claimable,
+    0,
+  );
+  const totalClaimed = positions.reduce(
+    (sum, position) => sum + position.claimed,
+    0,
+  );
   const weightedYield =
     totalInvested > 0
       ? positions.reduce(
@@ -72,8 +81,12 @@ export default function PortfolioPage() {
             </p>
           </div>
           <div className="flex flex-wrap gap-3 text-sm text-[var(--ink-500)]">
-            <span className="metric-chip">{positions.length} live positions</span>
-            <span className="metric-chip">{formatCurrency(totalClaimed)} realized</span>
+            <span className="metric-chip">
+              {positions.length} live positions
+            </span>
+            <span className="metric-chip">
+              {formatCurrency(totalClaimed)} realized
+            </span>
           </div>
         </div>
 
@@ -94,11 +107,14 @@ export default function PortfolioPage() {
                       <StatusBadge status={position.status} />
                     </div>
                     <p className="mt-2 text-sm text-[var(--ink-500)]">
-                      Originator {position.pool.originator} · Debtor {position.pool.debtor}
+                      Originator {position.pool.originator} · Debtor{" "}
+                      {position.pool.debtor}
                     </p>
                     <div className="mt-3 flex flex-wrap items-center gap-2">
                       <RiskBadge grade={position.pool.riskGrade} />
-                      <span className="metric-chip">{position.pool.dueLabel}</span>
+                      <span className="metric-chip">
+                        {position.pool.dueLabel}
+                      </span>
                     </div>
                   </div>
 
@@ -187,23 +203,31 @@ export default function PortfolioPage() {
               <p className="eyebrow">Cashflow status</p>
               <div className="mt-4 space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-[var(--ink-500)]">Ready to claim</span>
+                  <span className="text-sm text-[var(--ink-500)]">
+                    Ready to claim
+                  </span>
                   <span className="text-base font-semibold text-[var(--ink-900)]">
                     {formatCurrency(totalClaimable)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-[var(--ink-500)]">Already claimed</span>
+                  <span className="text-sm text-[var(--ink-500)]">
+                    Already claimed
+                  </span>
                   <span className="text-base font-semibold text-[var(--ink-900)]">
                     {formatCurrency(totalClaimed)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-[var(--ink-500)]">Active positions</span>
+                  <span className="text-sm text-[var(--ink-500)]">
+                    Active positions
+                  </span>
                   <span className="text-base font-semibold text-[var(--ink-900)]">
                     {
                       positions.filter((position) =>
-                        ["Funding", "Advanced", "Funded"].includes(position.status),
+                        ["Funding", "Advanced", "Funded"].includes(
+                          position.status,
+                        ),
                       ).length
                     }
                   </span>
@@ -237,10 +261,18 @@ export default function PortfolioPage() {
                   key={position.pool.id}
                   className="border-t border-[var(--line)] bg-white/80"
                 >
-                  <td className="px-4 py-4 font-semibold">{position.pool.issuer}</td>
-                  <td className="px-4 py-4">{formatCurrency(position.invested)}</td>
-                  <td className="px-4 py-4">{formatCurrency(position.claimable)}</td>
-                  <td className="px-4 py-4">{formatCurrency(position.claimed)}</td>
+                  <td className="px-4 py-4 font-semibold">
+                    {position.pool.issuer}
+                  </td>
+                  <td className="px-4 py-4">
+                    {formatCurrency(position.invested)}
+                  </td>
+                  <td className="px-4 py-4">
+                    {formatCurrency(position.claimable)}
+                  </td>
+                  <td className="px-4 py-4">
+                    {formatCurrency(position.claimed)}
+                  </td>
                   <td className="px-4 py-4">
                     {position.pool.annualizedYieldPct.toFixed(1)}%
                   </td>

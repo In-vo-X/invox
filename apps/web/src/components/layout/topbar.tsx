@@ -84,7 +84,10 @@ export function Topbar() {
 
   return (
     <div className="relative z-30 flex flex-col gap-4 rounded-[2rem] border border-white/80 bg-white/88 px-5 py-4 shadow-[0_18px_48px_rgba(127,139,176,0.12)] backdrop-blur-xl lg:flex-row lg:items-center lg:justify-between">
-      <div className="relative flex min-w-0 flex-1 items-center gap-4" ref={searchRef}>
+      <div
+        className="relative flex min-w-0 flex-1 items-center gap-4"
+        ref={searchRef}
+      >
         <form
           className="flex w-full items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-3 text-sm text-[var(--ink-500)]"
           onSubmit={handleSearchSubmit}

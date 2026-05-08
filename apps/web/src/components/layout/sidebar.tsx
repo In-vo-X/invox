@@ -1,10 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  LayoutDashboard,
-  Sparkles,
-  Wallet,
-} from "lucide-react";
+import { LayoutDashboard, Sparkles, Wallet } from "lucide-react";
 
 const items = [
   { href: "/marketplace", label: "Marketplace", icon: LayoutDashboard },
