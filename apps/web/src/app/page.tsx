@@ -54,7 +54,7 @@ export default function Home() {
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link className="btn-primary" href="/marketplace">
-                Explore pools
+                Start InvoX
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link className="btn-secondary" href="/ai-assist">
