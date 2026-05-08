@@ -330,8 +330,7 @@ export const assistRecommendations: AssistRecommendation[] = [
   {
     title: "Core match: Jakarta Logistics Co.",
     fit: "Best fit for cautious first-time investors",
-    why:
-      "This pool combines a top risk grade, verified enterprise counterparty context, and full funding progress, which makes the story easier to understand and monitor.",
+    why: "This pool combines a top risk grade, verified enterprise counterparty context, and full funding progress, which makes the story easier to understand and monitor.",
     watchouts:
       "Yield is not the absolute highest, so it suits confidence-building more than return maximization.",
     poolId: "2",
@@ -340,8 +339,7 @@ export const assistRecommendations: AssistRecommendation[] = [
   {
     title: "Optional satellite: Manila Design Studio",
     fit: "Good if you want a smaller, still-funding position",
-    why:
-      "The invoice size is moderate and the funding round is still open, which can help users learn how pool progress changes over time.",
+    why: "The invoice size is moderate and the funding round is still open, which can help users learn how pool progress changes over time.",
     watchouts:
       "Risk grade B means you should review debtor quality and payment timing carefully before sizing up.",
     poolId: "1",
@@ -353,8 +351,7 @@ export const alertNotifications: AlertNotification[] = [
   {
     id: "alert-1",
     title: "Pool 2 reached full funding",
-    body:
-      "Jakarta Logistics Co. is now 100% funded. Review repayment timing and servicing updates before adding a similar position.",
+    body: "Jakarta Logistics Co. is now 100% funded. Review repayment timing and servicing updates before adding a similar position.",
     timeLabel: "2 min ago",
     tone: "success",
     ctaLabel: "Review pool",
@@ -362,8 +359,7 @@ export const alertNotifications: AlertNotification[] = [
   {
     id: "alert-2",
     title: "New AI Assist match available",
-    body:
-      "A lower-risk invoice profile has been highlighted for cautious first-time investors based on your current guidance view.",
+    body: "A lower-risk invoice profile has been highlighted for cautious first-time investors based on your current guidance view.",
     timeLabel: "12 min ago",
     tone: "info",
     ctaLabel: "Open AI Assist",
@@ -371,8 +367,7 @@ export const alertNotifications: AlertNotification[] = [
   {
     id: "alert-3",
     title: "Servicing watch on Pool 3",
-    body:
-      "Cebu SaaS Agency remains in an impaired servicing state. Treat it as a learning example, not a starter allocation.",
+    body: "Cebu SaaS Agency remains in an impaired servicing state. Treat it as a learning example, not a starter allocation.",
     timeLabel: "Today",
     tone: "warning",
     ctaLabel: "Check risk",

@@ -83,7 +83,9 @@ export default function AiAssistPage() {
 
         <div className="mt-6 grid gap-4 xl:grid-cols-2">
           {assistRecommendations.map((recommendation) => {
-            const pool = demoPools.find((entry) => entry.id === recommendation.poolId);
+            const pool = demoPools.find(
+              (entry) => entry.id === recommendation.poolId,
+            );
 
             if (!pool) {
               return null;
@@ -103,17 +105,23 @@ export default function AiAssistPage() {
                       {recommendation.fit}
                     </p>
                   </div>
-                  <span className="metric-chip">{recommendation.confidence}</span>
+                  <span className="metric-chip">
+                    {recommendation.confidence}
+                  </span>
                 </div>
 
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   <div>
                     <p className="eyebrow">Originator</p>
-                    <p className="mt-2 text-base font-semibold">{pool.originator}</p>
+                    <p className="mt-2 text-base font-semibold">
+                      {pool.originator}
+                    </p>
                   </div>
                   <div>
                     <p className="eyebrow">Debtor</p>
-                    <p className="mt-2 text-base font-semibold">{pool.debtor}</p>
+                    <p className="mt-2 text-base font-semibold">
+                      {pool.debtor}
+                    </p>
                   </div>
                   <div>
                     <p className="eyebrow">Advance target</p>
@@ -129,7 +137,9 @@ export default function AiAssistPage() {
                   </div>
                   <div>
                     <p className="eyebrow">Duration</p>
-                    <p className="mt-2 text-base font-semibold">{pool.dueLabel}</p>
+                    <p className="mt-2 text-base font-semibold">
+                      {pool.dueLabel}
+                    </p>
                   </div>
                   <div>
                     <p className="eyebrow">Risk grade</p>
@@ -174,8 +184,8 @@ export default function AiAssistPage() {
           </h2>
           <div className="mt-4 space-y-4 text-sm leading-6 text-[var(--ink-500)]">
             <p>
-              Unlike public stocks or ETFs, these opportunities depend on
-              debtor repayment, servicing quality, legal documentation, and the
+              Unlike public stocks or ETFs, these opportunities depend on debtor
+              repayment, servicing quality, legal documentation, and the
               operator’s ability to advance and collect short-duration invoices.
             </p>
             <p>

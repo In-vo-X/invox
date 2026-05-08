@@ -152,7 +152,9 @@ export default function MarketplaceMorePage() {
                         />
                       </div>
                       <p className="mt-4 text-sm leading-6 text-[var(--ink-500)]">
-                        {pool.description} Legal hash {pool.legalAssetHash.slice(0, 10)}… backs the off-chain evidence bundle.
+                        {pool.description} Legal hash{" "}
+                        {pool.legalAssetHash.slice(0, 10)}… backs the off-chain
+                        evidence bundle.
                       </p>
                     </div>
                   </Link>
