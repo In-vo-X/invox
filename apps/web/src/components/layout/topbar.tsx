@@ -8,12 +8,16 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { alertNotifications, demoPools } from "@/lib/mock-data";
 
 export function Topbar() {
-  const [showAlerts, setShowAlerts] = useState(false);
   const [query, setQuery] = useState("");
-  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [alertsPathname, setAlertsPathname] = useState<string | null>(null);
+  const [searchResultsPathname, setSearchResultsPathname] = useState<
+    string | null
+  >(null);
   const router = useRouter();
   const pathname = usePathname();
   const searchRef = useRef<HTMLDivElement>(null);
+  const showAlerts = alertsPathname === pathname;
+  const showSearchResults = searchResultsPathname === pathname;
 
   const unreadCount = useMemo(
     () => alertNotifications.filter((item) => item.tone !== "success").length,
@@ -35,7 +39,8 @@ export function Topbar() {
           pool.debtor,
           pool.spv,
           pool.txSig,
-        ].join(" ")
+        ]
+          .join(" ")
           .toLowerCase();
 
         return searchable.includes(normalizedQuery);
@@ -52,7 +57,7 @@ export function Topbar() {
   useEffect(() => {
     function handlePointerDown(event: MouseEvent) {
       if (!searchRef.current?.contains(event.target as Node)) {
-        setShowSearchResults(false);
+        setSearchResultsPathname(null);
       }
     }
 
@@ -63,13 +68,8 @@ export function Topbar() {
     };
   }, []);
 
-  useEffect(() => {
-    setShowSearchResults(false);
-    setShowAlerts(false);
-  }, [pathname]);
-
   function openPool(poolId: string) {
-    setShowSearchResults(false);
+    setSearchResultsPathname(null);
     setQuery("");
     router.push(`/pools/${poolId}`);
   }
@@ -95,12 +95,12 @@ export function Topbar() {
             value={query}
             onChange={(event) => {
               setQuery(event.target.value);
-              setShowSearchResults(true);
+              setSearchResultsPathname(pathname);
             }}
-            onFocus={() => setShowSearchResults(true)}
+            onFocus={() => setSearchResultsPathname(pathname)}
             onKeyDown={(event) => {
               if (event.key === "Escape") {
-                setShowSearchResults(false);
+                setSearchResultsPathname(null);
               }
             }}
             placeholder="Search pools, issuers, tx signatures"
@@ -121,7 +121,7 @@ export function Topbar() {
               <button
                 type="button"
                 className="text-sm font-medium text-[var(--ink-500)] transition hover:text-[var(--ink-900)]"
-                onClick={() => setShowSearchResults(false)}
+                onClick={() => setSearchResultsPathname(null)}
               >
                 Close
               </button>
@@ -163,7 +163,19 @@ export function Topbar() {
               )
             ) : (
               <div className="mt-4 rounded-[1.35rem] border border-[var(--line)] bg-[var(--surface-soft)] p-4 text-sm leading-6 text-[var(--ink-500)]">
-                Try searches like <span className="font-semibold text-[var(--ink-700)]">Jakarta</span>, <span className="font-semibold text-[var(--ink-700)]">FlowPay Originator PH</span>, or <span className="font-semibold text-[var(--ink-700)]">5msuT3</span>.
+                Try searches like{" "}
+                <span className="font-semibold text-[var(--ink-700)]">
+                  Jakarta
+                </span>
+                ,{" "}
+                <span className="font-semibold text-[var(--ink-700)]">
+                  FlowPay Originator PH
+                </span>
+                , or{" "}
+                <span className="font-semibold text-[var(--ink-700)]">
+                  5msuT3
+                </span>
+                .
               </div>
             )}
           </div>
@@ -175,7 +187,11 @@ export function Topbar() {
           aria-haspopup="dialog"
           className="pill relative text-[var(--ink-600)]"
           type="button"
-          onClick={() => setShowAlerts((current) => !current)}
+          onClick={() =>
+            setAlertsPathname((current) =>
+              current === pathname ? null : pathname,
+            )
+          }
         >
           <Bell className="h-4 w-4" />
           Alerts
@@ -195,7 +211,7 @@ export function Topbar() {
               <button
                 className="text-sm font-medium text-[var(--ink-500)] transition hover:text-[var(--ink-900)]"
                 type="button"
-                onClick={() => setShowAlerts(false)}
+                onClick={() => setAlertsPathname(null)}
               >
                 Close
               </button>
@@ -222,9 +238,13 @@ export function Topbar() {
                   </p>
                   {notification.ctaLabel ? (
                     <Link
-                      href={notification.id === "alert-2" ? "/ai-assist" : "/marketplace"}
+                      href={
+                        notification.id === "alert-2"
+                          ? "/ai-assist"
+                          : "/marketplace"
+                      }
                       className="mt-3 inline-flex text-sm font-semibold text-[var(--brand-600)] transition hover:text-[var(--brand-700)]"
-                      onClick={() => setShowAlerts(false)}
+                      onClick={() => setAlertsPathname(null)}
                     >
                       {notification.ctaLabel}
                     </Link>
