@@ -1,0 +1,59 @@
+name: Main Heartbeat Empty Commit
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: main-heartbeat-empty-commit
+  cancel-in-progress: false
+
+jobs:
+  ensure-owner-head:
+    name: Ensure owner remains main HEAD author
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    env:
+      TARGET_LOGIN: ${{ vars.HEARTBEAT_TARGET_LOGIN || 'junghoon-vans' }}
+      TARGET_NAME: ${{ vars.HEARTBEAT_TARGET_NAME || 'Junghoon Ban' }}
+      TARGET_EMAIL: ${{ vars.HEARTBEAT_TARGET_EMAIL || 'junghoon.ban@gmail.com' }}
+
+    steps:
+      - name: Check main HEAD author
+        id: head-author
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const { data: commit } = await github.rest.repos.getCommit({
+              owner,
+              repo,
+              ref: context.sha,
+            });
+
+            const targetLogin = process.env.TARGET_LOGIN;
+            const authorLogin = commit.author?.login ?? "";
+            const committerLogin = commit.committer?.login ?? "";
+            const isTargetHead = authorLogin === targetLogin || committerLogin === targetLogin;
+
+            core.notice(`HEAD author=${authorLogin || "unknown"}, committer=${committerLogin || "unknown"}, target=${targetLogin}`);
+            core.setOutput("needs_heartbeat", isTargetHead ? "false" : "true");
+
+      - name: Checkout
+        if: steps.head-author.outputs.needs_heartbeat == 'true'
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create heartbeat empty commit
+        if: steps.head-author.outputs.needs_heartbeat == 'true'
+        run: |
+          git config user.name "$TARGET_NAME"
+          git config user.email "$TARGET_EMAIL"
+          git commit --allow-empty -m "chore: heartbeat"
+          git push origin HEAD:main
