@@ -119,7 +119,7 @@ export default function Home() {
                     Submit → Fund → Repay → Claim
                   </h3>
                 </div>
-                <Link className="btn-secondary h-10 px-4 text-sm" href="/marketplace#invoice-board">
+                <Link className="btn-secondary h-10 px-4 text-sm" href="/marketplace/more">
                   Open invoice board
                 </Link>
               </div>
