@@ -47,7 +47,7 @@ jobs:
 
       - name: Install Solana CLI
         run: |
-          sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
+          sh -c "$(curl -sSfL https://release.anza.xyz/v3.1.14/install)"
           export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
           echo "$HOME/.local/share/solana/install/active_release/bin" >> "$GITHUB_PATH"
           solana --version
@@ -55,7 +55,7 @@ jobs:
 
       - name: Install Anchor CLI 1.0.2
         run: |
-          cargo install --git https://github.com/solana-foundation/anchor avm --force
+          cargo install --git https://github.com/solana-foundation/anchor --tag v1.0.2 avm --locked
           export PATH="$HOME/.avm/bin:$PATH"
           echo "$HOME/.avm/bin" >> "$GITHUB_PATH"
           avm install 1.0.2
@@ -64,7 +64,7 @@ jobs:
 
       - name: Install Surfpool
         run: |
-          curl -sL https://run.surfpool.run/ | bash
+          curl -sL https://run.surfpool.run/ | VERSION=v1.2.1 bash
           export PATH="$HOME/.local/bin:$PATH"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
           surfpool --version
