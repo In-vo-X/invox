@@ -12,7 +12,7 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   title: "InvoX",
-  description: "On-chain invoice cashflow protocol on Solana",
+  description: "Pool-based receivables finance platform with on-chain repayment tracking on Solana",
 };
 
 export default function RootLayout({

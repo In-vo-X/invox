@@ -20,7 +20,7 @@ export function Topbar() {
   const showSearchResults = searchResultsPathname === pathname;
 
   const unreadCount = useMemo(
-    () => alertNotifications.filter((item) => item.tone !== "success").length,
+    () => alertNotifications.filter((item) => !item.read).length,
     [],
   );
 
@@ -34,6 +34,7 @@ export function Topbar() {
     return demoPools
       .filter((pool) => {
         const searchable = [
+          pool.name,
           pool.issuer,
           pool.originator,
           pool.debtor,
@@ -106,9 +107,9 @@ export function Topbar() {
                 setSearchResultsPathname(null);
               }
             }}
-            placeholder="Search pools, issuers, tx signatures"
+            placeholder="Search pools, originators, payers..."
             className="w-full bg-transparent text-[var(--ink-700)] outline-none placeholder:text-[var(--ink-500)]"
-            aria-label="Search pools, issuers, tx signatures"
+            aria-label="Search pools, originators, payers"
           />
         </form>
 
@@ -118,7 +119,7 @@ export function Topbar() {
               <div>
                 <p className="eyebrow">Search</p>
                 <p className="mt-2 text-base font-semibold text-[var(--ink-900)]">
-                  Find pools by issuer, originator, or tx signature
+                  Find pools by originator, payer, or transaction signature
                 </p>
               </div>
               <button
@@ -143,10 +144,10 @@ export function Topbar() {
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <p className="text-sm font-semibold text-[var(--ink-900)]">
-                            {pool.issuer}
+                            {pool.name}
                           </p>
                           <p className="mt-1 text-sm text-[var(--ink-500)]">
-                            {pool.originator} · Debtor {pool.debtor}
+                            {pool.category} · Payers {pool.keyDebtorsLabel}
                           </p>
                         </div>
                         <span className="metric-chip">{pool.dueLabel}</span>
@@ -160,8 +161,8 @@ export function Topbar() {
                 </div>
               ) : (
                 <div className="mt-4 rounded-[1.35rem] border border-[var(--line)] bg-[var(--surface-soft)] p-4 text-sm leading-6 text-[var(--ink-500)]">
-                  No pools matched “{query.trim()}”. Try an issuer, originator,
-                  debtor, or transaction signature.
+                  No pools matched “{query.trim()}”. Try a pool operator, payer,
+                  or transaction signature.
                 </div>
               )
             ) : (
@@ -224,7 +225,7 @@ export function Topbar() {
               {alertNotifications.map((notification) => (
                 <div
                   key={notification.id}
-                  className="rounded-[1.35rem] border border-[var(--line)] bg-[var(--surface-soft)] p-4"
+                  className={`rounded-[1.35rem] border border-[var(--line)] p-4 ${notification.read ? "bg-white/70 opacity-75" : "bg-[var(--surface-soft)]"}`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <p className="text-sm font-semibold text-[var(--ink-900)]">

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { LayoutDashboard, Sparkles, Wallet } from "lucide-react";
 
 const items = [
-  { href: "/marketplace", label: "Marketplace", icon: LayoutDashboard },
+  { href: "/marketplace", label: "Pools", icon: LayoutDashboard },
   { href: "/portfolio", label: "Portfolio", icon: Wallet },
   { href: "/ai-assist", label: "AI Assist", icon: Sparkles },
 ];
@@ -22,7 +22,7 @@ export function Sidebar() {
             priority
           />
           <p className="text-xs text-[var(--ink-500)]">
-            Invoice cashflow protocol
+            Receivables finance protocol
           </p>
         </div>
       </div>

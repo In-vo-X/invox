@@ -1,19 +1,22 @@
 const actions = [
   "Mint 10,000 Mock USDC",
   "Advance funded pool",
-  "Repay invoice in full",
+  "Repay pool in full",
   "Collect protocol fee",
-  "Seed demo invoices",
+  "Seed demo pools",
 ];
 
 export default function AdminPage() {
   return (
     <div className="grid gap-6 xl:grid-cols-[1fr_0.88fr]">
       <section className="soft-card p-6">
-        <p className="eyebrow">Admin console</p>
+        <p className="eyebrow">Operator Console</p>
         <h1 className="mt-2 text-2xl font-semibold tracking-tight">
-          Hackathon operations panel
+          Authorized pool operations
         </h1>
+        <p className="mt-3 text-sm leading-6 text-[var(--ink-500)]">
+          Operator actions are intended for authorized admin or originator wallets only. Regular participants can view pool performance but should not run servicing or repayment actions.
+        </p>
         <div className="mt-6 grid gap-3">
           {actions.map((action) => (
             <button
@@ -28,14 +31,14 @@ export default function AdminPage() {
       </section>
 
       <section className="stat-card stat-card--mint">
-        <p className="eyebrow">Transaction surface</p>
+        <p className="eyebrow">Operator activity</p>
         <h2 className="mt-8 text-3xl font-semibold">Latest execution</h2>
         <div className="mt-6 rounded-[1.5rem] bg-white/70 p-5">
           <p className="text-sm font-semibold text-[var(--ink-700)]">
             Signature
           </p>
           <p className="mt-3 break-all text-sm text-[var(--ink-500)]">
-            5msuT3fB5X8J6sB2n2d3Y9invoicefinancehackathon
+            5msuT3fB5X8J6sB2n2d3Y9poolopsdemo
           </p>
           <p className="mt-4 text-sm leading-6 text-[var(--ink-500)]">
             Use this area to surface Solana Explorer links after pool creation,
