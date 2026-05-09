@@ -8,18 +8,18 @@ import {
 
 const highlights = [
   {
-    title: "Fund pool",
-    copy: "Investors fill the advance target with USDC-backed liquidity.",
+    title: "Participate in pools",
+    copy: "Approved users fund verified receivable pools with short-duration cashflow exposure.",
     Icon: ChartColumnIncreasing,
   },
   {
     title: "Advance issuer",
-    copy: "Originators or admins trigger the working-capital payout.",
+    copy: "Operators release funding after the pool reaches its target and passes servicing checks.",
     Icon: BadgeDollarSign,
   },
   {
-    title: "Claim yield",
-    copy: "Repayments settle pro-rata and investors claim transparently.",
+    title: "Claim distributions",
+    copy: "Repayments settle pro-rata and participants claim distributions with clear on-chain records.",
     Icon: ShieldCheck,
   },
 ];
@@ -35,7 +35,7 @@ export default function Home() {
               InvoX
             </p>
             <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-4xl">
-              Turn unpaid invoices into on-chain cashflows.
+              Transparent receivable finance, built on-chain.
             </h1>
           </div>
         </header>
@@ -44,21 +44,18 @@ export default function Home() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-2 text-sm font-medium text-[var(--ink-600)]">
               <ShieldCheck className="h-4 w-4 text-[var(--brand-500)]" />
-              Solana 기반 빠른 정산 · 낮은 비용 · 투명한 거래 추적
+              Faster settlement · lower fees · transparent on-chain tracking
             </div>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--ink-600)]">
-              FlowPay keeps legal invoice ownership off-chain while moving
-              investment, advances, repayments, and investor claims onto Solana.
-              Investors evaluate short-duration cashflows like a clean wealth
-              dashboard instead of a noisy crypto trading screen.
+              Participate in verified short-duration receivable pools, track repayments in real time, and claim distributions with clear on-chain records. Not individual invoice trading. InvoX organizes verified receivables into managed pools so approved participants can access, monitor, and understand real-world cashflow more easily.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link className="btn-primary" href="/marketplace">
-                Start InvoX
+                Explore Pools
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link className="btn-secondary" href="/ai-assist">
-                AI Assist
+              <Link className="btn-secondary" href="/marketplace/more">
+                View How It Works
               </Link>
             </div>
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
@@ -78,30 +75,30 @@ export default function Home() {
 
           <div className="glass-panel relative overflow-hidden p-6 sm:p-8">
             <div className="absolute right-6 top-6 rounded-full bg-[rgba(255,255,255,0.75)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--ink-500)]">
-              RWA dashboard
+              Platform Overview
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="stat-card stat-card--lavender md:col-span-2">
-                <span className="eyebrow">Working balance</span>
+                <span className="eyebrow">Active Financing Volume</span>
                 <h3 className="mt-8 text-4xl font-semibold tracking-tight">
-                  $9,500
+                  $38.0M
                 </h3>
                 <p className="mt-2 text-sm text-[var(--ink-500)]">
-                  Current funding target
+                  Currently deployed across active receivable pools
                 </p>
               </div>
               <div className="stat-card stat-card--coral">
-                <span className="eyebrow">Expected gross yield</span>
-                <h3 className="mt-7 text-3xl font-semibold">4.28%</h3>
+                <span className="eyebrow">Total Repaid</span>
+                <h3 className="mt-7 text-3xl font-semibold">$12.4M</h3>
                 <p className="mt-2 text-sm text-[var(--ink-500)]">
-                  Your spending increased
+                  Cumulative repayments tracked on-chain
                 </p>
               </div>
               <div className="stat-card stat-card--mint">
-                <span className="eyebrow">Risk grade</span>
-                <h3 className="mt-7 text-3xl font-semibold">B</h3>
+                <span className="eyebrow">On-Time Repayment Rate</span>
+                <h3 className="mt-7 text-3xl font-semibold">97.2%</h3>
                 <p className="mt-2 text-sm text-[var(--ink-500)]">
-                  Originator verified
+                  Historical repayments completed by due date
                 </p>
               </div>
             </div>
@@ -117,14 +114,14 @@ export default function Home() {
                   className="btn-secondary h-10 px-4 text-sm"
                   href="/marketplace/more"
                 >
-                  Open invoice board
+                    View How It Works
                 </Link>
               </div>
               <p className="mt-4 text-sm leading-6 text-[var(--ink-500)]">
-                This is a hackathon MVP running on Devnet or Localnet. It does
-                not represent a public securities offering, lending service, or
-                legal claim to real-world invoices.
-              </p>
+                 This is a demo environment running on Devnet or Localnet. It does
+                 not represent a public securities offering, lending service, or
+                 legal assignment to real-world receivables.
+                </p>
             </div>
           </div>
         </section>

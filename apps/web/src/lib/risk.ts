@@ -28,5 +28,5 @@ export function buildRiskSummary(
   grade: string,
   durationDays: number,
 ) {
-  return `This invoice cashflow is scored ${score}/100 and graded ${grade}. The current demo underwriting assumes standard documentation quality, verified delivery, and a ${durationDays}-day repayment window with concentration risk centered on payment delay.`;
+  return `This receivables pool is scored ${score}/100 and graded ${grade}. The current demo underwriting assumes standard documentation quality, verified servicing, and a ${durationDays}-day repayment window with concentration risk centered on payment delay.`;
 }

@@ -12,23 +12,23 @@ export default function MarketplacePage() {
     <div className="space-y-6">
       <section className="grid gap-4 xl:grid-cols-3">
         <KpiCard
-          eyebrow="Total RWA TVL"
-          value="$38,050"
-          note={`Across ${featuredPools.length} featured invoice pools`}
+          eyebrow="Active Financing Volume"
+          value="$38.0M"
+          note="Currently deployed across active receivable pools"
           accent="linear-gradient(180deg,#7287ff,#5f72dd)"
           chart={[45, 32, 40, 72, 54]}
         />
         <KpiCard
-          eyebrow="Upcoming payouts"
-          value="$10,499"
-          note="Net investor distributions expected"
+          eyebrow="Total Repaid"
+          value="$12.4M"
+          note="Cumulative repayments tracked on-chain"
           accent="linear-gradient(180deg,#5ed7c6,#37bfae)"
           chart={[28, 34, 51, 68, 82]}
         />
         <KpiCard
-          eyebrow="Originator score"
-          value="92 / 100"
-          note="Average diligence profile"
+          eyebrow="On-Time Repayment Rate"
+          value="97.2%"
+          note="Historical repayments completed by due date"
           accent="linear-gradient(180deg,#ff9b87,#ff7f6e)"
           chart={[22, 46, 58, 60, 74]}
         />
@@ -37,10 +37,13 @@ export default function MarketplacePage() {
       <section className="soft-card p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="eyebrow">Marketplace</p>
+            <p className="eyebrow">Pool Marketplace</p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-              Invoice cashflow opportunities
+              Browse verified receivable pools
             </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--ink-500)]">
+              Explore verified short-duration receivable pools by estimated yield, duration, funding progress, and repayment quality.
+            </p>
           </div>
           <Link className="btn-primary" href="/marketplace/more">
             More
@@ -57,38 +60,45 @@ export default function MarketplacePage() {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-sm font-semibold text-[var(--ink-900)]">
-                    {pool.originator}
+                    {pool.name}
                   </p>
                   <p className="mt-1 text-sm text-[var(--ink-500)]">
-                    SPV · {pool.spv}
+                    {pool.category} · Operator {pool.operatorName}
                   </p>
                 </div>
                 <StatusBadge status={pool.status} />
               </div>
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <RiskBadge grade={pool.riskGrade} />
+                <span className="metric-chip">Avg. {pool.avgMaturityDays}d</span>
+                <span className="metric-chip">{pool.receivablesCount} receivables</span>
+              </div>
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 <div>
-                  <p className="eyebrow">Invoice value</p>
+                  <p className="eyebrow">Pool Face Value</p>
                   <p className="mt-2 text-xl font-semibold">
                     {formatCurrency(pool.invoiceValue)}
                   </p>
                 </div>
                 <div>
-                  <p className="eyebrow">Advance target</p>
+                  <p className="eyebrow">Funding Target</p>
                   <p className="mt-2 text-xl font-semibold">
                     {formatCurrency(pool.advanceAmount)}
                   </p>
                 </div>
                 <div>
-                  <p className="eyebrow">Servicing</p>
+                  <p className="eyebrow">Est. Annualized Yield</p>
                   <p className="mt-2 text-xl font-semibold">
-                    {pool.servicingStatus}
+                    {pool.annualizedYieldPct.toFixed(1)}%
                   </p>
                 </div>
                 <div>
-                  <p className="eyebrow">Risk</p>
-                  <div className="mt-2">
-                    <RiskBadge grade={pool.riskGrade} />
-                  </div>
+                  <p className="eyebrow">On-Time Repayment</p>
+                  <p className="mt-2 text-xl font-semibold">{pool.onTimeRepaymentRate}%</p>
+                </div>
+                <div>
+                  <p className="eyebrow">Late Exposure</p>
+                  <p className="mt-2 text-xl font-semibold">{pool.lateExposurePercent}%</p>
                 </div>
               </div>
               <div className="mt-6 rounded-[1.25rem] bg-[var(--surface-soft)] p-4">
@@ -103,9 +113,7 @@ export default function MarketplacePage() {
                   />
                 </div>
                 <p className="mt-4 text-sm leading-6 text-[var(--ink-500)]">
-                  {pool.description} Legal hash{" "}
-                  {pool.legalAssetHash.slice(0, 10)}… backs the off-chain
-                  evidence bundle.
+                  {pool.receivablesCount} verified receivables · Late exposure {pool.lateExposurePercent}% · {pool.description}
                 </p>
               </div>
             </Link>

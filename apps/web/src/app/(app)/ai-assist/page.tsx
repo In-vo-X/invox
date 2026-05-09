@@ -15,14 +15,10 @@ export default function AiAssistPage() {
         <div className="soft-card p-6">
           <p className="eyebrow">AI Assist</p>
           <h1 className="mt-2 text-2xl font-semibold tracking-tight">
-            Beginner-friendly investment guidance
+            Cashflow and risk explanation assistant
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--ink-500)]">
-            FlowPay helps users evaluate invoice-backed opportunities without
-            assuming they already understand private credit, RWA underwriting,
-            or debtor risk. This view explains what matters first, then narrows
-            the marketplace into recommendations that fit a more cautious,
-            general investor profile.
+            InvoX helps users evaluate verified receivable pools without assuming they already understand private credit, servicing, or payer concentration risk. This view explains what matters first, what changed recently, and what to review before participating. This is not financial advice.
           </p>
 
           <div className="mt-6 grid gap-4 md:grid-cols-3">
@@ -46,7 +42,7 @@ export default function AiAssistPage() {
         <div className="stat-card stat-card--lavender">
           <p className="eyebrow">How to use this tab</p>
           <h2 className="mt-8 text-3xl font-semibold">
-            Learn the filters before choosing a pool
+            Learn the filters before participating in a pool
           </h2>
           <div className="mt-6 space-y-3">
             {assistChecklist.map((item, index) => (
@@ -69,15 +65,13 @@ export default function AiAssistPage() {
       <section className="soft-card p-6">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="eyebrow">Tailored recommendations</p>
+            <p className="eyebrow">Pool explanations</p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-              Where AI Assist would start you today
+              How AI Assist would frame this pool set
             </h2>
           </div>
           <p className="max-w-xl text-sm leading-6 text-[var(--ink-500)]">
-            These are not guarantees or public-market style ratings. They are
-            onboarding-oriented suggestions that help newer users focus on the
-            clearest underwriting stories first.
+            These are not guarantees or direct recommendations. They are onboarding-oriented explanations that help newer users focus on repayment quality, late exposure, and servicing strength first.
           </p>
         </div>
 
@@ -112,25 +106,25 @@ export default function AiAssistPage() {
 
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   <div>
-                    <p className="eyebrow">Originator</p>
+                    <p className="eyebrow">Pool Operator</p>
                     <p className="mt-2 text-base font-semibold">
                       {pool.originator}
                     </p>
                   </div>
                   <div>
-                    <p className="eyebrow">Debtor</p>
+                    <p className="eyebrow">Key Payers</p>
                     <p className="mt-2 text-base font-semibold">
-                      {pool.debtor}
+                      {pool.keyDebtorsLabel}
                     </p>
                   </div>
                   <div>
-                    <p className="eyebrow">Advance target</p>
+                    <p className="eyebrow">Funding Target</p>
                     <p className="mt-2 text-base font-semibold">
                       {formatCurrency(pool.advanceAmount)}
                     </p>
                   </div>
                   <div>
-                    <p className="eyebrow">Gross yield</p>
+                    <p className="eyebrow">Estimated Yield</p>
                     <p className="mt-2 text-base font-semibold">
                       {formatPercent(pool.grossYieldPct)}
                     </p>
@@ -151,13 +145,13 @@ export default function AiAssistPage() {
 
                 <div className="mt-5 rounded-[1.4rem] bg-[var(--surface-soft)] p-4">
                   <p className="text-sm font-semibold text-[var(--ink-900)]">
-                    Why this fits you
+                    What this pool means
                   </p>
                   <p className="mt-2 text-sm leading-6 text-[var(--ink-500)]">
                     {recommendation.why}
                   </p>
                   <p className="mt-4 text-sm font-semibold text-[var(--ink-900)]">
-                    What to watch
+                    Main factor to watch
                   </p>
                   <p className="mt-2 text-sm leading-6 text-[var(--ink-500)]">
                     {recommendation.watchouts}
@@ -168,7 +162,7 @@ export default function AiAssistPage() {
                   href={`/pools/${pool.id}`}
                   className="btn-primary mt-5 inline-flex"
                 >
-                  Review this pool
+                  Explain this pool
                 </Link>
               </div>
             );
@@ -178,32 +172,29 @@ export default function AiAssistPage() {
 
       <section className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
         <div className="soft-card p-6">
-          <p className="eyebrow">What FlowPay is</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-            Private invoice cashflow, not a mass-market product
+            <p className="eyebrow">What InvoX is</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight">
+              Pool-based receivable finance built for approved participants
           </h2>
           <div className="mt-4 space-y-4 text-sm leading-6 text-[var(--ink-500)]">
             <p>
-              Unlike public stocks or ETFs, these opportunities depend on debtor
-              repayment, servicing quality, legal documentation, and the
-              operator’s ability to advance and collect short-duration invoices.
+              Unlike public stocks or ETFs, these opportunities depend on underlying payer repayment, servicing quality, legal documentation, and the operator’s ability to advance and collect short-duration receivables.
             </p>
             <p>
-              That means first-time users should avoid treating the highest APY
-              as the best pool. It is usually safer to start with simpler cases:
-              shorter duration, stronger debtor context, active servicing, and
-              clean documentation references.
+              That means users should avoid treating the highest estimated yield as the best pool. It is usually safer to start with shorter duration, stronger repayment history, lower late exposure, and cleaner servicing updates.
             </p>
           </div>
         </div>
 
         <div className="soft-card p-6">
-          <p className="eyebrow">Questions AI Assist answers</p>
+            <p className="eyebrow">Suggested prompts</p>
           <div className="mt-4 grid gap-3">
             {[
-              "Which pool is easiest for a first-time investor to understand?",
-              "How much of my capital should stay in lower-risk invoice pools?",
-              "What signs tell me a pool needs more manual review before investing?",
+              "Explain this pool in simple terms",
+              "What are the main risks?",
+              "When could I receive repayments?",
+              "Why is the yield different from other pools?",
+              "What does late exposure mean?",
             ].map((question) => (
               <div
                 key={question}

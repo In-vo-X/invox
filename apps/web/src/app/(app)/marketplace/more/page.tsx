@@ -14,10 +14,13 @@ export default function MarketplaceMorePage() {
       <section className="soft-card p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="eyebrow">Marketplace</p>
+            <p className="eyebrow">Pool Marketplace</p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-              Invoice discovery board
+              Pool discovery board
             </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--ink-500)]">
+              Browse verified receivable pools by estimated yield, duration, repayment history, and risk profile.
+            </p>
           </div>
           <Link className="btn-secondary" href="/marketplace">
             Back to marketplace
@@ -28,13 +31,13 @@ export default function MarketplaceMorePage() {
           <section className="rounded-[1.6rem] bg-[linear-gradient(160deg,rgba(244,247,255,0.96),rgba(255,247,236,0.92))] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="eyebrow">Top 3 yield leaderboard</p>
+                <p className="eyebrow">Top 3 estimated yield pools</p>
                 <h3 className="mt-2 text-xl font-semibold tracking-tight">
-                  Highest annualized invoice opportunities
+                  Highest estimated annualized pool yield
                 </h3>
               </div>
               <p className="text-sm text-[var(--ink-500)]">
-                Updated from demo invoices
+                Updated from demo receivable pools
               </p>
             </div>
 
@@ -52,15 +55,15 @@ export default function MarketplaceMorePage() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-[var(--ink-900)]">
-                          {pool.issuer}
+                          {pool.name}
                         </p>
                         <p className="mt-1 text-sm text-[var(--ink-500)]">
-                          Debtor · {pool.debtor}
+                          {pool.category} · Key payers {pool.keyDebtorsLabel}
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="eyebrow">Annualized</p>
+                      <p className="eyebrow">Est. Annualized Yield</p>
                       <p className="mt-2 text-xl font-semibold">
                         {formatPercent(pool.annualizedYieldPct)}
                       </p>
@@ -81,10 +84,10 @@ export default function MarketplaceMorePage() {
           <section className="rounded-[1.6rem] border border-[var(--line)] bg-[var(--surface-soft)] p-4">
             <div className="flex items-end justify-between gap-4 px-2 pb-4">
               <div>
-                <p className="eyebrow">추가 청구서</p>
+                <p className="eyebrow">Additional receivable pools</p>
               </div>
               <p className="text-sm text-[var(--ink-500)]">
-                {demoPools.length} invoices
+                {demoPools.length} pools
               </p>
             </div>
 
@@ -99,47 +102,47 @@ export default function MarketplaceMorePage() {
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="text-sm font-semibold text-[var(--ink-900)]">
-                          {pool.originator}
+                          {pool.name}
                         </p>
                         <p className="mt-1 text-sm text-[var(--ink-500)]">
-                          SPV · {pool.spv}
+                          {pool.category} · Operator {pool.operatorName}
                         </p>
                       </div>
                       <StatusBadge status={pool.status} />
                     </div>
                     <div className="mt-4 flex flex-wrap items-center gap-2">
                       <RiskBadge grade={pool.riskGrade} />
-                      <span className="metric-chip">{pool.dueLabel}</span>
+                        <span className="metric-chip">{pool.avgMaturityDays}d avg</span>
                     </div>
                     <div className="mt-6 grid gap-4 sm:grid-cols-2">
                       <div>
-                        <p className="eyebrow">Invoice value</p>
+                        <p className="eyebrow">Pool Face Value</p>
                         <p className="mt-2 text-xl font-semibold">
                           {formatCurrency(pool.invoiceValue)}
                         </p>
                       </div>
                       <div>
-                        <p className="eyebrow">Advance target</p>
+                        <p className="eyebrow">Funding Target</p>
                         <p className="mt-2 text-xl font-semibold">
                           {formatCurrency(pool.advanceAmount)}
                         </p>
                       </div>
                       <div>
-                        <p className="eyebrow">Servicing</p>
+                        <p className="eyebrow">On-Time Repayment</p>
                         <p className="mt-2 text-xl font-semibold">
-                          {pool.servicingStatus}
+                          {pool.onTimeRepaymentRate}%
                         </p>
                       </div>
                       <div>
-                        <p className="eyebrow">Annualized</p>
+                        <p className="eyebrow">Late Exposure</p>
                         <p className="mt-2 text-xl font-semibold">
-                          {formatPercent(pool.annualizedYieldPct)}
+                          {pool.lateExposurePercent}%
                         </p>
                       </div>
                     </div>
                     <div className="mt-6 rounded-[1.25rem] bg-[var(--surface-soft)] p-4">
                       <div className="flex items-center justify-between text-sm font-medium text-[var(--ink-600)]">
-                        <span>Funding progress</span>
+                        <span>Funding Progress</span>
                         <span>{pool.fundedPct}%</span>
                       </div>
                       <div className="mt-3 h-3 rounded-full bg-white">
@@ -149,9 +152,7 @@ export default function MarketplaceMorePage() {
                         />
                       </div>
                       <p className="mt-4 text-sm leading-6 text-[var(--ink-500)]">
-                        {pool.description} Legal hash{" "}
-                        {pool.legalAssetHash.slice(0, 10)}… backs the off-chain
-                        evidence bundle.
+                        {pool.receivablesCount} receivables · Estimated yield {formatPercent(pool.annualizedYieldPct)} · {pool.description}
                       </p>
                     </div>
                   </Link>
