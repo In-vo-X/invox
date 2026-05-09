@@ -367,39 +367,13 @@ describe("flowpay", () => {
   });
 
   it("creates, funds, advances, repays, collects fees, and claims", async () => {
-    const poolId = new BN(0);
-    const [poolPda] = PublicKey.findProgramAddressSync(
-      [POOL_SEED, poolId.toArrayLike(Buffer, "le", 8)],
-      program.programId,
-    );
-    const [vaultAuthority] = PublicKey.findProgramAddressSync(
-      [VAULT_AUTHORITY_SEED, poolPda.toBuffer()],
-      program.programId,
-    );
-    const vault = getAssociatedTokenAddressSync(usdcMint, vaultAuthority, true);
-
-    await program.methods
-      .createPool(
-        new BN(10_000 * ONE_USDC),
-        new BN(9_500 * ONE_USDC),
-        new BN(Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 60),
-        78,
-        LEGAL_ASSET_HASH,
-        "demo://pool-1",
-      )
-      .accountsPartial({
-        authority: provider.wallet.publicKey,
-        issuer: issuer.publicKey,
-        originator: originator.publicKey,
-        spv: spv.publicKey,
-        config: configPda,
-        pool: poolPda,
-        vaultAuthority,
-        vault,
-        usdcMint,
-        tokenProgram: TOKEN_PROGRAM_ID,
-      })
-      .rpc();
+    const { poolPda, vaultAuthority, vault } = await createPool({
+      invoiceFaceValue: 10_000 * ONE_USDC,
+      advanceAmount: 9_500 * ONE_USDC,
+      dueTs: futureTs(60 * 60 * 24 * 60),
+      riskScore: 78,
+      metadataUri: "demo://pool-1",
+    });
 
     let pool = await program.account.invoicePool.fetch(poolPda);
     expect(pool.originator.toBase58()).to.equal(
@@ -424,46 +398,21 @@ describe("flowpay", () => {
     expect(pool.servicingStatus).to.equal(1);
     expect(pool.metadataUri).to.equal("demo://pool-1-servicing");
 
-    const [investmentOnePda] = PublicKey.findProgramAddressSync(
-      [INVESTMENT_SEED, poolPda.toBuffer(), investorOne.publicKey.toBuffer()],
-      program.programId,
-    );
-    const [investmentTwoPda] = PublicKey.findProgramAddressSync(
-      [INVESTMENT_SEED, poolPda.toBuffer(), investorTwo.publicKey.toBuffer()],
-      program.programId,
-    );
+    const investmentOnePda = await investInPool({
+      poolPda,
+      vault,
+      investor: investorOne,
+      investorTokenAccount: investorOneAta,
+      amount: 4_000 * ONE_USDC,
+    });
 
-    await program.methods
-      .invest(new BN(4_000 * ONE_USDC))
-      .accountsPartial({
-        investor: investorOne.publicKey,
-        config: configPda,
-        pool: poolPda,
-        investment: investmentOnePda,
-        investorTokenAccount: investorOneAta,
-        vault,
-        usdcMint,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        systemProgram: SystemProgram.programId,
-      })
-      .signers([investorOne])
-      .rpc();
-
-    await program.methods
-      .invest(new BN(5_500 * ONE_USDC))
-      .accountsPartial({
-        investor: investorTwo.publicKey,
-        config: configPda,
-        pool: poolPda,
-        investment: investmentTwoPda,
-        investorTokenAccount: investorTwoAta,
-        vault,
-        usdcMint,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        systemProgram: SystemProgram.programId,
-      })
-      .signers([investorTwo])
-      .rpc();
+    const investmentTwoPda = await investInPool({
+      poolPda,
+      vault,
+      investor: investorTwo,
+      investorTokenAccount: investorTwoAta,
+      amount: 5_500 * ONE_USDC,
+    });
 
     pool = await program.account.invoicePool.fetch(poolPda);
     expect(pool.status).to.deep.equal({ funded: {} });
@@ -563,59 +512,17 @@ describe("flowpay", () => {
   });
 
   it("cancels and refunds a partially funded pool", async () => {
-    const poolId = new BN(1);
-    const [poolPda] = PublicKey.findProgramAddressSync(
-      [POOL_SEED, poolId.toArrayLike(Buffer, "le", 8)],
-      program.programId,
-    );
-    const [vaultAuthority] = PublicKey.findProgramAddressSync(
-      [VAULT_AUTHORITY_SEED, poolPda.toBuffer()],
-      program.programId,
-    );
-    const vault = getAssociatedTokenAddressSync(usdcMint, vaultAuthority, true);
-    const [investmentPda] = PublicKey.findProgramAddressSync(
-      [INVESTMENT_SEED, poolPda.toBuffer(), investorOne.publicKey.toBuffer()],
-      program.programId,
-    );
+    const { poolPda, vaultAuthority, vault } = await createPool({
+      metadataUri: "demo://pool-2",
+    });
 
-    await program.methods
-      .createPool(
-        new BN(5_000 * ONE_USDC),
-        new BN(4_800 * ONE_USDC),
-        new BN(Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30),
-        65,
-        LEGAL_ASSET_HASH,
-        "demo://pool-2",
-      )
-      .accountsPartial({
-        authority: provider.wallet.publicKey,
-        issuer: issuer.publicKey,
-        originator: originator.publicKey,
-        spv: spv.publicKey,
-        config: configPda,
-        pool: poolPda,
-        vaultAuthority,
-        vault,
-        usdcMint,
-        tokenProgram: TOKEN_PROGRAM_ID,
-      })
-      .rpc();
-
-    await program.methods
-      .invest(new BN(1_000 * ONE_USDC))
-      .accountsPartial({
-        investor: investorOne.publicKey,
-        config: configPda,
-        pool: poolPda,
-        investment: investmentPda,
-        investorTokenAccount: investorOneAta,
-        vault,
-        usdcMint,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        systemProgram: SystemProgram.programId,
-      })
-      .signers([investorOne])
-      .rpc();
+    const investmentPda = await investInPool({
+      poolPda,
+      vault,
+      investor: investorOne,
+      investorTokenAccount: investorOneAta,
+      amount: 1_000 * ONE_USDC,
+    });
 
     await program.methods
       .cancelPool()
@@ -1222,6 +1129,12 @@ describe("flowpay", () => {
       "Unauthorized",
     );
 
+    const preUpdatePoolAccounts = await createPool({
+      invoiceFaceValue: 1_100 * ONE_USDC,
+      advanceAmount: 1_000 * ONE_USDC,
+      metadataUri: "demo://pre-fee-snapshot",
+    });
+
     await program.methods
       .updateFeeBps(100)
       .accountsPartial({
@@ -1233,10 +1146,10 @@ describe("flowpay", () => {
     let config = await program.account.platformConfig.fetch(configPda);
     expect(config.feeBps).to.equal(100);
 
-    const oldPool = await program.account.invoicePool.fetch(
-      derivePoolAccounts(0).poolPda,
+    const preUpdatePool = await program.account.invoicePool.fetch(
+      preUpdatePoolAccounts.poolPda,
     );
-    expect(oldPool.feeBps).to.equal(50);
+    expect(preUpdatePool.feeBps).to.equal(50);
 
     const newPoolAccounts = await createPool({
       invoiceFaceValue: 1_100 * ONE_USDC,
@@ -1317,6 +1230,209 @@ describe("flowpay", () => {
       provider.wallet.publicKey.toBase58(),
     );
     expect(config.paused).to.equal(false);
+  });
+
+  it("rejects guarded instructions while paused", async () => {
+    const fundingPool = await createPool({
+      invoiceFaceValue: 1_200 * ONE_USDC,
+      advanceAmount: 1_000 * ONE_USDC,
+      metadataUri: "demo://paused-funding",
+    });
+    const fundedPool = await createPool({
+      invoiceFaceValue: 1_200 * ONE_USDC,
+      advanceAmount: 1_000 * ONE_USDC,
+      metadataUri: "demo://paused-funded",
+    });
+    const advancedPool = await createPool({
+      invoiceFaceValue: 1_200 * ONE_USDC,
+      advanceAmount: 1_000 * ONE_USDC,
+      metadataUri: "demo://paused-advanced",
+    });
+    const repaidPool = await createPool({
+      invoiceFaceValue: 1_200 * ONE_USDC,
+      advanceAmount: 1_000 * ONE_USDC,
+      metadataUri: "demo://paused-repaid",
+    });
+
+    await investInPool({
+      poolPda: fundedPool.poolPda,
+      vault: fundedPool.vault,
+      investor: investorOne,
+      investorTokenAccount: investorOneAta,
+      amount: 1_000 * ONE_USDC,
+    });
+    await investInPool({
+      poolPda: advancedPool.poolPda,
+      vault: advancedPool.vault,
+      investor: investorOne,
+      investorTokenAccount: investorOneAta,
+      amount: 1_000 * ONE_USDC,
+    });
+    const repaidInvestmentPda = await investInPool({
+      poolPda: repaidPool.poolPda,
+      vault: repaidPool.vault,
+      investor: investorOne,
+      investorTokenAccount: investorOneAta,
+      amount: 1_000 * ONE_USDC,
+    });
+
+    await advancePool(advancedPool);
+    await advancePool(repaidPool);
+    await program.methods
+      .repay(new BN(1_200 * ONE_USDC))
+      .accountsPartial({
+        authority: provider.wallet.publicKey,
+        config: configPda,
+        pool: repaidPool.poolPda,
+        payerTokenAccount: adminAta,
+        vault: repaidPool.vault,
+        tokenProgram: TOKEN_PROGRAM_ID,
+      })
+      .rpc();
+
+    const setPaused = (paused) =>
+      program.methods
+        .setPause(paused)
+        .accountsPartial({
+          admin: provider.wallet.publicKey,
+          config: configPda,
+        })
+        .rpc();
+
+    await setPaused(true);
+    try {
+      await expectAnchorError(
+        createPool({ metadataUri: "demo://paused-create" }),
+        "PlatformPaused",
+      );
+
+      await expectAnchorError(
+        program.methods
+          .updatePoolServicing(50, 1, "demo://paused-servicing")
+          .accountsPartial({
+            authority: originator.publicKey,
+            config: configPda,
+            pool: fundingPool.poolPda,
+          })
+          .signers([originator])
+          .rpc(),
+        "PlatformPaused",
+      );
+
+      await expectAnchorError(
+        program.methods
+          .invest(new BN(100 * ONE_USDC))
+          .accountsPartial({
+            investor: investorOne.publicKey,
+            config: configPda,
+            pool: fundingPool.poolPda,
+            investment: deriveInvestmentPda(
+              fundingPool.poolPda,
+              investorOne.publicKey,
+            ),
+            investorTokenAccount: investorOneAta,
+            vault: fundingPool.vault,
+            usdcMint,
+            tokenProgram: TOKEN_PROGRAM_ID,
+            systemProgram: SystemProgram.programId,
+          })
+          .signers([investorOne])
+          .rpc(),
+        "PlatformPaused",
+      );
+
+      await expectAnchorError(
+        program.methods
+          .cancelPool()
+          .accountsPartial({
+            authority: provider.wallet.publicKey,
+            config: configPda,
+            pool: fundingPool.poolPda,
+          })
+          .rpc(),
+        "PlatformPaused",
+      );
+
+      await expectAnchorError(
+        program.methods
+          .advanceToIssuer()
+          .accountsPartial({
+            authority: provider.wallet.publicKey,
+            config: configPda,
+            pool: fundedPool.poolPda,
+            vault: fundedPool.vault,
+            vaultAuthority: fundedPool.vaultAuthority,
+            issuerTokenAccount: issuerAta,
+            tokenProgram: TOKEN_PROGRAM_ID,
+          })
+          .rpc(),
+        "PlatformPaused",
+      );
+
+      await expectAnchorError(
+        program.methods
+          .repay(new BN(100 * ONE_USDC))
+          .accountsPartial({
+            authority: provider.wallet.publicKey,
+            config: configPda,
+            pool: advancedPool.poolPda,
+            payerTokenAccount: adminAta,
+            vault: advancedPool.vault,
+            tokenProgram: TOKEN_PROGRAM_ID,
+          })
+          .rpc(),
+        "PlatformPaused",
+      );
+
+      await expectAnchorError(
+        program.methods
+          .claim()
+          .accountsPartial({
+            investor: investorOne.publicKey,
+            config: configPda,
+            pool: repaidPool.poolPda,
+            investment: repaidInvestmentPda,
+            vault: repaidPool.vault,
+            vaultAuthority: repaidPool.vaultAuthority,
+            investorTokenAccount: investorOneAta,
+            tokenProgram: TOKEN_PROGRAM_ID,
+          })
+          .signers([investorOne])
+          .rpc(),
+        "PlatformPaused",
+      );
+
+      const config = await program.account.platformConfig.fetch(configPda);
+      await expectAnchorError(
+        program.methods
+          .collectFee()
+          .accountsPartial({
+            authority: provider.wallet.publicKey,
+            config: configPda,
+            pool: repaidPool.poolPda,
+            vault: repaidPool.vault,
+            vaultAuthority: repaidPool.vaultAuthority,
+            treasury: config.treasury,
+            tokenProgram: TOKEN_PROGRAM_ID,
+          })
+          .rpc(),
+        "PlatformPaused",
+      );
+
+      await expectAnchorError(
+        program.methods
+          .markDefaulted()
+          .accountsPartial({
+            authority: provider.wallet.publicKey,
+            config: configPda,
+            pool: advancedPool.poolPda,
+          })
+          .rpc(),
+        "PlatformPaused",
+      );
+    } finally {
+      await setPaused(false);
+    }
   });
 
   it("allows fee collection after investor claims close a repaid pool", async () => {
