@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 
 use crate::constants::MAX_METADATA_URI_LEN;
 
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq)]
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, Debug, PartialEq, Eq)]
 #[borsh(use_discriminant = true)]
 #[repr(u8)]
 pub enum PoolStatus {
@@ -18,6 +18,18 @@ pub enum PoolStatus {
 
 impl PoolStatus {
     pub const LEN: usize = 1;
+
+    pub fn after_repayment(self, repaid_amount: u64, invoice_face_value: u64) -> Self {
+        if self == PoolStatus::Defaulted {
+            return PoolStatus::Defaulted;
+        }
+
+        if repaid_amount >= invoice_face_value {
+            PoolStatus::Repaid
+        } else {
+            PoolStatus::PartiallyRepaid
+        }
+    }
 }
 
 #[account]
@@ -117,4 +129,29 @@ pub struct Investment {
 
 impl Investment {
     pub const SPACE: usize = 8 + 32 + 32 + 8 + 8 + 8 + 1;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::PoolStatus;
+
+    #[test]
+    fn defaulted_status_is_sticky_after_repayment() {
+        assert_eq!(
+            PoolStatus::Defaulted.after_repayment(1_200, 1_000),
+            PoolStatus::Defaulted
+        );
+    }
+
+    #[test]
+    fn non_defaulted_repayment_status_tracks_face_value() {
+        assert_eq!(
+            PoolStatus::Advanced.after_repayment(999, 1_000),
+            PoolStatus::PartiallyRepaid
+        );
+        assert_eq!(
+            PoolStatus::PartiallyRepaid.after_repayment(1_000, 1_000),
+            PoolStatus::Repaid
+        );
+    }
 }

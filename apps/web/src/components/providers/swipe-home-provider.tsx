@@ -45,7 +45,11 @@ export function SwipeHomeProvider({ children }: PropsWithChildren) {
       const verticalDriftIsSmall = Math.abs(deltaY) <= MAX_VERTICAL_DRIFT;
       const horizontalMovementDominates = Math.abs(deltaX) > Math.abs(deltaY);
 
-      if (isRightToLeftSwipe && verticalDriftIsSmall && horizontalMovementDominates) {
+      if (
+        isRightToLeftSwipe &&
+        verticalDriftIsSmall &&
+        horizontalMovementDominates
+      ) {
         router.push("/");
       }
     }

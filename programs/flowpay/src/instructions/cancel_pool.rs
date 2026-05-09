@@ -3,6 +3,7 @@ use anchor_lang::prelude::*;
 use crate::{
     constants::CONFIG_SEED,
     error::FlowPayError,
+    events::PoolCancelled,
     state::{InvoicePool, PlatformConfig, PoolStatus},
 };
 
@@ -35,5 +36,13 @@ pub fn handler(ctx: Context<CancelPool>) -> Result<()> {
     );
 
     pool.status = PoolStatus::Cancelled;
+
+    emit!(PoolCancelled {
+        pool: pool.key(),
+        pool_id: pool.pool_id,
+        authority: authority_key,
+        funded_amount: pool.funded_amount,
+    });
+
     Ok(())
 }

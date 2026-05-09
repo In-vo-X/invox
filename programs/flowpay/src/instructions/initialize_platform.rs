@@ -4,6 +4,7 @@ use anchor_spl::token::{Mint, TokenAccount};
 use crate::{
     constants::{CONFIG_SEED, MAX_FEE_BPS},
     error::FlowPayError,
+    events::PlatformInitialized,
     state::PlatformConfig,
 };
 
@@ -38,6 +39,13 @@ pub fn handler(ctx: Context<InitializePlatform>, fee_bps: u16) -> Result<()> {
     config.next_pool_id = 0;
     config.paused = false;
     config.bump = ctx.bumps.config;
+
+    emit!(PlatformInitialized {
+        admin: config.admin,
+        usdc_mint: config.usdc_mint,
+        treasury: config.treasury,
+        fee_bps,
+    });
 
     Ok(())
 }

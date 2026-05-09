@@ -4,6 +4,7 @@ use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer};
 use crate::{
     constants::{CONFIG_SEED, INVESTMENT_SEED},
     error::FlowPayError,
+    events::Invested,
     state::{Investment, InvoicePool, PlatformConfig, PoolStatus},
 };
 
@@ -87,6 +88,15 @@ pub fn handler(ctx: Context<Invest>, amount: u64) -> Result<()> {
     if pool.funded_amount == pool.advance_amount {
         pool.status = PoolStatus::Funded;
     }
+
+    emit!(Invested {
+        pool: pool.key(),
+        pool_id: pool.pool_id,
+        investor: ctx.accounts.investor.key(),
+        amount,
+        funded_amount: pool.funded_amount,
+        status: pool.status as u8,
+    });
 
     Ok(())
 }

@@ -9,7 +9,16 @@
   "instructions": [
     {
       "name": "advance_to_issuer",
-      "discriminator": [171, 74, 210, 171, 208, 28, 192, 156],
+      "discriminator": [
+        171,
+        74,
+        210,
+        171,
+        208,
+        28,
+        192,
+        156
+      ],
       "accounts": [
         {
           "name": "authority",
@@ -21,7 +30,14 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [99, 111, 110, 102, 105, 103]
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
               }
             ]
           }
@@ -41,8 +57,21 @@
               {
                 "kind": "const",
                 "value": [
-                  118, 97, 117, 108, 116, 95, 97, 117, 116, 104, 111, 114, 105,
-                  116, 121
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
                 ]
               },
               {
@@ -65,7 +94,16 @@
     },
     {
       "name": "cancel_pool",
-      "discriminator": [211, 11, 27, 100, 252, 115, 57, 77],
+      "discriminator": [
+        211,
+        11,
+        27,
+        100,
+        252,
+        115,
+        57,
+        77
+      ],
       "accounts": [
         {
           "name": "authority",
@@ -77,7 +115,14 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [99, 111, 110, 102, 105, 103]
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
               }
             ]
           }
@@ -91,7 +136,16 @@
     },
     {
       "name": "claim",
-      "discriminator": [62, 198, 214, 193, 213, 159, 108, 210],
+      "discriminator": [
+        62,
+        198,
+        214,
+        193,
+        213,
+        159,
+        108,
+        210
+      ],
       "accounts": [
         {
           "name": "investor",
@@ -104,7 +158,14 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [99, 111, 110, 102, 105, 103]
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
               }
             ]
           }
@@ -120,7 +181,18 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [105, 110, 118, 101, 115, 116, 109, 101, 110, 116]
+                "value": [
+                  105,
+                  110,
+                  118,
+                  101,
+                  115,
+                  116,
+                  109,
+                  101,
+                  110,
+                  116
+                ]
               },
               {
                 "kind": "account",
@@ -144,8 +216,21 @@
               {
                 "kind": "const",
                 "value": [
-                  118, 97, 117, 108, 116, 95, 97, 117, 116, 104, 111, 114, 105,
-                  116, 121
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
                 ]
               },
               {
@@ -168,7 +253,16 @@
     },
     {
       "name": "collect_fee",
-      "discriminator": [60, 173, 247, 103, 4, 93, 130, 48],
+      "discriminator": [
+        60,
+        173,
+        247,
+        103,
+        4,
+        93,
+        130,
+        48
+      ],
       "accounts": [
         {
           "name": "authority",
@@ -180,7 +274,14 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [99, 111, 110, 102, 105, 103]
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
               }
             ]
           }
@@ -200,8 +301,21 @@
               {
                 "kind": "const",
                 "value": [
-                  118, 97, 117, 108, 116, 95, 97, 117, 116, 104, 111, 114, 105,
-                  116, 121
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
                 ]
               },
               {
@@ -224,7 +338,16 @@
     },
     {
       "name": "create_pool",
-      "discriminator": [233, 146, 209, 142, 207, 104, 64, 188],
+      "discriminator": [
+        233,
+        146,
+        209,
+        142,
+        207,
+        104,
+        64,
+        188
+      ],
       "accounts": [
         {
           "name": "authority",
@@ -247,7 +370,14 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [99, 111, 110, 102, 105, 103]
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
               }
             ]
           }
@@ -259,7 +389,12 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [112, 111, 111, 108]
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
               },
               {
                 "kind": "account",
@@ -276,8 +411,21 @@
               {
                 "kind": "const",
                 "value": [
-                  118, 97, 117, 108, 116, 95, 97, 117, 116, 104, 111, 114, 105,
-                  116, 121
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
                 ]
               },
               {
@@ -299,9 +447,38 @@
               {
                 "kind": "const",
                 "value": [
-                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
-                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
-                  245, 133, 126, 255, 0, 169
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
                 ]
               },
               {
@@ -312,9 +489,38 @@
             "program": {
               "kind": "const",
               "value": [
-                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
-                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
-                219, 233, 248, 89
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
               ]
             }
           }
@@ -355,47 +561,11 @@
         {
           "name": "legal_asset_hash",
           "type": {
-            "array": ["u8", 32]
-          }
-        },
-        {
-          "name": "metadata_uri",
-          "type": "string"
-        }
-      ]
-    },
-    {
-      "name": "update_pool_servicing",
-      "discriminator": [25, 17, 107, 87, 118, 29, 32, 168],
-      "accounts": [
-        {
-          "name": "authority",
-          "signer": true
-        },
-        {
-          "name": "config",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [99, 111, 110, 102, 105, 103]
-              }
+            "array": [
+              "u8",
+              32
             ]
           }
-        },
-        {
-          "name": "pool",
-          "writable": true
-        }
-      ],
-      "args": [
-        {
-          "name": "risk_score",
-          "type": "u8"
-        },
-        {
-          "name": "servicing_status",
-          "type": "u8"
         },
         {
           "name": "metadata_uri",
@@ -405,7 +575,16 @@
     },
     {
       "name": "initialize_platform",
-      "discriminator": [119, 201, 101, 45, 75, 122, 89, 3],
+      "discriminator": [
+        119,
+        201,
+        101,
+        45,
+        75,
+        122,
+        89,
+        3
+      ],
       "accounts": [
         {
           "name": "admin",
@@ -419,7 +598,14 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [99, 111, 110, 102, 105, 103]
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
               }
             ]
           }
@@ -444,7 +630,16 @@
     },
     {
       "name": "invest",
-      "discriminator": [13, 245, 180, 103, 254, 182, 121, 4],
+      "discriminator": [
+        13,
+        245,
+        180,
+        103,
+        254,
+        182,
+        121,
+        4
+      ],
       "accounts": [
         {
           "name": "investor",
@@ -457,7 +652,14 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [99, 111, 110, 102, 105, 103]
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
               }
             ]
           }
@@ -473,7 +675,18 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [105, 110, 118, 101, 115, 116, 109, 101, 110, 116]
+                "value": [
+                  105,
+                  110,
+                  118,
+                  101,
+                  115,
+                  116,
+                  109,
+                  101,
+                  110,
+                  116
+                ]
               },
               {
                 "kind": "account",
@@ -515,7 +728,16 @@
     },
     {
       "name": "mark_defaulted",
-      "discriminator": [97, 81, 37, 229, 172, 125, 169, 178],
+      "discriminator": [
+        97,
+        81,
+        37,
+        229,
+        172,
+        125,
+        169,
+        178
+      ],
       "accounts": [
         {
           "name": "authority",
@@ -527,7 +749,14 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [99, 111, 110, 102, 105, 103]
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
               }
             ]
           }
@@ -541,7 +770,16 @@
     },
     {
       "name": "repay",
-      "discriminator": [234, 103, 67, 82, 208, 234, 219, 166],
+      "discriminator": [
+        234,
+        103,
+        67,
+        82,
+        208,
+        234,
+        219,
+        166
+      ],
       "accounts": [
         {
           "name": "authority",
@@ -554,7 +792,14 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [99, 111, 110, 102, 105, 103]
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
               }
             ]
           }
@@ -585,7 +830,16 @@
     },
     {
       "name": "set_pause",
-      "discriminator": [63, 32, 154, 2, 56, 103, 79, 45],
+      "discriminator": [
+        63,
+        32,
+        154,
+        2,
+        56,
+        103,
+        79,
+        45
+      ],
       "accounts": [
         {
           "name": "admin",
@@ -598,7 +852,14 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [99, 111, 110, 102, 105, 103]
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
               }
             ]
           }
@@ -612,8 +873,202 @@
       ]
     },
     {
+      "name": "update_admin",
+      "discriminator": [
+        161,
+        176,
+        40,
+        213,
+        60,
+        184,
+        179,
+        228
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "new_admin",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "update_fee_bps",
+      "discriminator": [
+        43,
+        158,
+        104,
+        51,
+        236,
+        96,
+        178,
+        195
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "new_fee_bps",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "update_pool_servicing",
+      "discriminator": [
+        25,
+        17,
+        107,
+        87,
+        118,
+        29,
+        32,
+        168
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "risk_score",
+          "type": "u8"
+        },
+        {
+          "name": "servicing_status",
+          "type": "u8"
+        },
+        {
+          "name": "metadata_uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "update_treasury",
+      "discriminator": [
+        60,
+        16,
+        243,
+        66,
+        96,
+        59,
+        254,
+        131
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "withdraw_cancelled",
-      "discriminator": [211, 39, 47, 234, 73, 113, 193, 59],
+      "discriminator": [
+        211,
+        39,
+        47,
+        234,
+        73,
+        113,
+        193,
+        59
+      ],
       "accounts": [
         {
           "name": "investor",
@@ -631,7 +1086,18 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [105, 110, 118, 101, 115, 116, 109, 101, 110, 116]
+                "value": [
+                  105,
+                  110,
+                  118,
+                  101,
+                  115,
+                  116,
+                  109,
+                  101,
+                  110,
+                  116
+                ]
               },
               {
                 "kind": "account",
@@ -655,8 +1121,21 @@
               {
                 "kind": "const",
                 "value": [
-                  118, 97, 117, 108, 116, 95, 97, 117, 116, 104, 111, 114, 105,
-                  116, 121
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
                 ]
               },
               {
@@ -681,15 +1160,239 @@
   "accounts": [
     {
       "name": "Investment",
-      "discriminator": [175, 134, 9, 175, 115, 153, 39, 28]
+      "discriminator": [
+        175,
+        134,
+        9,
+        175,
+        115,
+        153,
+        39,
+        28
+      ]
     },
     {
       "name": "InvoicePool",
-      "discriminator": [154, 35, 17, 134, 254, 152, 248, 235]
+      "discriminator": [
+        154,
+        35,
+        17,
+        134,
+        254,
+        152,
+        248,
+        235
+      ]
     },
     {
       "name": "PlatformConfig",
-      "discriminator": [160, 78, 128, 0, 248, 83, 230, 160]
+      "discriminator": [
+        160,
+        78,
+        128,
+        0,
+        248,
+        83,
+        230,
+        160
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "AdvancedToIssuer",
+      "discriminator": [
+        187,
+        163,
+        104,
+        23,
+        30,
+        52,
+        32,
+        23
+      ]
+    },
+    {
+      "name": "CancelledInvestmentWithdrawn",
+      "discriminator": [
+        155,
+        172,
+        247,
+        86,
+        135,
+        63,
+        61,
+        207
+      ]
+    },
+    {
+      "name": "Claimed",
+      "discriminator": [
+        217,
+        192,
+        123,
+        72,
+        108,
+        150,
+        248,
+        33
+      ]
+    },
+    {
+      "name": "FeeCollected",
+      "discriminator": [
+        12,
+        28,
+        17,
+        248,
+        244,
+        36,
+        8,
+        73
+      ]
+    },
+    {
+      "name": "Invested",
+      "discriminator": [
+        178,
+        41,
+        156,
+        68,
+        189,
+        44,
+        235,
+        152
+      ]
+    },
+    {
+      "name": "PlatformAdminUpdated",
+      "discriminator": [
+        53,
+        198,
+        188,
+        245,
+        188,
+        110,
+        180,
+        137
+      ]
+    },
+    {
+      "name": "PlatformFeeBpsUpdated",
+      "discriminator": [
+        91,
+        156,
+        114,
+        195,
+        66,
+        244,
+        161,
+        153
+      ]
+    },
+    {
+      "name": "PlatformInitialized",
+      "discriminator": [
+        16,
+        222,
+        212,
+        5,
+        213,
+        140,
+        112,
+        162
+      ]
+    },
+    {
+      "name": "PlatformPauseSet",
+      "discriminator": [
+        49,
+        75,
+        8,
+        185,
+        116,
+        121,
+        28,
+        119
+      ]
+    },
+    {
+      "name": "PlatformTreasuryUpdated",
+      "discriminator": [
+        106,
+        46,
+        248,
+        50,
+        196,
+        28,
+        63,
+        81
+      ]
+    },
+    {
+      "name": "PoolCancelled",
+      "discriminator": [
+        204,
+        15,
+        86,
+        4,
+        124,
+        97,
+        170,
+        173
+      ]
+    },
+    {
+      "name": "PoolCreated",
+      "discriminator": [
+        202,
+        44,
+        41,
+        88,
+        104,
+        220,
+        157,
+        82
+      ]
+    },
+    {
+      "name": "PoolDefaulted",
+      "discriminator": [
+        235,
+        55,
+        249,
+        120,
+        3,
+        193,
+        2,
+        194
+      ]
+    },
+    {
+      "name": "PoolServicingUpdated",
+      "discriminator": [
+        32,
+        147,
+        176,
+        40,
+        103,
+        121,
+        66,
+        107
+      ]
+    },
+    {
+      "name": "Repaid",
+      "discriminator": [
+        38,
+        248,
+        231,
+        7,
+        150,
+        164,
+        172,
+        23
+      ]
     }
   ],
   "errors": [
@@ -802,9 +1505,166 @@
       "code": 6021,
       "name": "InvalidServicingStatus",
       "msg": "Invalid servicing status"
+    },
+    {
+      "code": 6022,
+      "name": "RepaymentNotOpen",
+      "msg": "Repayment is not open for this pool"
     }
   ],
   "types": [
+    {
+      "name": "AdvancedToIssuer",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_id",
+            "type": "u64"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "issuer",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CancelledInvestmentWithdrawn",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_id",
+            "type": "u64"
+          },
+          {
+            "name": "investor",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "claimed_amount",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Claimed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_id",
+            "type": "u64"
+          },
+          {
+            "name": "investor",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "claimed_amount",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "FeeCollected",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_id",
+            "type": "u64"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "fee_collected_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Invested",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_id",
+            "type": "u64"
+          },
+          {
+            "name": "investor",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "funded_amount",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": "u8"
+          }
+        ]
+      }
+    },
     {
       "name": "Investment",
       "type": {
@@ -869,7 +1729,10 @@
           {
             "name": "legal_asset_hash",
             "type": {
-              "array": ["u8", 32]
+              "array": [
+                "u8",
+                32
+              ]
             }
           },
           {
@@ -948,6 +1811,22 @@
       }
     },
     {
+      "name": "PlatformAdminUpdated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "previous_admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "new_admin",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
       "name": "PlatformConfig",
       "type": {
         "kind": "struct",
@@ -984,6 +1863,231 @@
       }
     },
     {
+      "name": "PlatformFeeBpsUpdated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "previous_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "new_fee_bps",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PlatformInitialized",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "usdc_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "fee_bps",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PlatformPauseSet",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "paused",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PlatformTreasuryUpdated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "previous_treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "new_treasury",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolCancelled",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_id",
+            "type": "u64"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "funded_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolCreated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_id",
+            "type": "u64"
+          },
+          {
+            "name": "issuer",
+            "type": "pubkey"
+          },
+          {
+            "name": "originator",
+            "type": "pubkey"
+          },
+          {
+            "name": "spv",
+            "type": "pubkey"
+          },
+          {
+            "name": "legal_asset_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "invoice_face_value",
+            "type": "u64"
+          },
+          {
+            "name": "advance_amount",
+            "type": "u64"
+          },
+          {
+            "name": "due_ts",
+            "type": "i64"
+          },
+          {
+            "name": "risk_score",
+            "type": "u8"
+          },
+          {
+            "name": "metadata_uri",
+            "type": "string"
+          },
+          {
+            "name": "fee_bps",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolDefaulted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_id",
+            "type": "u64"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "due_ts",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolServicingUpdated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_id",
+            "type": "u64"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "risk_score",
+            "type": "u8"
+          },
+          {
+            "name": "servicing_status",
+            "type": "u8"
+          },
+          {
+            "name": "metadata_uri",
+            "type": "string"
+          },
+          {
+            "name": "updated_ts",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
       "name": "PoolStatus",
       "repr": {
         "kind": "rust"
@@ -1014,6 +2118,42 @@
           },
           {
             "name": "Defaulted"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Repaid",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_id",
+            "type": "u64"
+          },
+          {
+            "name": "payer",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "fee_amount",
+            "type": "u64"
+          },
+          {
+            "name": "repaid_amount",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": "u8"
           }
         ]
       }

@@ -3,6 +3,7 @@ use anchor_lang::prelude::*;
 use crate::{
     constants::CONFIG_SEED,
     error::FlowPayError,
+    events::PoolDefaulted,
     state::{InvoicePool, PlatformConfig, PoolStatus},
 };
 
@@ -37,5 +38,13 @@ pub fn handler(ctx: Context<MarkDefaulted>) -> Result<()> {
     );
 
     pool.status = PoolStatus::Defaulted;
+
+    emit!(PoolDefaulted {
+        pool: pool.key(),
+        pool_id: pool.pool_id,
+        authority: ctx.accounts.authority.key(),
+        due_ts: pool.due_ts,
+    });
+
     Ok(())
 }

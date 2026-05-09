@@ -4,6 +4,7 @@ use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 use crate::{
     constants::CONFIG_SEED,
     error::FlowPayError,
+    events::AdvancedToIssuer,
     state::{InvoicePool, PlatformConfig, PoolStatus},
     VAULT_AUTHORITY_SEED,
 };
@@ -67,5 +68,14 @@ pub fn handler(ctx: Context<AdvanceToIssuer>) -> Result<()> {
     )?;
 
     pool.status = PoolStatus::Advanced;
+
+    emit!(AdvancedToIssuer {
+        pool: pool_key,
+        pool_id: pool.pool_id,
+        authority: ctx.accounts.authority.key(),
+        issuer: pool.issuer,
+        amount: pool.advance_amount,
+    });
+
     Ok(())
 }
