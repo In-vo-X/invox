@@ -32,6 +32,10 @@ anchor test --validator legacy
 pnpm --dir apps/web dev
 ```
 
+## SDK IDL sync
+
+`packages/sdk/src/flowpay-idl.json` is generated from `target/idl/flowpay.json`. After IDL-affecting program changes, run `anchor build --ignore-keys` and then `pnpm run sync:idl`. CI verifies this with `pnpm run sync:idl:check`. Do not manually edit or format the generated SDK IDL.
+
 ## Notes
 
 - Program ID: `EjfVxrCATPwhbEKEcMAamkZaMabRaYStprDmAFu5TQFB`
