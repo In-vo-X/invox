@@ -4,6 +4,7 @@ use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 use crate::{
     constants::INVESTMENT_SEED,
     error::FlowPayError,
+    events::CancelledInvestmentWithdrawn,
     state::{Investment, InvoicePool, PoolStatus},
     VAULT_AUTHORITY_SEED,
 };
@@ -85,6 +86,15 @@ pub fn handler(ctx: Context<WithdrawCancelled>) -> Result<()> {
     if pool.claimed_amount >= pool.funded_amount {
         pool.status = PoolStatus::Closed;
     }
+
+    emit!(CancelledInvestmentWithdrawn {
+        pool: pool_key,
+        pool_id: pool.pool_id,
+        investor: ctx.accounts.investor.key(),
+        amount: claimable,
+        claimed_amount: pool.claimed_amount,
+        status: pool.status as u8,
+    });
 
     Ok(())
 }

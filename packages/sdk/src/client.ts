@@ -19,11 +19,16 @@ import type {
   CollectFeeParams,
   CreatePoolResult,
   CreatePoolParams,
+  InitializePlatformParams,
   InvestParams,
   LegalAssetHash,
   PoolActionParams,
   RepayParams,
+  SetPauseParams,
+  UpdateAdminParams,
+  UpdateFeeBpsParams,
   UpdatePoolServicingParams,
+  UpdateTreasuryParams,
   WithdrawCancelledParams,
 } from "./types";
 
@@ -58,8 +63,13 @@ type AccountClient<TAccount> = {
 };
 
 type FlowPayMethods = {
+  initializePlatform: ProgramMethod<[number]>;
   createPool: ProgramMethod<[BN, BN, BN, number, number[], string]>;
   updatePoolServicing: ProgramMethod<[number, number, string]>;
+  setPause: ProgramMethod<[boolean]>;
+  updateAdmin: ProgramMethod<[PublicKey]>;
+  updateTreasury: ProgramMethod<[]>;
+  updateFeeBps: ProgramMethod<[number]>;
   invest: ProgramMethod<[BN]>;
   advanceToIssuer: ProgramMethod<[]>;
   markDefaulted: ProgramMethod<[]>;
@@ -126,6 +136,17 @@ export function createFlowPayClient(
   return {
     provider,
     program,
+    initializePlatform: async (params: InitializePlatformParams) =>
+      methods
+        .initializePlatform(params.feeBps)
+        .accountsPartial({
+          admin: provider.wallet.publicKey,
+          config: configPda,
+          usdcMint: toPublicKey(params.usdcMint),
+          treasury: toPublicKey(params.treasury),
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc(),
     getPlatformConfig: async () => accounts.platformConfig.fetch(configPda),
     getPool: async (poolId: bigint) =>
       accounts.invoicePool.fetch(getPoolPda(poolId, programId)),
@@ -178,6 +199,39 @@ export function createFlowPayClient(
           authority: provider.wallet.publicKey,
           config: configPda,
           pool: getPoolPda(params.poolId, programId),
+        })
+        .rpc(),
+    setPause: async (params: SetPauseParams) =>
+      methods
+        .setPause(params.paused)
+        .accountsPartial({
+          admin: provider.wallet.publicKey,
+          config: configPda,
+        })
+        .rpc(),
+    updateAdmin: async (params: UpdateAdminParams) =>
+      methods
+        .updateAdmin(toPublicKey(params.newAdmin))
+        .accountsPartial({
+          admin: provider.wallet.publicKey,
+          config: configPda,
+        })
+        .rpc(),
+    updateTreasury: async (params: UpdateTreasuryParams) =>
+      methods
+        .updateTreasury()
+        .accountsPartial({
+          admin: provider.wallet.publicKey,
+          config: configPda,
+          treasury: toPublicKey(params.treasury),
+        })
+        .rpc(),
+    updateFeeBps: async (params: UpdateFeeBpsParams) =>
+      methods
+        .updateFeeBps(params.newFeeBps)
+        .accountsPartial({
+          admin: provider.wallet.publicKey,
+          config: configPda,
         })
         .rpc(),
     invest: async (params: InvestParams) => {

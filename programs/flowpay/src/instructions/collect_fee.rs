@@ -4,6 +4,7 @@ use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 use crate::{
     constants::CONFIG_SEED,
     error::FlowPayError,
+    events::FeeCollected,
     state::{InvoicePool, PlatformConfig, PoolStatus},
     VAULT_AUTHORITY_SEED,
 };
@@ -43,7 +44,10 @@ pub fn handler(ctx: Context<CollectFee>) -> Result<()> {
     require!(
         matches!(
             pool.status,
-            PoolStatus::PartiallyRepaid | PoolStatus::Repaid | PoolStatus::Defaulted
+            PoolStatus::PartiallyRepaid
+                | PoolStatus::Repaid
+                | PoolStatus::Closed
+                | PoolStatus::Defaulted
         ),
         FlowPayError::PoolNotRepaid
     );
@@ -78,6 +82,14 @@ pub fn handler(ctx: Context<CollectFee>) -> Result<()> {
         .fee_collected_amount
         .checked_add(fee_to_collect)
         .ok_or(FlowPayError::MathOverflow)?;
+
+    emit!(FeeCollected {
+        pool: pool_key,
+        pool_id: pool.pool_id,
+        authority: ctx.accounts.authority.key(),
+        amount: fee_to_collect,
+        fee_collected_amount: pool.fee_collected_amount,
+    });
 
     Ok(())
 }

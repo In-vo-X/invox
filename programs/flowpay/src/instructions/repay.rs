@@ -4,7 +4,8 @@ use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 use crate::{
     constants::{BPS_DENOMINATOR, CONFIG_SEED},
     error::FlowPayError,
-    state::{InvoicePool, PlatformConfig, PoolStatus},
+    events::Repaid,
+    state::{InvoicePool, PlatformConfig},
 };
 
 #[derive(Accounts)]
@@ -31,7 +32,7 @@ pub fn handler(ctx: Context<Repay>, amount: u64) -> Result<()> {
     require!(amount > 0, FlowPayError::InvalidAmount);
 
     let pool = &mut ctx.accounts.pool;
-    require!(pool.is_repayment_open(), FlowPayError::PoolNotAdvanced);
+    require!(pool.is_repayment_open(), FlowPayError::RepaymentNotOpen);
     require!(
         ctx.accounts.authority.key() == ctx.accounts.config.admin
             || ctx.accounts.authority.key() == pool.originator,
@@ -63,11 +64,19 @@ pub fn handler(ctx: Context<Repay>, amount: u64) -> Result<()> {
         .checked_add(fee)
         .ok_or(FlowPayError::MathOverflow)?;
 
-    pool.status = if pool.repaid_amount >= pool.invoice_face_value {
-        PoolStatus::Repaid
-    } else {
-        PoolStatus::PartiallyRepaid
-    };
+    pool.status = pool
+        .status
+        .after_repayment(pool.repaid_amount, pool.invoice_face_value);
+
+    emit!(Repaid {
+        pool: pool.key(),
+        pool_id: pool.pool_id,
+        payer: ctx.accounts.authority.key(),
+        amount,
+        fee_amount: fee,
+        repaid_amount: pool.repaid_amount,
+        status: pool.status as u8,
+    });
 
     Ok(())
 }

@@ -12,9 +12,11 @@ These items are intentionally documented instead of blocking the MVP implementat
 ## Cashflow policy
 
 - Whether partial investor claims should remain enabled before full repayment.
-- Whether defaulted pools should keep accepting recovery repayments indefinitely.
-- Whether protocol fees should be collected from defaulted partial recoveries or only after full repayment.
 - Whether dust remaining after integer pro-rata claims should go to treasury, issuer, or remain in the vault.
+
+## Resolved MVP cashflow policy
+- Defaulted pools keep accepting admin/originator recovery repayments, while the pool status remains `Defaulted` until a future settlement policy is defined.
+- Protocol fees accrue and can be collected from partial and defaulted recoveries, including after investor claims close a repaid pool.
 
 ## Product scope
 
@@ -26,6 +28,5 @@ These items are intentionally documented instead of blocking the MVP implementat
 
 - Investor whitelist and jurisdiction checks.
 - Originator registry and role rotation.
-- Admin/treasury update instructions.
 - Tranches, reserve buffers, insurance, or junior first-loss positions.
 - x402-paid verification agents.

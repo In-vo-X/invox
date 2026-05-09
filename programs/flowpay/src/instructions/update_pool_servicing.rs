@@ -3,6 +3,7 @@ use anchor_lang::prelude::*;
 use crate::{
     constants::{CONFIG_SEED, MAX_METADATA_URI_LEN, MAX_SERVICING_STATUS},
     error::FlowPayError,
+    events::PoolServicingUpdated,
     state::{InvoicePool, PlatformConfig, PoolStatus},
 };
 
@@ -47,6 +48,16 @@ pub fn handler(
     pool.servicing_status = servicing_status;
     pool.servicing_updated_ts = Clock::get()?.unix_timestamp;
     pool.metadata_uri = metadata_uri;
+
+    emit!(PoolServicingUpdated {
+        pool: pool.key(),
+        pool_id: pool.pool_id,
+        authority: ctx.accounts.authority.key(),
+        risk_score: pool.risk_score,
+        servicing_status: pool.servicing_status,
+        metadata_uri: pool.metadata_uri.clone(),
+        updated_ts: pool.servicing_updated_ts,
+    });
 
     Ok(())
 }

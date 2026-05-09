@@ -9,6 +9,7 @@ use crate::{
         CONFIG_SEED, MAX_METADATA_URI_LEN, POOL_SEED, SERVICING_STATUS_ACTIVE, VAULT_AUTHORITY_SEED,
     },
     error::FlowPayError,
+    events::PoolCreated,
     state::{InvoicePool, PlatformConfig, PoolStatus},
 };
 
@@ -114,6 +115,21 @@ pub fn handler(
         .next_pool_id
         .checked_add(1)
         .ok_or(FlowPayError::MathOverflow)?;
+
+    emit!(PoolCreated {
+        pool: pool.key(),
+        pool_id: pool.pool_id,
+        issuer: pool.issuer,
+        originator: pool.originator,
+        spv: pool.spv,
+        legal_asset_hash: pool.legal_asset_hash,
+        invoice_face_value: pool.invoice_face_value,
+        advance_amount: pool.advance_amount,
+        due_ts: pool.due_ts,
+        risk_score: pool.risk_score,
+        metadata_uri: pool.metadata_uri.clone(),
+        fee_bps: pool.fee_bps,
+    });
 
     Ok(())
 }

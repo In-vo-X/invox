@@ -10,6 +10,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   verify:
     name: Verify
@@ -17,10 +21,53 @@ jobs:
     env:
       DATABASE_URL: file:./prisma/ci.db
       NEXT_TELEMETRY_DISABLED: "1"
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install Ubuntu native dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            pkg-config \
+            libssl-dev \
+            libudev-dev \
+            llvm \
+            libclang-dev \
+            clang \
+            protobuf-compiler
+
+      - name: Setup Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Solana CLI
+        run: |
+          sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
+          export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> "$GITHUB_PATH"
+          solana --version
+          cargo-build-sbf --version
+
+      - name: Install Anchor CLI 1.0.2
+        run: |
+          cargo install --git https://github.com/solana-foundation/anchor avm --force
+          export PATH="$HOME/.avm/bin:$PATH"
+          echo "$HOME/.avm/bin" >> "$GITHUB_PATH"
+          avm install 1.0.2
+          avm use 1.0.2
+          anchor --version
+
+      - name: Install Surfpool
+        run: |
+          curl -sL https://run.surfpool.run/ | bash
+          export PATH="$HOME/.local/bin:$PATH"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          surfpool --version
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -37,8 +84,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Generate Prisma client
-        run: pnpm --dir apps/web prisma:generate
+      - name: Generate ephemeral Solana wallet
+        run: |
+          mkdir -p "$HOME/.config/solana"
+          solana-keygen new --no-bip39-passphrase --silent --force -o "$HOME/.config/solana/id.json"
 
       - name: Check formatting
         run: pnpm lint
@@ -46,5 +95,14 @@ jobs:
       - name: Lint web app
         run: pnpm --dir apps/web lint
 
-      - name: Build web app
-        run: pnpm build:web
+      - name: Run FlowPay verification suite
+        run: |
+          export ANCHOR_WALLET="$HOME/.config/solana/id.json"
+          cargo fmt --all --check
+          cargo test -p flowpay
+          pnpm --filter @flowpay/sdk exec tsc --noEmit
+          pnpm --dir apps/web prisma:generate
+          pnpm run build:web
+          anchor build --ignore-keys
+          pnpm run sync:idl:check
+          anchor test

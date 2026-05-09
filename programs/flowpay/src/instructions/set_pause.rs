@@ -1,6 +1,8 @@
 use anchor_lang::prelude::*;
 
-use crate::{constants::CONFIG_SEED, error::FlowPayError, state::PlatformConfig};
+use crate::{
+    constants::CONFIG_SEED, error::FlowPayError, events::PlatformPauseSet, state::PlatformConfig,
+};
 
 #[derive(Accounts)]
 pub struct SetPause<'info> {
@@ -15,5 +17,11 @@ pub fn handler(ctx: Context<SetPause>, paused: bool) -> Result<()> {
         FlowPayError::Unauthorized
     );
     ctx.accounts.config.paused = paused;
+
+    emit!(PlatformPauseSet {
+        admin: ctx.accounts.admin.key(),
+        paused,
+    });
+
     Ok(())
 }

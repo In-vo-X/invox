@@ -46,4 +46,6 @@ pub enum FlowPayError {
     DefaultNotReached,
     #[msg("Invalid servicing status")]
     InvalidServicingStatus,
+    #[msg("Repayment is not open for this pool")]
+    RepaymentNotOpen,
 }

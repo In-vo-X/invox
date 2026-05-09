@@ -78,6 +78,28 @@ export type CreatePoolResult = {
   pool: string;
 };
 
+export type InitializePlatformParams = {
+  usdcMint: string;
+  treasury: string;
+  feeBps: number;
+};
+
+export type SetPauseParams = {
+  paused: boolean;
+};
+
+export type UpdateAdminParams = {
+  newAdmin: string;
+};
+
+export type UpdateTreasuryParams = {
+  treasury: string;
+};
+
+export type UpdateFeeBpsParams = {
+  newFeeBps: number;
+};
+
 export type UpdatePoolServicingParams = {
   poolId: bigint;
   riskScore: number;

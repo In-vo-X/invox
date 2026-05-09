@@ -6,6 +6,8 @@
   "scripts": {
     "build:program": "anchor build",
     "test:program": "anchor test",
+    "sync:idl": "node scripts/sync-flowpay-idl.mjs",
+    "sync:idl:check": "node scripts/sync-flowpay-idl.mjs --check",
     "lint": "prettier --check \"**/*.{js,ts,tsx,json,md}\"",
     "lint:fix": "prettier --write \"**/*.{js,ts,tsx,json,md}\"",
     "dev:web": "pnpm --dir apps/web dev",

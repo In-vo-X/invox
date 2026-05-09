@@ -4,6 +4,7 @@ use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 use crate::{
     constants::{CONFIG_SEED, INVESTMENT_SEED},
     error::FlowPayError,
+    events::Claimed,
     state::{Investment, InvoicePool, PlatformConfig, PoolStatus},
     VAULT_AUTHORITY_SEED,
 };
@@ -99,6 +100,15 @@ pub fn handler(ctx: Context<Claim>) -> Result<()> {
     if pool.status == PoolStatus::Repaid && pool.claimed_amount >= net_repaid {
         pool.status = PoolStatus::Closed;
     }
+
+    emit!(Claimed {
+        pool: pool_key,
+        pool_id: pool.pool_id,
+        investor: ctx.accounts.investor.key(),
+        amount: claimable,
+        claimed_amount: pool.claimed_amount,
+        status: pool.status as u8,
+    });
 
     Ok(())
 }
