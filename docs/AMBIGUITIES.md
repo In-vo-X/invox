@@ -15,6 +15,7 @@ These items are intentionally documented instead of blocking the MVP implementat
 - Whether dust remaining after integer pro-rata claims should go to treasury, issuer, or remain in the vault.
 
 ## Resolved MVP cashflow policy
+
 - Defaulted pools keep accepting admin/originator recovery repayments, while the pool status remains `Defaulted` until a future settlement policy is defined.
 - Protocol fees accrue and can be collected from partial and defaulted recoveries, including after investor claims close a repaid pool.
 

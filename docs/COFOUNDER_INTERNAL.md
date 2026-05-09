@@ -49,26 +49,31 @@ That is the product abstraction layer we are building.
 ### 4.1 Landing page
 
 Purpose:
+
 - define what the product is
 - explain the Solana angle in user language
 - push users toward marketplace exploration and AI Assist
 
 Current messaging emphasizes:
+
 - unpaid invoices → on-chain cashflows
 - faster settlement, lower cost, transparent tracking on Solana
 
 ### 4.2 Marketplace
 
 Purpose:
+
 - surface available invoice opportunities
 - make comparisons easy
 - separate simple discovery from expanded exploration
 
 Current structure:
+
 - `/marketplace`: core market view
 - `/marketplace/more`: expanded invoice discovery board
 
 Displayed data includes:
+
 - invoice value
 - advance target
 - gross yield
@@ -81,9 +86,11 @@ Displayed data includes:
 ### 4.3 Pool detail
 
 Purpose:
+
 - become the transactional hub for a single invoice pool
 
 This page currently supports:
+
 - pool metrics and counterparty view
 - legal asset hash display
 - recent tx signature display
@@ -96,9 +103,11 @@ The pool detail page is the current core transaction surface.
 ### 4.4 Portfolio
 
 Purpose:
+
 - make positions understandable as a modern DeFi-style portfolio
 
 Current structure includes:
+
 - portfolio KPIs
 - claimable now
 - blended yield
@@ -110,6 +119,7 @@ Current structure includes:
 ### 4.5 AI Assist
 
 Purpose:
+
 - help non-expert users reason about invoice finance
 - provide a recommendation and education layer rather than just a list of pools
 
@@ -137,7 +147,9 @@ On-chain source of truth lives in `programs/flowpay`.
 ### 6.1 Core accounts
 
 #### PlatformConfig
+
 Contains:
+
 - admin
 - USDC mint
 - treasury
@@ -148,7 +160,9 @@ Contains:
 This is the top-level protocol config and governance state.
 
 #### InvoicePool
+
 Contains:
+
 - pool id
 - issuer
 - originator
@@ -175,7 +189,9 @@ Contains:
 This is the main structured finance state container.
 
 #### Investment
+
 Contains:
+
 - pool
 - investor
 - amount
@@ -187,6 +203,7 @@ This is the user-level position state.
 ### 6.2 Core instructions
 
 The protocol currently includes:
+
 - initialize_platform
 - create_pool
 - invest
@@ -207,6 +224,7 @@ This is a serious protocol surface already, not just a mock contract.
 ## 7. Frontend and app architecture
 
 ### 7.1 Frontend stack
+
 - Next.js App Router
 - TypeScript
 - Tailwind-based premium light dashboard styling
@@ -214,17 +232,21 @@ This is a serious protocol surface already, not just a mock contract.
 - Anchor client bridge
 
 ### 7.2 SDK layer
+
 Located in `packages/sdk`.
 
 Responsibilities:
+
 - derive PDAs
 - wrap program calls
 - expose createPool / invest / advance / repay / claim / servicing / default flows
 
 ### 7.3 Metadata layer
+
 Located in `apps/web/prisma`.
 
 This is not the money ledger. It is used for:
+
 - invoice metadata
 - risk metadata
 - demo indexing
@@ -237,7 +259,9 @@ Balances and settlement truth remain on-chain.
 ## 8. Current implementation status
 
 ### 8.1 Product/UI status
+
 Implemented:
+
 - landing page
 - marketplace and expanded invoice board
 - AI Assist
@@ -247,7 +271,9 @@ Implemented:
 - branding updates
 
 ### 8.2 Pool action wiring status
+
 Implemented in web app:
+
 - Invest
 - Claim
 - Advance to issuer
@@ -258,7 +284,9 @@ Implemented in web app:
 These are no longer placeholder buttons; they are wired to actual on-chain method calls.
 
 ### 8.3 Localnet verification status
+
 We successfully:
+
 - installed Solana CLI / validator / keygen locally
 - built the Anchor program
 - deployed the program to localnet
@@ -273,10 +301,13 @@ This is a major milestone because it proves the action flow is not merely mock-U
 ## 9. What still blocks “true product-level complete” status
 
 ### 9.1 Devnet deployment is not yet live
+
 The originally referenced program id was not deployed on devnet when we tested. That means the product cannot yet be called “live on Devnet” from the current app configuration without additional deployment work.
 
 ### 9.2 Claim bookkeeping needs precise verification and likely hardening
+
 In localnet execution, actual token movements occurred successfully, but state aggregation needs rigorous confirmation, especially around:
+
 - pool.claimed_amount
 - final status transition to Closed
 - post-claim aggregate accounting
@@ -284,9 +315,11 @@ In localnet execution, actual token movements occurred successfully, but state a
 This is the most important technical caveat left in the protocol flow.
 
 ### 9.3 Chain-driven reads are not fully dominant yet
+
 Some UI pages still rely partly on curated mock/read-model data, even though action wiring now exists.
 
 ### 9.4 Admin affordance UX can improve
+
 Admin actions are protected by on-chain authority rules, but the UI could do more up front to communicate which wallet roles are allowed to perform which action.
 
 ---
@@ -294,16 +327,20 @@ Admin actions are protected by on-chain authority rules, but the UI could do mor
 ## 10. Business model
 
 ### 10.1 Protocol fee on repayment
+
 The clearest built-in revenue line is protocol fee capture on repayments.
 
 Protocol state already tracks:
+
 - fee owed
 - fee collected
 
 This means a repayment-based fee model is structurally native to the protocol.
 
 ### 10.2 Operator / originator tooling
+
 Beyond the protocol itself, we can offer operator-facing value through:
+
 - pool creation workflow
 - servicing status updates
 - risk metadata management
@@ -312,14 +349,18 @@ Beyond the protocol itself, we can offer operator-facing value through:
 This turns part of InvoX into structured finance operations tooling.
 
 ### 10.3 Premium intelligence layer
+
 AI Assist can evolve into a monetizable product layer through:
+
 - better pool selection support
 - anomaly alerts
 - risk interpretation
 - tailored investor guidance
 
 ### 10.4 B2B2C path
+
 Rather than only being a retail app, InvoX can also be a platform rail for:
+
 - originators
 - invoice finance operators
 - fintech partners
@@ -334,25 +375,32 @@ This may in fact be the stronger early GTM path.
 We need to choose what we are actually building:
 
 ### Option A — Retail invoice investment app
+
 Pros:
+
 - clearer consumer narrative
 - visible investor product
 
 Cons:
+
 - stronger regulatory burden
 - harder trust challenge
 - more distribution-heavy
 
 ### Option B — Infrastructure + operator rail
+
 Pros:
+
 - closer to current protocol structure
 - easier to justify with real originator workflows
 - less dependent on instant retail scale
 
 Cons:
+
 - less emotionally compelling demo for mainstream users
 
 ### Option C — Hybrid
+
 Build operator-facing rails first, but preserve investor-facing UX as the eventual front end.
 
 This is likely the most realistic route.
@@ -362,7 +410,9 @@ This is likely the most realistic route.
 ## 12. Risk register
 
 ### 12.1 Legal / regulatory
+
 Open questions already recorded in `docs/AMBIGUITIES.md` include:
+
 - issuer vs originator identity relationship
 - SPV requirements
 - legal asset hash definition
@@ -370,20 +420,26 @@ Open questions already recorded in `docs/AMBIGUITIES.md` include:
 - investor eligibility / whitelist rules
 
 ### 12.2 Cashflow policy ambiguity
+
 Still unresolved:
+
 - partial claim policy
 - default recovery handling
 - fee treatment on recoveries
 - dust handling
 
 ### 12.3 Product scope ambiguity
+
 Still open:
+
 - one pool = one invoice vs receivables bundle
 - whether servicing changes should pause investment automatically
 - whether AI risk updates need verification signatures
 
 ### 12.4 Deferred implementation
+
 Deferred items include:
+
 - whitelist checks
 - originator registry
 - admin / treasury rotation
@@ -396,21 +452,25 @@ Deferred items include:
 ## 13. Recommended near-term roadmap
 
 ### Phase 1 — Close the transaction correctness gap
+
 - fully confirm claim bookkeeping correctness
 - build reproducible localnet E2E verification
 - run repeated scenario tests until deterministic
 
 ### Phase 2 — Live environment readiness
+
 - deploy a real devnet program
 - update app configuration to target live program
 - run devnet smoke tests with real wallets
 
 ### Phase 3 — Read-model integrity
+
 - reduce mock dependency in portfolio and marketplace
 - fetch more state from chain directly
 - clarify where Prisma is metadata only vs state source
 
 ### Phase 4 — Product and compliance strategy
+
 - choose target GTM (retail vs operator vs hybrid)
 - resolve legal structure assumptions
 - define investor eligibility model
@@ -426,6 +486,7 @@ The biggest remaining question is no longer “can this work technically?”
 The answer to that is increasingly **yes**.
 
 The bigger questions now are:
+
 - can the claim/repayment bookkeeping be made fully deterministic?
 - what exact legal/operational shape will the product take?
 - are we building for retail users first, or for operators first?
