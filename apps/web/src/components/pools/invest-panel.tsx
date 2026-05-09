@@ -342,7 +342,7 @@ export function InvestPanel({
     callback: (snapshot: ChainSnapshot) => Promise<string>,
   ) {
     if (!connected || !anchorWallet || !publicKey) {
-      setFeedback("먼저 지갑을 연결해야 이 액션을 실행할 수 있습니다.");
+      setFeedback("Connect your wallet before running this action.");
       return;
     }
 
@@ -358,11 +358,11 @@ export function InvestPanel({
       await connection.confirmTransaction(txSignature, "confirmed");
       await refreshChainSnapshot();
       setSignature(txSignature);
-      setFeedback(`${label} 트랜잭션이 제출되고 확인되었습니다.`);
+      setFeedback(`${label} transaction submitted and confirmed.`);
       router.refresh();
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
-      setFeedback(`${label}에 실패했습니다: ${message}`);
+      setFeedback(`${label} failed: ${message}`);
     } finally {
       setSubmittingAction(null);
     }
@@ -373,17 +373,17 @@ export function InvestPanel({
 
     if (!parsedInvestAmount || parsedInvestAmount.lte(new BN(0))) {
       setFeedback(
-        "USDC 금액을 올바르게 입력해주세요. 소수점은 6자리까지 가능합니다.",
+        "Enter a valid USDC amount. Decimals are supported up to 6 places.",
       );
       return;
     }
 
     if (!isFundingOpen) {
-      setFeedback("현재 이 풀은 투자 가능한 Funding 상태가 아닙니다.");
+      setFeedback("This pool is not currently open for funding.");
       return;
     }
 
-    await runAction("투자", async (snapshot) => {
+    await runAction("Investment", async (snapshot) => {
       const investorTokenAccount = await ensureTokenAccount(
         snapshot.config.usdcMint,
         publicKey!,
@@ -408,9 +408,9 @@ export function InvestPanel({
   }
 
   async function handleClaim() {
-    await runAction("청구", async (snapshot) => {
+    await runAction("Claim", async (snapshot) => {
       if (!snapshot.investment || snapshot.claimable.lte(new BN(0))) {
-        throw new Error("현재 청구 가능한 상환금이 없습니다.");
+        throw new Error("There is no claimable repayment available right now.");
       }
 
       const investorTokenAccount = await ensureTokenAccount(
@@ -436,7 +436,7 @@ export function InvestPanel({
   }
 
   async function handleAdvance() {
-    await runAction("선지급 실행", async (snapshot) => {
+    await runAction("Advance", async (snapshot) => {
       const issuerTokenAccount = await ensureTokenAccount(
         snapshot.config.usdcMint,
         snapshot.pool.issuer,
@@ -460,11 +460,11 @@ export function InvestPanel({
 
   async function handleRepay() {
     if (!parsedRepayAmount || parsedRepayAmount.lte(new BN(0))) {
-      setFeedback("상환 금액을 올바르게 입력해주세요.");
+      setFeedback("Enter a valid repayment amount.");
       return;
     }
 
-    await runAction("상환", async (snapshot) => {
+    await runAction("Repayment", async (snapshot) => {
       const payerTokenAccount = await ensureTokenAccount(
         snapshot.config.usdcMint,
         publicKey!,
@@ -494,11 +494,11 @@ export function InvestPanel({
       parsedRiskScore < 0 ||
       parsedRiskScore > 100
     ) {
-      setFeedback("리스크 스코어는 0에서 100 사이 정수여야 합니다.");
+      setFeedback("Risk score must be an integer between 0 and 100.");
       return;
     }
 
-    await runAction("서비싱 업데이트", async (snapshot) =>
+    await runAction("Servicing update", async (snapshot) =>
       getProgram(anchorWallet)
         .methods.updatePoolServicing(
           parsedRiskScore,
@@ -515,7 +515,7 @@ export function InvestPanel({
   }
 
   async function handleDefault() {
-    await runAction("디폴트 전환", async (snapshot) =>
+    await runAction("Default update", async (snapshot) =>
       getProgram(anchorWallet)
         .methods.markDefaulted()
         .accountsPartial({
@@ -572,7 +572,7 @@ export function InvestPanel({
             className="btn-primary mt-4 w-full"
             disabled={submittingAction !== null}
           >
-            {submittingAction === "투자"
+            {submittingAction === "Investment"
               ? "Submitting transaction..."
               : "Invest with Solana wallet"}
           </button>
@@ -596,7 +596,7 @@ export function InvestPanel({
               disabled={submittingAction !== null}
               onClick={handleClaim}
             >
-              {submittingAction === "청구" ? "Claiming..." : "Claim repayment"}
+              {submittingAction === "Claim" ? "Claiming..." : "Claim repayment"}
             </button>
           </div>
           <p className="mt-3 text-sm leading-6 text-[var(--ink-500)]">
@@ -624,9 +624,7 @@ export function InvestPanel({
                 disabled={submittingAction !== null}
                 onClick={handleAdvance}
               >
-                {submittingAction === "선지급 실행"
-                  ? "Advancing..."
-                  : "Advance"}
+                {submittingAction === "Advance" ? "Advancing..." : "Advance"}
               </button>
             </div>
           </div>
@@ -648,7 +646,7 @@ export function InvestPanel({
                 disabled={submittingAction !== null}
                 onClick={handleRepay}
               >
-                {submittingAction === "상환" ? "Repaying..." : "Repay"}
+                {submittingAction === "Repayment" ? "Repaying..." : "Repay"}
               </button>
             </div>
           </div>
@@ -686,7 +684,7 @@ export function InvestPanel({
               disabled={submittingAction !== null}
               onClick={handleServicingUpdate}
             >
-              {submittingAction === "서비싱 업데이트"
+              {submittingAction === "Servicing update"
                 ? "Updating..."
                 : "Update servicing"}
             </button>
@@ -716,7 +714,7 @@ export function InvestPanel({
                 disabled={submittingAction !== null}
                 onClick={handleDefault}
               >
-                {submittingAction === "디폴트 전환"
+                {submittingAction === "Default update"
                   ? "Updating..."
                   : "Mark defaulted"}
               </button>

@@ -44,7 +44,7 @@ export default function Home() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-2 text-sm font-medium text-[var(--ink-600)]">
               <ShieldCheck className="h-4 w-4 text-[var(--brand-500)]" />
-              Solana 기반 빠른 정산 · 낮은 비용 · 투명한 거래 추적
+              Fast Solana settlement · Low fees · Transparent cashflow tracking
             </div>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--ink-600)]">
               FlowPay keeps legal invoice ownership off-chain while moving
