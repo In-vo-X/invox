@@ -13,6 +13,7 @@ export function Topbar() {
   const [searchResultsPathname, setSearchResultsPathname] = useState<
     string | null
   >(null);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchRef = useRef<HTMLDivElement>(null);
@@ -54,6 +55,10 @@ export function Topbar() {
     success: "bg-[rgba(94,215,198,0.18)] text-[rgba(37,144,128,1)]",
     warning: "bg-[rgba(255,155,135,0.2)] text-[rgba(217,99,72,1)]",
   } as const;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     function handlePointerDown(event: MouseEvent) {
@@ -258,7 +263,13 @@ export function Topbar() {
             </div>
           </div>
         ) : null}
-        <WalletMultiButton className="!h-12 !rounded-full !bg-[linear-gradient(135deg,#5f72dd,#7287ff)] !px-5 !font-semibold !shadow-[0_18px_32px_rgba(114,135,255,0.24)]" />
+        {mounted ? (
+          <WalletMultiButton className="!h-12 !rounded-full !bg-[linear-gradient(135deg,#5f72dd,#7287ff)] !px-5 !font-semibold !shadow-[0_18px_32px_rgba(114,135,255,0.24)]" />
+        ) : (
+          <button className="!h-12 !rounded-full !bg-[linear-gradient(135deg,#5f72dd,#7287ff)] !px-5 !font-semibold !shadow-[0_18px_32px_rgba(114,135,255,0.24)] text-white">
+            Select Wallet
+          </button>
+        )}
       </div>
     </div>
   );
