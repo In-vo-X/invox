@@ -11,6 +11,10 @@ import {
 import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 import { useRouter } from "next/navigation";
+import { EligibilityGate } from "@/components/compliance/eligibility-gate";
+import { KycRequiredCard } from "@/components/compliance/kyc-required-card";
+import { ParticipationModal } from "@/components/compliance/participation-modal";
+import { RiskDisclosure } from "@/components/compliance/risk-disclosure";
 import { FLOWPAY_PROGRAM_ID, USDC_DECIMALS } from "@/lib/constants";
 import { createFlowPayProgram } from "@/lib/flowpayClient";
 import {
@@ -202,10 +206,19 @@ export function InvestPanel({
   const [feedback, setFeedback] = useState<string | null>(null);
   const [signature, setSignature] = useState<string | null>(null);
   const [chainSnapshot, setChainSnapshot] = useState<ChainSnapshot | null>(null);
+  const [eligibilityStatus, setEligibilityStatus] = useState<
+    "not_connected" | "kyc_required" | "pending_review" | "approved" | "restricted_region" | "not_whitelisted"
+  >("not_connected");
+  const [showParticipationModal, setShowParticipationModal] = useState(false);
 
   const parsedInvestAmount = useMemo(() => parseUsdcAmount(amount), [amount]);
   const parsedRepayAmount = useMemo(() => parseUsdcAmount(repayAmount), [repayAmount]);
   const isFundingOpen = (chainSnapshot?.statusLabel ?? status) === "Funding";
+  const isOperator =
+    !!publicKey &&
+    !!chainSnapshot &&
+    (publicKey.equals(chainSnapshot.config.admin) ||
+      publicKey.equals(chainSnapshot.pool.originator));
 
   async function fetchChainSnapshot(): Promise<ChainSnapshot> {
     const program = getProgram();
@@ -292,9 +305,19 @@ export function InvestPanel({
     void refreshChainSnapshot();
   }, [publicKey, poolId]);
 
+  useEffect(() => {
+    if (!connected || !publicKey) {
+      setEligibilityStatus("not_connected");
+      return;
+    }
+
+    const saved = window.localStorage.getItem(`invox-eligibility-${publicKey.toBase58()}`);
+    setEligibilityStatus((saved as typeof eligibilityStatus) || "kyc_required");
+  }, [connected, publicKey]);
+
   async function runAction(label: string, callback: (snapshot: ChainSnapshot) => Promise<string>) {
     if (!connected || !anchorWallet || !publicKey) {
-      setFeedback("먼저 지갑을 연결해야 이 액션을 실행할 수 있습니다.");
+      setFeedback("Connect a wallet before you run this action.");
       return;
     }
 
@@ -310,11 +333,11 @@ export function InvestPanel({
       await connection.confirmTransaction(txSignature, "confirmed");
       await refreshChainSnapshot();
       setSignature(txSignature);
-      setFeedback(`${label} 트랜잭션이 제출되고 확인되었습니다.`);
+      setFeedback(`${label} transaction submitted and confirmed.`);
       router.refresh();
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
-      setFeedback(`${label}에 실패했습니다: ${message}`);
+      setFeedback(`${label} failed: ${message}`);
     } finally {
       setSubmittingAction(null);
     }
@@ -323,13 +346,27 @@ export function InvestPanel({
   async function handleInvest(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    if (eligibilityStatus !== "approved") {
+      setFeedback(
+        eligibilityStatus === "not_connected"
+          ? "Connect a wallet before you run this action."
+          : "Your eligibility status must be approved before you can participate.",
+      );
+      return;
+    }
+
+    if (!window.localStorage.getItem("invox-participation-ack")) {
+      setShowParticipationModal(true);
+      return;
+    }
+
     if (!parsedInvestAmount || parsedInvestAmount.lte(new BN(0))) {
-      setFeedback("USDC 금액을 올바르게 입력해주세요. 소수점은 6자리까지 가능합니다.");
+      setFeedback("Enter a valid USDC amount with up to 6 decimal places.");
       return;
     }
 
     if (!isFundingOpen) {
-      setFeedback("현재 이 풀은 투자 가능한 Funding 상태가 아닙니다.");
+      setFeedback("This pool is not currently open for participation.");
       return;
     }
 
@@ -357,10 +394,25 @@ export function InvestPanel({
     });
   }
 
+  function completeKyc() {
+    if (!publicKey) return;
+    setEligibilityStatus("pending_review");
+    window.localStorage.setItem(`invox-eligibility-${publicKey.toBase58()}`, "pending_review");
+    window.setTimeout(() => {
+      setEligibilityStatus("approved");
+      window.localStorage.setItem(`invox-eligibility-${publicKey.toBase58()}`, "approved");
+    }, 1200);
+  }
+
+  function confirmParticipation() {
+    window.localStorage.setItem("invox-participation-ack", "true");
+    setShowParticipationModal(false);
+  }
+
   async function handleClaim() {
     await runAction("청구", async (snapshot) => {
       if (!snapshot.investment || snapshot.claimable.lte(new BN(0))) {
-        throw new Error("현재 청구 가능한 상환금이 없습니다.");
+        throw new Error("There is no claimable distribution available right now.");
       }
 
       const investorTokenAccount = await ensureTokenAccount(
@@ -410,7 +462,7 @@ export function InvestPanel({
 
   async function handleRepay() {
     if (!parsedRepayAmount || parsedRepayAmount.lte(new BN(0))) {
-      setFeedback("상환 금액을 올바르게 입력해주세요.");
+      setFeedback("Enter a valid repayment amount.");
       return;
     }
 
@@ -440,7 +492,7 @@ export function InvestPanel({
     const parsedServicing = Number(servicingValue);
 
     if (!Number.isInteger(parsedRiskScore) || parsedRiskScore < 0 || parsedRiskScore > 100) {
-      setFeedback("리스크 스코어는 0에서 100 사이 정수여야 합니다.");
+      setFeedback("Risk score must be an integer between 0 and 100.");
       return;
     }
 
@@ -471,6 +523,12 @@ export function InvestPanel({
 
   const chainStatusLabel = chainSnapshot?.statusLabel ?? status;
   const claimableLabel = chainSnapshot ? formatBnUsdc(chainSnapshot.claimable) : "$0";
+  const alreadyClaimedLabel = chainSnapshot?.investment
+    ? formatBnUsdc(chainSnapshot.investment.claimedAmount)
+    : "$0";
+  const totalRepaidLabel = chainSnapshot
+    ? formatBnUsdc(chainSnapshot.pool.repaidAmount)
+    : "$0";
   const fundingLabel = chainSnapshot
     ? `${chainSnapshot.pool.fundedAmount.mul(new BN(100)).div(chainSnapshot.pool.advanceAmount).toString()}%`
     : `${fundedPct}%`;
@@ -478,10 +536,10 @@ export function InvestPanel({
   return (
     <div className="space-y-6">
       <div className="stat-card stat-card--lavender">
-        <p className="eyebrow">Invest panel</p>
-        <h2 className="mt-8 text-3xl font-semibold">Commit USDC</h2>
+        <p className="eyebrow">Participate in Pool</p>
+        <h2 className="mt-8 text-3xl font-semibold">Participate with USDC</h2>
         <p className="mt-3 text-sm leading-6 text-[var(--ink-500)]">
-          On-chain status {chainStatusLabel} · expected settlement in {dueLabel}.
+          On-chain repayment tracking · pool status {chainStatusLabel} · projected cashflow window {dueLabel}.
         </p>
         <div className="mt-6 h-3 rounded-full bg-white">
           <div
@@ -489,9 +547,21 @@ export function InvestPanel({
             style={{ width: fundingLabel }}
           />
         </div>
+        <div className="mt-6 space-y-4">
+          {eligibilityStatus === "kyc_required" ? (
+            <KycRequiredCard onAction={completeKyc} />
+          ) : (
+            <EligibilityGate
+              status={eligibilityStatus}
+              actionLabel={eligibilityStatus === "not_whitelisted" ? "Join Whitelist" : undefined}
+              onAction={eligibilityStatus === "not_whitelisted" ? completeKyc : undefined}
+            />
+          )}
+          <RiskDisclosure />
+        </div>
         <form className="mt-6 rounded-[1.5rem] bg-white/74 p-4" onSubmit={handleInvest}>
           <label className="text-sm font-medium text-[var(--ink-600)]">
-            Investment amount
+            Participation amount
             <input
               className="mt-2 h-12 w-full rounded-2xl border border-[var(--line)] bg-[var(--surface-soft)] px-4 outline-none"
               value={amount}
@@ -501,51 +571,83 @@ export function InvestPanel({
             />
           </label>
           <div className="mt-3 flex items-center justify-between text-xs text-[var(--ink-500)]">
-            <span>Pool target</span>
+            <span>Funding target</span>
             <span>${advanceAmount.toLocaleString()} USDC</span>
           </div>
+          <div className="mt-3 grid gap-2 rounded-[1.25rem] bg-[var(--surface-soft)] p-3 text-xs text-[var(--ink-500)] sm:grid-cols-3">
+            <span>Wallet status: {connected ? "Connected" : "Connect wallet"}</span>
+            <span>Eligibility: {eligibilityStatus.replaceAll("_", " ")}</span>
+            <span>Estimated pool share: {advanceAmount ? `${((Number(amount || 0) / advanceAmount) * 100 || 0).toFixed(1)}%` : "0%"}</span>
+          </div>
           <button className="btn-primary mt-4 w-full" disabled={submittingAction !== null}>
-            {submittingAction === "투자" ? "Submitting transaction..." : "Invest with Solana wallet"}
+            {submittingAction === "투자"
+              ? "Submitting transaction..."
+              : eligibilityStatus === "not_connected"
+                ? "Connect Wallet"
+                : eligibilityStatus === "kyc_required"
+                  ? "Complete KYC"
+                  : eligibilityStatus === "pending_review"
+                    ? "Eligibility Review Pending"
+                    : eligibilityStatus === "restricted_region"
+                      ? "Not Available in Your Region"
+                      : eligibilityStatus === "not_whitelisted"
+                        ? "Join Whitelist"
+                        : isFundingOpen
+                          ? "Participate"
+                          : "Pool Closed"}
           </button>
         </form>
       </div>
 
       <div className="soft-card p-6">
-        <p className="eyebrow">Claim</p>
+        <p className="eyebrow">Claim Distribution</p>
         <div className="mt-4 rounded-[1.5rem] bg-[var(--surface-soft)] p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-[var(--ink-500)]">Currently claimable</p>
+              <p className="text-sm text-[var(--ink-500)]">Claimable now</p>
               <p className="mt-2 text-2xl font-semibold text-[var(--ink-900)]">{claimableLabel}</p>
+              <div className="mt-3 grid gap-2 text-xs text-[var(--ink-500)] sm:grid-cols-3">
+                <span>Total repaid to pool: {totalRepaidLabel}</span>
+                <span>Already claimed: {alreadyClaimedLabel}</span>
+                <span>Next expected distribution: After next repayment batch</span>
+              </div>
             </div>
             <button
               className="btn-secondary"
               disabled={submittingAction !== null}
               onClick={handleClaim}
             >
-              {submittingAction === "청구" ? "Claiming..." : "Claim repayment"}
+              {submittingAction === "청구" ? "Claiming..." : "Claim"}
             </button>
           </div>
           <p className="mt-3 text-sm leading-6 text-[var(--ink-500)]">
-            Connect the investor wallet to calculate and withdraw the currently available pro-rata repayment.
+            Claim proportional distributions after repayments settle on-chain. This is not financial advice.
           </p>
         </div>
       </div>
 
       <div className="soft-card p-6">
-        <p className="eyebrow">Admin actions</p>
+        <p className="eyebrow">Operator Actions</p>
+        <p className="mt-3 text-sm leading-6 text-[var(--ink-500)]">
+          Only authorized operator or admin wallets should run these servicing and funding actions.
+        </p>
+        {!isOperator ? (
+          <p className="mt-2 text-sm leading-6 text-[var(--ink-500)]">
+            Connect an authorized operator wallet to enable these controls.
+          </p>
+        ) : null}
         <div className="mt-4 space-y-4">
           <div className="rounded-[1.5rem] bg-[var(--surface-soft)] p-4">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold text-[var(--ink-900)]">Advance to issuer</p>
+                <p className="text-sm font-semibold text-[var(--ink-900)]">Advance funds</p>
                 <p className="mt-1 text-sm text-[var(--ink-500)]">
                   Transfer the funded advance amount from vault to issuer ATA.
                 </p>
               </div>
               <button
                 className="btn-secondary"
-                disabled={submittingAction !== null}
+                disabled={submittingAction !== null || !isOperator}
                 onClick={handleAdvance}
               >
                 {submittingAction === "선지급 실행" ? "Advancing..." : "Advance"}
@@ -554,7 +656,7 @@ export function InvestPanel({
           </div>
 
           <div className="rounded-[1.5rem] bg-[var(--surface-soft)] p-4">
-            <p className="text-sm font-semibold text-[var(--ink-900)]">Repay from originator</p>
+                <p className="text-sm font-semibold text-[var(--ink-900)]">Record repayment</p>
             <div className="mt-3 flex flex-col gap-3 sm:flex-row">
               <input
                 className="h-12 flex-1 rounded-2xl border border-[var(--line)] bg-white px-4 outline-none"
@@ -565,7 +667,7 @@ export function InvestPanel({
               />
               <button
                 className="btn-secondary"
-                disabled={submittingAction !== null}
+                disabled={submittingAction !== null || !isOperator}
                 onClick={handleRepay}
               >
                 {submittingAction === "상환" ? "Repaying..." : "Repay"}
@@ -601,7 +703,7 @@ export function InvestPanel({
             </div>
             <button
               className="btn-secondary mt-3"
-              disabled={submittingAction !== null}
+              disabled={submittingAction !== null || !isOperator}
               onClick={handleServicingUpdate}
             >
               {submittingAction === "서비싱 업데이트" ? "Updating..." : "Update servicing"}
@@ -614,14 +716,14 @@ export function InvestPanel({
           <div className="rounded-[1.5rem] bg-[var(--surface-soft)] p-4">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold text-[var(--ink-900)]">Mark defaulted</p>
+                <p className="text-sm font-semibold text-[var(--ink-900)]">Mark delayed / defaulted</p>
                 <p className="mt-1 text-sm text-[var(--ink-500)]">
                   Allowed only after due date and only for Advanced / PartiallyRepaid pools.
                 </p>
               </div>
               <button
                 className="btn-secondary"
-                disabled={submittingAction !== null}
+                disabled={submittingAction !== null || !isOperator}
                 onClick={handleDefault}
               >
                 {submittingAction === "디폴트 전환" ? "Updating..." : "Mark defaulted"}
@@ -639,6 +741,11 @@ export function InvestPanel({
           </p>
         ) : null}
       </div>
+      <ParticipationModal
+        open={showParticipationModal}
+        onClose={() => setShowParticipationModal(false)}
+        onConfirm={confirmParticipation}
+      />
     </div>
   );
 }

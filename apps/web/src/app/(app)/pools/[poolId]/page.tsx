@@ -21,19 +21,19 @@ export default async function PoolDetailPage(
         <div className="soft-card p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="eyebrow">Pool detail</p>
+              <p className="eyebrow">Receivable Pool</p>
               <h1 className="mt-2 text-2xl font-semibold tracking-tight">
-                {pool.originator}
+                {pool.name}
               </h1>
               <p className="mt-2 text-sm text-[var(--ink-500)]">
-                SPV · {pool.spv}
+                {pool.category} · Operator {pool.operatorName}
               </p>
             </div>
             <StatusBadge status={pool.status} />
           </div>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             <div className="rounded-[1.4rem] bg-[var(--surface-soft)] p-4">
-              <p className="eyebrow">Invoice value</p>
+              <p className="eyebrow">Pool Face Value</p>
               <p className="mt-2 text-2xl font-semibold">
                 {formatCurrency(pool.invoiceValue)}
               </p>
@@ -45,7 +45,7 @@ export default async function PoolDetailPage(
               </p>
             </div>
             <div className="rounded-[1.4rem] bg-[var(--surface-soft)] p-4">
-              <p className="eyebrow">Gross yield</p>
+              <p className="eyebrow">Estimated Yield</p>
               <p className="mt-2 text-2xl font-semibold">
                 {formatPercent(pool.grossYieldPct)}
               </p>
@@ -54,7 +54,19 @@ export default async function PoolDetailPage(
               </p>
             </div>
             <div className="rounded-[1.4rem] bg-[var(--surface-soft)] p-4">
-              <p className="eyebrow">Risk grade</p>
+              <p className="eyebrow">Avg. Days to Maturity</p>
+              <p className="mt-2 text-2xl font-semibold">{pool.avgMaturityDays}d</p>
+            </div>
+            <div className="rounded-[1.4rem] bg-[var(--surface-soft)] p-4">
+              <p className="eyebrow">On-Time Repayment Rate</p>
+              <p className="mt-2 text-2xl font-semibold">{pool.onTimeRepaymentRate}%</p>
+            </div>
+            <div className="rounded-[1.4rem] bg-[var(--surface-soft)] p-4">
+              <p className="eyebrow">Late Exposure</p>
+              <p className="mt-2 text-2xl font-semibold">{pool.lateExposurePercent}%</p>
+            </div>
+            <div className="rounded-[1.4rem] bg-[var(--surface-soft)] p-4">
+              <p className="eyebrow">Risk Grade</p>
               <div className="mt-3">
                 <RiskBadge grade={pool.riskGrade} />
               </div>
@@ -65,15 +77,15 @@ export default async function PoolDetailPage(
           </p>
           <div className="mt-6 grid gap-3 rounded-[1.5rem] bg-[var(--surface-soft)] p-4 sm:grid-cols-2">
             <div>
-              <p className="eyebrow">Issuer</p>
+              <p className="eyebrow">Pool Operator</p>
               <p className="mt-2 text-sm font-semibold text-[var(--ink-700)]">
-                {pool.issuer}
+                {pool.operatorName}
               </p>
             </div>
             <div>
-              <p className="eyebrow">Debtor</p>
+              <p className="eyebrow">Key Payers</p>
               <p className="mt-2 text-sm font-semibold text-[var(--ink-700)]">
-                {pool.debtor}
+                {pool.keyDebtorsLabel}
               </p>
             </div>
             <div>
@@ -83,6 +95,12 @@ export default async function PoolDetailPage(
               </p>
             </div>
             <div>
+              <p className="eyebrow">Receivables in Pool</p>
+              <p className="mt-2 text-sm font-semibold text-[var(--ink-700)]">
+                {pool.receivablesCount}
+              </p>
+            </div>
+            <div className="sm:col-span-2">
               <p className="eyebrow">Legal asset hash</p>
               <p className="mt-2 break-all text-sm font-semibold text-[var(--ink-700)]">
                 {pool.legalAssetHash.slice(0, 18)}…
@@ -92,20 +110,80 @@ export default async function PoolDetailPage(
         </div>
 
         <div className="soft-card p-6">
-          <p className="eyebrow">Transaction history</p>
-          <div className="mt-5 rounded-[1.5rem] bg-[var(--surface-soft)] p-4">
-            <p className="text-sm font-semibold text-[var(--ink-700)]">
-              Most recent signature
+          <p className="eyebrow">Pool composition</p>
+          <div className="mt-5 grid gap-4 sm:grid-cols-3">
+            <div className="rounded-[1.35rem] bg-[var(--surface-soft)] p-4">
+              <p className="text-sm font-semibold text-[var(--ink-900)]">Industry mix</p>
+              <div className="mt-3 space-y-2 text-sm text-[var(--ink-500)]">
+                {pool.composition.industryMix.map((item) => (
+                  <div key={item.label} className="flex items-center justify-between">
+                    <span>{item.label}</span>
+                    <span>{item.percent}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-[1.35rem] bg-[var(--surface-soft)] p-4">
+              <p className="text-sm font-semibold text-[var(--ink-900)]">Payer concentration</p>
+              <div className="mt-3 space-y-2 text-sm text-[var(--ink-500)]">
+                {pool.composition.payerConcentration.map((item) => (
+                  <div key={item.label} className="flex items-center justify-between">
+                    <span>{item.label}</span>
+                    <span>{item.percent}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-[1.35rem] bg-[var(--surface-soft)] p-4">
+              <p className="text-sm font-semibold text-[var(--ink-900)]">Maturity buckets</p>
+              <div className="mt-3 space-y-2 text-sm text-[var(--ink-500)]">
+                {pool.composition.maturityBuckets.map((item) => (
+                  <div key={item.label} className="flex items-center justify-between">
+                    <span>{item.label}</span>
+                    <span>{item.percent}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="soft-card p-6">
+          <p className="eyebrow">Repayment timeline</p>
+          <div className="mt-5 space-y-3">
+            {pool.repaymentEvents.map((event) => (
+              <div key={`${event.date}-${event.txSignature}`} className="rounded-[1.35rem] bg-[var(--surface-soft)] p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-semibold text-[var(--ink-900)]">{event.type}</p>
+                    <p className="mt-1 text-sm text-[var(--ink-500)]">{event.date}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-semibold text-[var(--ink-900)]">{formatCurrency(event.amount)}</p>
+                    <p className="mt-1 text-xs text-[var(--ink-500)]">{event.txSignature}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="soft-card p-6">
+          <p className="eyebrow">Risk & Disclosures</p>
+          <div className="mt-5 space-y-3 text-sm leading-6 text-[var(--ink-500)]">
+            <p>
+              Estimated yield is not guaranteed. Repayments depend on underlying payer performance, servicing quality, and collection outcomes.
             </p>
-            <p className="mt-2 break-all text-sm text-[var(--ink-500)]">
-              {pool.txSig}
+            <p>
+              Late payments may reduce or delay claimable distributions, and participation may be restricted by eligibility, jurisdiction, and pool-specific rules.
             </p>
-            <p className="mt-4 text-xs uppercase tracking-[0.24em] text-[var(--ink-400)]">
-              Legal hash
-            </p>
-            <p className="mt-2 break-all text-sm text-[var(--ink-500)]">
-              {pool.legalAssetHash}
-            </p>
+            <div className="rounded-[1.35rem] bg-[var(--surface-soft)] p-4">
+              {pool.disclosures.map((item) => (
+                <p key={item} className="text-sm text-[var(--ink-600)]">
+                  • {item}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
       </section>
