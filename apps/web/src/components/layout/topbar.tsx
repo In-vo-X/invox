@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Bell, Search } from "lucide-react";
@@ -80,7 +80,7 @@ export function Topbar() {
     router.push(`/pools/${poolId}`);
   }
 
-  function handleSearchSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSearchSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (searchResults[0]) {
