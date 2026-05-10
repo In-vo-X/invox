@@ -311,7 +311,7 @@ export default function PortfolioPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-[var(--ink-500)]">
-                    Active positions
+                    Active pools
                   </span>
                   <span className="text-base font-semibold text-[var(--ink-900)]">
                     {
@@ -328,7 +328,9 @@ export default function PortfolioPage() {
           </div>
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-[1.5rem] border border-[var(--line)]">
+        <div className="mt-6">
+          <p className="eyebrow">History</p>
+          <div className="mt-3 overflow-hidden rounded-[1.5rem] border border-[var(--line)]">
           <table className="w-full border-collapse text-left text-sm">
             <thead className="bg-[var(--surface-soft)] text-[var(--ink-500)]">
               <tr>
@@ -374,6 +376,7 @@ export default function PortfolioPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </section>
     </div>
