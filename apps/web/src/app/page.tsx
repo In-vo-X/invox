@@ -184,20 +184,8 @@ export default function Home() {
                 </div>
                 <div className="mt-5 flex items-center justify-between gap-3">
                   <h3 className="text-xl font-semibold">{title}</h3>
-                  <span className="rounded-full bg-white/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--ink-500)] shadow-[0_8px_18px_rgba(126,136,170,0.08)]">
-                    Live flow
-                  </span>
                 </div>
                 <p className="mt-3 text-sm leading-7 text-[var(--ink-500)]">{copy}</p>
-                <div className="mt-5 h-16 rounded-[1.2rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.86),rgba(242,246,255,0.76))] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
-                  <div className="flex h-full items-end gap-2">
-                    <span className="h-4 w-4 rounded-full bg-[rgba(114,135,255,0.26)]" />
-                    <span className="h-6 w-4 rounded-full bg-[rgba(114,135,255,0.36)]" />
-                    <span className="h-8 w-4 rounded-full bg-[rgba(94,215,198,0.34)]" />
-                    <span className="h-10 w-4 rounded-full bg-[rgba(94,215,198,0.46)]" />
-                    <span className="ml-auto h-2.5 w-14 rounded-full bg-[linear-gradient(135deg,#5f72dd,#7287ff)]" />
-                  </div>
-                </div>
               </div>
             ))}
           </div>
@@ -255,9 +243,6 @@ export default function Home() {
                     </div>
                     <p className="mt-4 text-base font-semibold text-[var(--ink-900)]">{title}</p>
                     <p className="mt-2 text-sm leading-6 text-[var(--ink-500)]">{copy}</p>
-                    <div className="mt-4 h-1.5 rounded-full bg-white/80">
-                      <div className="h-full w-2/3 rounded-full bg-[linear-gradient(135deg,#5f72dd,#7287ff)]" />
-                    </div>
                   </div>
                 ))}
               </div>
