@@ -287,6 +287,7 @@ export function Topbar() {
                 </p>
                 <div className="mt-4 rounded-[1.35rem] bg-[var(--surface-soft)] p-4 text-sm leading-6 text-[var(--ink-600)]">
                   <p>Account mode: {connected ? "Wallet enabled" : "Demo session only"}</p>
+                  <p className="mt-2">Role: {session?.role === "institution" ? "Institution" : "Investor"}</p>
                   <p className="mt-2">You can explore the platform after login. Real on-chain actions still require a Solana wallet signature.</p>
                 </div>
                 {!connected ? (

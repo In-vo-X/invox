@@ -13,6 +13,7 @@ export function DemoConnectModal({
 }) {
   const { connectWithEmail, connectWithProvider } = useDemoSession();
   const [email, setEmail] = useState("demo@invox.ai");
+  const [role, setRole] = useState<"investor" | "institution">("investor");
 
   if (!open) {
     return null;
@@ -21,7 +22,7 @@ export function DemoConnectModal({
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!email.trim()) return;
-    connectWithEmail(email.trim());
+    connectWithEmail(email.trim(), role);
     onClose();
   }
 
@@ -40,9 +41,36 @@ export function DemoConnectModal({
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           <button
             type="button"
+            className={`rounded-[1.35rem] border px-4 py-4 text-left transition ${
+              role === "investor"
+                ? "border-[rgba(114,135,255,0.4)] bg-[linear-gradient(135deg,rgba(114,135,255,0.16),rgba(94,215,198,0.12))] shadow-[0_16px_30px_rgba(126,136,170,0.12)]"
+                : "border-[var(--line)] bg-white/70"
+            }`}
+            onClick={() => setRole("investor")}
+          >
+            <span className="text-base font-semibold">투자자 로그인</span>
+            <span className="mt-1 block text-sm text-[var(--ink-500)]">상품 참여와 투자 흐름 확인</span>
+          </button>
+          <button
+            type="button"
+            className={`rounded-[1.35rem] border px-4 py-4 text-left transition ${
+              role === "institution"
+                ? "border-[rgba(114,135,255,0.4)] bg-[linear-gradient(135deg,rgba(114,135,255,0.16),rgba(94,215,198,0.12))] shadow-[0_16px_30px_rgba(126,136,170,0.12)]"
+                : "border-[var(--line)] bg-white/70"
+            }`}
+            onClick={() => setRole("institution")}
+          >
+            <span className="text-base font-semibold">기관 로그인</span>
+            <span className="mt-1 block text-sm text-[var(--ink-500)]">운영과 모니터링 관점 체험</span>
+          </button>
+        </div>
+
+        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          <button
+            type="button"
             className="btn-secondary h-auto flex-col items-start rounded-[1.35rem] px-4 py-4 text-left"
             onClick={() => {
-              connectWithProvider("google");
+              connectWithProvider("google", role);
               onClose();
             }}
           >
@@ -53,7 +81,7 @@ export function DemoConnectModal({
             type="button"
             className="btn-secondary h-auto flex-col items-start rounded-[1.35rem] px-4 py-4 text-left"
             onClick={() => {
-              connectWithProvider("apple");
+              connectWithProvider("apple", role);
               onClose();
             }}
           >
@@ -81,8 +109,15 @@ export function DemoConnectModal({
           </button>
         </form>
 
-        <button className="btn-secondary mt-4 w-full" type="button">
-          Sign up
+        <button
+          className="btn-secondary mt-4 w-full"
+          type="button"
+          onClick={() => {
+            connectWithEmail(email.trim() || "demo@invox.ai", role);
+            onClose();
+          }}
+        >
+          가입하기
         </button>
 
         <div className="mt-4 flex justify-end">

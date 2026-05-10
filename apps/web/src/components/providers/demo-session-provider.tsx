@@ -8,14 +8,15 @@ type DemoSession = {
   id: string;
   method: DemoAuthMethod;
   label: string;
+  role: "investor" | "institution";
   region: string;
   createdAt: number;
 };
 
 type DemoSessionContextValue = {
   session: DemoSession | null;
-  connectWithEmail: (email: string) => void;
-  connectWithProvider: (provider: DemoAuthMethod) => void;
+  connectWithEmail: (email: string, role: "investor" | "institution") => void;
+  connectWithProvider: (provider: DemoAuthMethod, role: "investor" | "institution") => void;
   disconnect: () => void;
 };
 
@@ -23,11 +24,16 @@ const STORAGE_KEY = "invox-demo-session";
 
 const DemoSessionContext = createContext<DemoSessionContextValue | null>(null);
 
-function createSession(method: DemoAuthMethod, label: string): DemoSession {
+function createSession(
+  method: DemoAuthMethod,
+  label: string,
+  role: "investor" | "institution",
+): DemoSession {
   return {
     id: crypto.randomUUID(),
     method,
     label,
+    role,
     region: "KR",
     createdAt: Date.now(),
   };
@@ -54,16 +60,16 @@ export function DemoSessionProvider({ children }: PropsWithChildren) {
   const value = useMemo<DemoSessionContextValue>(
     () => ({
       session,
-      connectWithEmail(email: string) {
-        saveSession(createSession("email", email));
+      connectWithEmail(email: string, role: "investor" | "institution") {
+        saveSession(createSession("email", email, role));
       },
-      connectWithProvider(provider: DemoAuthMethod) {
+      connectWithProvider(provider: DemoAuthMethod, role: "investor" | "institution") {
         const labelMap: Record<DemoAuthMethod, string> = {
           email: "demo@invox.ai",
           google: "Google account",
           apple: "Apple ID",
         };
-        saveSession(createSession(provider, labelMap[provider]));
+        saveSession(createSession(provider, labelMap[provider], role));
       },
       disconnect() {
         setSession(null);

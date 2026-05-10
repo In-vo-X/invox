@@ -1,14 +1,22 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useDemoSession } from "@/components/providers/demo-session-provider";
 import { LayoutDashboard, Sparkles, Wallet } from "lucide-react";
 
-const items = [
-  { href: "/marketplace", label: "Pools", icon: LayoutDashboard },
-  { href: "/portfolio", label: "Portfolio", icon: Wallet },
-  { href: "/ai-assist", label: "AI Assist", icon: Sparkles },
-];
-
 export function Sidebar() {
+  const { session } = useDemoSession();
+
+  const items = [
+    { href: "/marketplace", label: "Pools", icon: LayoutDashboard },
+    { href: "/portfolio", label: "Portfolio", icon: Wallet },
+    { href: "/ai-assist", label: "AI Assist", icon: Sparkles },
+    ...(session?.role === "institution"
+      ? [{ href: "/admin", label: "관리자", icon: Sparkles }]
+      : []),
+  ];
+
   return (
     <aside className="flex h-full flex-col rounded-[2rem] border border-white/80 bg-white/88 p-5 shadow-[0_20px_55px_rgba(127,139,176,0.12)] backdrop-blur-xl">
       <Link href="/" className="block rounded-[1.4rem] bg-[var(--surface-soft)] px-4 py-3 transition hover:bg-white">
