@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { BrandWordmark } from "@/components/brand-wordmark";
 import { LayoutDashboard, Sparkles, Wallet } from "lucide-react";
 
 const items = [
@@ -11,21 +11,14 @@ const items = [
 export function Sidebar() {
   return (
     <aside className="flex h-full flex-col rounded-[2rem] border border-white/80 bg-white/88 p-5 shadow-[0_20px_55px_rgba(127,139,176,0.12)] backdrop-blur-xl">
-      <div className="rounded-[1.4rem] bg-[var(--surface-soft)] px-4 py-3">
+      <Link href="/" className="block rounded-[1.4rem] bg-[var(--surface-soft)] px-4 py-3 transition hover:bg-white">
         <div>
-          <Image
-            src="/branding/logo-wordmark.jpg"
-            alt="InvoX logo"
-            width={1054}
-            height={332}
-            className="h-9 w-auto object-contain"
-            priority
-          />
+          <BrandWordmark compact />
           <p className="text-xs text-[var(--ink-500)]">
-            Receivables finance protocol
+            Invoice investment protocol
           </p>
         </div>
-      </div>
+      </Link>
 
       <nav className="mt-8 space-y-2">
         {items.map(({ href, label, icon: Icon }) => (
