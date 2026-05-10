@@ -58,11 +58,8 @@ export default function Home() {
               <ShieldCheck className="h-4 w-4 text-[var(--brand-500)]" />
               Faster settlement · lower fees · transparent on-chain tracking
             </div>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,rgba(114,135,255,0.14),rgba(94,215,198,0.12))] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand-700)]">
-              Institutional-grade pool participation
-            </div>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--ink-600)]">
-              Participate in verified short-duration invoice investment pools, track repayments in real time, and claim distributions with clear on-chain records. InvoX organizes verified invoices into managed pools so approved participants can access, monitor, and understand real-world cashflow more easily.
+              Participate in verified short-duration invoice investment pools, monitor repayment status through clear on-chain records, and claim distributions with more transparency. InvoX organizes verified invoices into managed pools so users can understand invoice cashflow more clearly.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link className="btn-primary" href="/marketplace">
@@ -140,7 +137,7 @@ export default function Home() {
               A clearer operating layer for invoice investing.
             </h2>
             <p className="mt-4 text-base leading-8 text-[var(--ink-600)]">
-              InvoX is not trying to replace the real-world operator that sources, verifies, and services invoices. It gives that workflow a clearer digital surface: verified pool data, transparent repayment events, and on-chain claim records that participants can actually follow.
+              InvoX works alongside verified and experienced invoice investment operators. By pairing their real-world sourcing and servicing expertise with transparent pool data, on-chain repayment records, and claim visibility, the platform makes invoice investing easier to monitor and understand.
             </p>
           </div>
 
