@@ -10,12 +10,20 @@ datasource db {
 model InvoiceMetadata {
   id               String   @id @default(cuid())
   poolId           String?  @unique
+  poolName         String?
+  category         String?
+  operatorName     String?
+  receivablesCount Int?
   issuerName       String
   issuerWallet     String
   debtorName       String
   invoiceNumber    String
   invoiceFaceValue Float
   advanceAmount    Float
+  estimatedYieldPct Float?
+  lateExposurePct   Float?
+  onTimeRepaymentPct Float?
+  avgDurationDays    Int?
   dueDate          DateTime
   paymentTerms     String
   description      String
