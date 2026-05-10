@@ -39,10 +39,10 @@ export default function Home() {
         <header className="border-b border-[var(--line)] px-6 py-5 sm:px-8">
           <div>
             <Image
-              src="/branding/logo-icon.jpg"
+              src="/branding/logo-wordmark.jpg"
               alt="InvoX logo"
-              width={36722}
-              height={36722}
+              width={1054}
+              height={332}
               className="h-14 w-auto object-contain sm:h-16"
               priority
             />
