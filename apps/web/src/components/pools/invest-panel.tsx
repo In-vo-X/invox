@@ -216,6 +216,7 @@ export function InvestPanel({
   const parsedInvestAmount = useMemo(() => parseUsdcAmount(amount), [amount]);
   const parsedRepayAmount = useMemo(() => parseUsdcAmount(repayAmount), [repayAmount]);
   const isFundingOpen = (chainSnapshot?.statusLabel ?? status) === "Funding";
+  const hasRealWallet = connected && !!publicKey && !!anchorWallet;
   const isOperator =
     !!publicKey &&
     !!chainSnapshot &&
@@ -308,17 +309,17 @@ export function InvestPanel({
   }, [publicKey, poolId]);
 
   useEffect(() => {
-    if (!connected || !publicKey) {
+    if (!hasRealWallet) {
       setEligibilityStatus(session ? "approved" : "not_connected");
       return;
     }
 
     const saved = window.localStorage.getItem(`invox-eligibility-${publicKey.toBase58()}`);
     setEligibilityStatus((saved as typeof eligibilityStatus) || "kyc_required");
-  }, [connected, publicKey, session]);
+  }, [hasRealWallet, publicKey, session]);
 
   async function runAction(label: string, callback: (snapshot: ChainSnapshot) => Promise<string>) {
-    if (!connected || !anchorWallet || !publicKey) {
+    if (!hasRealWallet) {
       setFeedback(
         session
           ? "A real Solana wallet is still required to sign on-chain actions. Demo access lets you explore the product without installing a wallet first."
@@ -582,18 +583,19 @@ export function InvestPanel({
           </div>
           <div className="mt-3 grid gap-2 rounded-[1.25rem] bg-[var(--surface-soft)] p-3 text-xs text-[var(--ink-500)] sm:grid-cols-3">
             <span>
-              Wallet status: {connected ? "Connected" : session ? "Demo session only" : "Connect wallet"}
+              Wallet status: {hasRealWallet ? "Connected" : session ? "Demo session only" : "Connect wallet"}
             </span>
             <span>Eligibility: {eligibilityStatus.replaceAll("_", " ")}</span>
             <span>Estimated pool share: {advanceAmount ? `${((Number(amount || 0) / advanceAmount) * 100 || 0).toFixed(1)}%` : "0%"}</span>
           </div>
-          <button className="btn-primary mt-4 w-full" disabled={submittingAction !== null}>
+          <button
+            className={`mt-4 w-full ${!hasRealWallet ? "inline-flex items-center justify-center rounded-full bg-[rgba(163,173,194,0.42)] px-5 py-3 font-semibold text-[rgba(86,98,127,1)] cursor-not-allowed" : "btn-primary"}`}
+            disabled={submittingAction !== null || !hasRealWallet}
+          >
             {submittingAction === "투자"
               ? "Submitting transaction..."
-              : eligibilityStatus === "not_connected"
-                ? session
-                  ? "Enable Solana Wallet"
-                  : "Connect Wallet"
+                : !hasRealWallet
+                  ? "지갑을 연결하세요"
                 : eligibilityStatus === "kyc_required"
                   ? "Complete KYC"
                   : eligibilityStatus === "pending_review"
