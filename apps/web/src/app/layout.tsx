@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import { SwipeHomeProvider } from "@/components/providers/swipe-home-provider";
+import { DemoSessionProvider } from "@/components/providers/demo-session-provider";
 import { WalletProvider } from "@/components/providers/wallet-provider";
 import "./globals.css";
 
@@ -23,9 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${manrope.variable} h-full antialiased`}>
       <body className="min-h-full bg-[var(--app-bg)] text-[var(--ink-900)]">
-        <WalletProvider>
-          <SwipeHomeProvider>{children}</SwipeHomeProvider>
-        </WalletProvider>
+        <DemoSessionProvider>
+          <WalletProvider>
+            <SwipeHomeProvider>{children}</SwipeHomeProvider>
+          </WalletProvider>
+        </DemoSessionProvider>
       </body>
     </html>
   );

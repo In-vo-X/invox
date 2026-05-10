@@ -4,8 +4,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Bell, Search } from "lucide-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { WalletMultiButton, WalletModalButton } from "@solana/wallet-adapter-react-ui";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { alertNotifications, demoPools } from "@/lib/mock-data";
+import { DemoConnectModal } from "@/components/wallet/demo-connect-modal";
+import { useDemoSession } from "@/components/providers/demo-session-provider";
 
 export function Topbar() {
   const [query, setQuery] = useState("");
@@ -14,9 +17,12 @@ export function Topbar() {
     string | null
   >(null);
   const [mounted, setMounted] = useState(false);
+  const [showDemoConnect, setShowDemoConnect] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchRef = useRef<HTMLDivElement>(null);
+  const { connected } = useWallet();
+  const { session, disconnect } = useDemoSession();
   const showAlerts = alertsPathname === pathname;
   const showSearchResults = searchResultsPathname === pathname;
 
@@ -263,14 +269,43 @@ export function Topbar() {
             </div>
           </div>
         ) : null}
-        {mounted ? (
-          <WalletMultiButton className="!h-12 !rounded-full !bg-[linear-gradient(135deg,#5f72dd,#7287ff)] !px-5 !font-semibold !shadow-[0_18px_32px_rgba(114,135,255,0.24)]" />
+        {session && !connected ? (
+          <div className="flex items-center gap-3">
+            <div className="rounded-full border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-3 text-sm text-[var(--ink-600)]">
+              Demo session · {session.label}
+            </div>
+            {mounted ? (
+              <WalletModalButton className="!h-12 !rounded-full !bg-[linear-gradient(135deg,#5f72dd,#7287ff)] !px-5 !font-semibold !shadow-[0_18px_32px_rgba(114,135,255,0.24)]">
+                Enable Wallet
+              </WalletModalButton>
+            ) : (
+              <button className="!h-12 !rounded-full !bg-[linear-gradient(135deg,#5f72dd,#7287ff)] !px-5 !font-semibold !shadow-[0_18px_32px_rgba(114,135,255,0.24)] text-white">
+                Enable Wallet
+              </button>
+            )}
+            <button className="text-sm font-medium text-[var(--ink-500)] transition hover:text-[var(--ink-900)]" onClick={disconnect} type="button">
+              Reset
+            </button>
+          </div>
+        ) : mounted ? (
+          connected ? (
+            <WalletMultiButton className="!h-12 !rounded-full !bg-[linear-gradient(135deg,#5f72dd,#7287ff)] !px-5 !font-semibold !shadow-[0_18px_32px_rgba(114,135,255,0.24)]" />
+          ) : (
+            <button
+              className="!h-12 !rounded-full !bg-[linear-gradient(135deg,#5f72dd,#7287ff)] !px-5 !font-semibold !shadow-[0_18px_32px_rgba(114,135,255,0.24)] text-white"
+              onClick={() => setShowDemoConnect(true)}
+              type="button"
+            >
+              Continue
+            </button>
+          )
         ) : (
           <button className="!h-12 !rounded-full !bg-[linear-gradient(135deg,#5f72dd,#7287ff)] !px-5 !font-semibold !shadow-[0_18px_32px_rgba(114,135,255,0.24)] text-white">
-            Select Wallet
+            Continue
           </button>
         )}
       </div>
+      <DemoConnectModal open={showDemoConnect} onClose={() => setShowDemoConnect(false)} />
     </div>
   );
 }
