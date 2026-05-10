@@ -6,7 +6,7 @@ import { formatCurrency, formatPercent } from "@/lib/format";
 
 export default function MarketplaceMorePage() {
   const activePools = demoPools.filter(
-    (pool) => !["Repaid", "Closed", "Cancelled", "Defaulted"].includes(pool.status),
+    (pool) => pool.status === "Funding" && pool.fundedPct < 100,
   );
 
   const rankedPools = [...activePools]
