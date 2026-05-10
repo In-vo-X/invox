@@ -13,7 +13,7 @@ export default function MyPage() {
     : "Not connected";
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1fr_0.88fr]">
+    <div className="grid gap-6">
       <section className="soft-card p-6">
         <p className="eyebrow">My Page</p>
         <h1 className="mt-2 text-2xl font-semibold tracking-tight">Account and wallet status</h1>
@@ -39,20 +39,20 @@ export default function MyPage() {
             </p>
           </div>
           <div className="rounded-[1.4rem] bg-[var(--surface-soft)] p-4">
-            <p className="eyebrow">Connected wallet</p>
-            <p className="mt-2 text-lg font-semibold text-[var(--ink-900)]">
-              {connected ? wallet?.adapter.name ?? "Unknown wallet" : "None"}
-            </p>
-          </div>
-          <div className="rounded-[1.4rem] bg-[var(--surface-soft)] p-4 sm:col-span-2">
             <p className="eyebrow">Wallet address</p>
             <p className="mt-2 text-lg font-semibold text-[var(--ink-900)]">
               {shortWalletAddress}
             </p>
           </div>
+          <div className="rounded-[1.4rem] bg-[var(--surface-soft)] p-4 sm:col-span-2">
+            <p className="eyebrow">Wallet provider</p>
+            <p className="mt-2 text-lg font-semibold text-[var(--ink-900)]">
+              {connected ? wallet?.adapter.name ?? "Unknown wallet" : "Not connected"}
+            </p>
+          </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="mt-8 flex justify-end gap-3">
           {connected ? (
             <WalletMultiButton className="!h-12 !justify-center !rounded-full !bg-[linear-gradient(135deg,#5f72dd,#7287ff)] !px-5 !font-semibold !shadow-[0_18px_32px_rgba(114,135,255,0.24)]" />
           ) : (
@@ -71,14 +71,6 @@ export default function MyPage() {
             </button>
           ) : null}
         </div>
-      </section>
-
-      <section className="stat-card stat-card--lavender">
-        <p className="eyebrow">How this account works</p>
-        <h2 className="mt-8 text-3xl font-semibold">Explore first, sign when needed</h2>
-        <p className="mt-4 text-sm leading-7 text-[var(--ink-500)]">
-          You can browse pools, AI guidance, and portfolio surfaces after login. When it is time to invest, claim, or run operator actions, a Solana wallet is still required for on-chain signatures.
-        </p>
       </section>
     </div>
   );
