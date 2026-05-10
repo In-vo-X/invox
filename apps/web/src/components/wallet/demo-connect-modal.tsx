@@ -27,8 +27,8 @@ export function DemoConnectModal({
   }
 
   return (
-    <div className="fixed inset-0 z-[140] flex items-center justify-center overflow-y-auto bg-[rgba(17,24,39,0.36)] px-6 py-8">
-      <div className="glass-panel my-auto max-h-[calc(100vh-4rem)] w-full max-w-lg overflow-y-auto p-6">
+    <div className="fixed inset-0 z-[140] flex items-start justify-center overflow-y-auto bg-[rgba(17,24,39,0.36)] px-6 py-14">
+      <div className="glass-panel mt-4 w-full max-w-lg p-6">
         <div className="flex items-center gap-2 text-[var(--brand-700)]">
           <Sparkles className="h-4 w-4" />
           <p className="eyebrow text-[var(--brand-700)]">Login</p>
