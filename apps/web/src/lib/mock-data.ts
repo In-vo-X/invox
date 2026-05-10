@@ -836,9 +836,9 @@ export const portfolioRows = [
   {
     pool: "Cebu SaaS Agency",
     invested: 480,
-    claimable: 499,
+    claimable: 50,
     claimed: 0,
-    status: "Repaid" as PoolStatus,
+    status: "PartiallyRepaid" as PoolStatus,
   },
 ];
 

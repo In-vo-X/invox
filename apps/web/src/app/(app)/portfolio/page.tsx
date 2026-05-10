@@ -114,6 +114,16 @@ export default function PortfolioPage() {
         ) / totalInvested
       : 0;
 
+  const getRepaymentStatusLabel = (position: (typeof positions)[number]) => {
+    const repaidPct = position.pool.repaidAmount
+      ? Math.min(100, Math.round((position.pool.repaidAmount / position.pool.advanceAmount) * 100))
+      : 0;
+
+    if (repaidPct >= 100) return "상환완료";
+    if (repaidPct > 0) return "진행중";
+    return "대기중";
+  };
+
   return (
     <div className="space-y-6">
       <section className="grid gap-4 xl:grid-cols-3">
@@ -173,11 +183,9 @@ export default function PortfolioPage() {
             </p>
           </div>
           <div className="flex flex-wrap gap-3 text-sm text-[var(--ink-500)]">
+            <span className="metric-chip">보유 중인 풀 {positions.length}개</span>
             <span className="metric-chip">
-              {positions.length} live positions
-            </span>
-            <span className="metric-chip">
-              {formatCurrency(totalClaimed)} realized
+              실현 금액 {formatCurrency(totalClaimed)}
             </span>
           </div>
         </div>
@@ -240,7 +248,7 @@ export default function PortfolioPage() {
                 <div className="mt-5 rounded-[1.35rem] bg-[var(--surface-soft)] p-4">
                   <div className="flex items-center justify-between text-sm font-medium text-[var(--ink-600)]">
                     <span>Repayment progress</span>
-                    <span>{position.pool.repaidAmount ? Math.min(100, Math.round((position.pool.repaidAmount / position.pool.advanceAmount) * 100)) : 0}% repaid</span>
+                    <span>{position.pool.repaidAmount ? Math.min(100, Math.round((position.pool.repaidAmount / position.pool.advanceAmount) * 100)) : 0}% · {getRepaymentStatusLabel(position)}</span>
                   </div>
                   <div className="mt-3 h-3 rounded-full bg-white">
                     <div
@@ -251,9 +259,9 @@ export default function PortfolioPage() {
                   <div className="mt-4 grid gap-2 text-xs uppercase tracking-[0.18em] text-[var(--ink-400)] sm:grid-cols-3">
                     <span>Invested</span>
                     <span>{position.status === "Advanced" || position.status === "PartiallyRepaid" || position.status === "Repaid" ? "Advanced to originator" : "Funding"}</span>
-                    <span>{position.claimable > 0 ? "Claimable" : "Tracking"}</span>
+                    <span>{position.claimable > 0 ? "청구 가능" : "추적 중"}</span>
                   </div>
-                  <p className="mt-3 text-sm text-[var(--ink-500)]">Expected next distribution: {position.pool.nextDistributionLabel}</p>
+                  <p className="mt-3 text-sm text-[var(--ink-500)]">다음 지급 예정: {position.claimable > 0 ? "지금 신청 가능" : position.pool.nextDistributionLabel}</p>
                 </div>
               </Link>
             ))}
