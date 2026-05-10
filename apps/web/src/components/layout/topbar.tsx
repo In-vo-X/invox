@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Bell, Search, UserRound } from "lucide-react";
+import { Bell, Search, UserRound, WalletCards } from "lucide-react";
 import { WalletMultiButton, WalletModalButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { alertNotifications, demoPools } from "@/lib/mock-data";
@@ -270,6 +270,18 @@ export function Topbar() {
             </div>
           </div>
         ) : null}
+        {mounted ? (
+          <WalletModalButton className="pill relative h-12 w-12 justify-center text-[var(--ink-700)]">
+            <WalletCards className="h-5 w-5" />
+            {connected ? (
+              <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-[var(--mint-600)] shadow-[0_0_0_3px_rgba(255,255,255,0.75)]" />
+            ) : null}
+          </WalletModalButton>
+        ) : (
+          <button className="pill relative h-12 w-12 justify-center text-[var(--ink-700)]" type="button">
+            <WalletCards className="h-5 w-5" />
+          </button>
+        )}
         {session || connected ? (
           <div className="relative">
             <button
