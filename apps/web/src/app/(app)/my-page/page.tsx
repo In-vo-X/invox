@@ -7,6 +7,10 @@ import { useDemoSession } from "@/components/providers/demo-session-provider";
 export default function MyPage() {
   const { connected, wallet } = useWallet();
   const { session, disconnect } = useDemoSession();
+  const walletAddress = connected ? wallet?.adapter.publicKey?.toBase58?.() ?? null : null;
+  const shortWalletAddress = walletAddress
+    ? `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`
+    : "Not connected";
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1fr_0.88fr]">
@@ -14,7 +18,7 @@ export default function MyPage() {
         <p className="eyebrow">My Page</p>
         <h1 className="mt-2 text-2xl font-semibold tracking-tight">Account and wallet status</h1>
         <p className="mt-3 text-sm leading-6 text-[var(--ink-500)]">
-          Use this page to review your login role, wallet status, and whether you are in demo mode or real on-chain signing mode.
+          Use this page to review your account role, wallet connection, and the signing setup used for on-chain actions.
         </p>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -29,15 +33,21 @@ export default function MyPage() {
             </p>
           </div>
           <div className="rounded-[1.4rem] bg-[var(--surface-soft)] p-4">
-            <p className="eyebrow">Wallet mode</p>
+            <p className="eyebrow">Connection status</p>
             <p className="mt-2 text-lg font-semibold text-[var(--ink-900)]">
-              {connected ? "Wallet enabled" : session ? "Demo session only" : "Not connected"}
+              {connected ? "Connected" : "Not connected"}
             </p>
           </div>
           <div className="rounded-[1.4rem] bg-[var(--surface-soft)] p-4">
             <p className="eyebrow">Connected wallet</p>
             <p className="mt-2 text-lg font-semibold text-[var(--ink-900)]">
               {connected ? wallet?.adapter.name ?? "Unknown wallet" : "None"}
+            </p>
+          </div>
+          <div className="rounded-[1.4rem] bg-[var(--surface-soft)] p-4 sm:col-span-2">
+            <p className="eyebrow">Wallet address</p>
+            <p className="mt-2 text-lg font-semibold text-[var(--ink-900)]">
+              {shortWalletAddress}
             </p>
           </div>
         </div>
@@ -65,9 +75,9 @@ export default function MyPage() {
 
       <section className="stat-card stat-card--lavender">
         <p className="eyebrow">How this account works</p>
-        <h2 className="mt-8 text-3xl font-semibold">Demo session first, wallet signing when needed</h2>
+        <h2 className="mt-8 text-3xl font-semibold">Explore first, sign when needed</h2>
         <p className="mt-4 text-sm leading-7 text-[var(--ink-500)]">
-          You can browse pools, AI guidance, and portfolio surfaces after login. When it is time to invest, claim, or run operator actions, a real Solana wallet is still required for on-chain signatures.
+          You can browse pools, AI guidance, and portfolio surfaces after login. When it is time to invest, claim, or run operator actions, a Solana wallet is still required for on-chain signatures.
         </p>
       </section>
     </div>
