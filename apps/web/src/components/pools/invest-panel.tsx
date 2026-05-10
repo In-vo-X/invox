@@ -15,6 +15,7 @@ import { EligibilityGate } from "@/components/compliance/eligibility-gate";
 import { KycRequiredCard } from "@/components/compliance/kyc-required-card";
 import { ParticipationModal } from "@/components/compliance/participation-modal";
 import { RiskDisclosure } from "@/components/compliance/risk-disclosure";
+import { useDemoSession } from "@/components/providers/demo-session-provider";
 import { FLOWPAY_PROGRAM_ID, USDC_DECIMALS } from "@/lib/constants";
 import { createFlowPayProgram } from "@/lib/flowpayClient";
 import {
@@ -194,6 +195,7 @@ export function InvestPanel({
   const { connection } = useConnection();
   const anchorWallet = useAnchorWallet();
   const { publicKey, connected, sendTransaction } = useWallet();
+  const { session } = useDemoSession();
 
   const [amount, setAmount] = useState("500");
   const [repayAmount, setRepayAmount] = useState("500");
@@ -307,17 +309,21 @@ export function InvestPanel({
 
   useEffect(() => {
     if (!connected || !publicKey) {
-      setEligibilityStatus("not_connected");
+      setEligibilityStatus(session ? "approved" : "not_connected");
       return;
     }
 
     const saved = window.localStorage.getItem(`invox-eligibility-${publicKey.toBase58()}`);
     setEligibilityStatus((saved as typeof eligibilityStatus) || "kyc_required");
-  }, [connected, publicKey]);
+  }, [connected, publicKey, session]);
 
   async function runAction(label: string, callback: (snapshot: ChainSnapshot) => Promise<string>) {
     if (!connected || !anchorWallet || !publicKey) {
-      setFeedback("Connect a wallet before you run this action.");
+      setFeedback(
+        session
+          ? "A real Solana wallet is still required to sign on-chain actions. Demo access lets you explore the product without installing a wallet first."
+          : "Connect a wallet before you run this action.",
+      );
       return;
     }
 
@@ -575,7 +581,9 @@ export function InvestPanel({
             <span>${advanceAmount.toLocaleString()} USDC</span>
           </div>
           <div className="mt-3 grid gap-2 rounded-[1.25rem] bg-[var(--surface-soft)] p-3 text-xs text-[var(--ink-500)] sm:grid-cols-3">
-            <span>Wallet status: {connected ? "Connected" : "Connect wallet"}</span>
+            <span>
+              Wallet status: {connected ? "Connected" : session ? "Demo session only" : "Connect wallet"}
+            </span>
             <span>Eligibility: {eligibilityStatus.replaceAll("_", " ")}</span>
             <span>Estimated pool share: {advanceAmount ? `${((Number(amount || 0) / advanceAmount) * 100 || 0).toFixed(1)}%` : "0%"}</span>
           </div>
@@ -583,7 +591,9 @@ export function InvestPanel({
             {submittingAction === "투자"
               ? "Submitting transaction..."
               : eligibilityStatus === "not_connected"
-                ? "Connect Wallet"
+                ? session
+                  ? "Enable Solana Wallet"
+                  : "Connect Wallet"
                 : eligibilityStatus === "kyc_required"
                   ? "Complete KYC"
                   : eligibilityStatus === "pending_review"
