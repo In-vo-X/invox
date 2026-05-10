@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "prisma generate && next build",
-    "start": "next start",
+    "dev": "DATABASE_URL=${DATABASE_URL:-file:./prisma/dev.db} next dev",
+    "build": "DATABASE_URL=${DATABASE_URL:-file:./prisma/dev.db} prisma db push && DATABASE_URL=${DATABASE_URL:-file:./prisma/dev.db} prisma generate && DATABASE_URL=${DATABASE_URL:-file:./prisma/dev.db} next build",
+    "start": "DATABASE_URL=${DATABASE_URL:-file:./prisma/dev.db} next start",
     "lint": "eslint",
-    "prisma:generate": "prisma generate",
-    "prisma:push": "prisma db push",
-    "prisma:seed": "tsx prisma/seed.ts"
+    "prisma:generate": "DATABASE_URL=${DATABASE_URL:-file:./prisma/dev.db} prisma generate",
+    "prisma:push": "DATABASE_URL=${DATABASE_URL:-file:./prisma/dev.db} prisma db push",
+    "prisma:seed": "DATABASE_URL=${DATABASE_URL:-file:./prisma/dev.db} tsx prisma/seed.ts"
   },
   "dependencies": {
     "@anchor-lang/core": "^1.0.2",
