@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useDemoSession } from "@/components/providers/demo-session-provider";
-import { LayoutDashboard, Sparkles, Wallet } from "lucide-react";
+import { LayoutDashboard, Sparkles, UserRound, Wallet } from "lucide-react";
 
 export function Sidebar() {
   const { session } = useDemoSession();
@@ -12,6 +12,7 @@ export function Sidebar() {
     { href: "/marketplace", label: "Pools", icon: LayoutDashboard },
     { href: "/portfolio", label: "Portfolio", icon: Wallet },
     { href: "/ai-assist", label: "AI Assist", icon: Sparkles },
+    ...(session ? [{ href: "/my-page", label: "마이페이지", icon: UserRound }] : []),
     ...(session?.role === "institution"
       ? [{ href: "/admin", label: "관리자", icon: Sparkles }]
       : []),

@@ -18,7 +18,6 @@ export function Topbar() {
   >(null);
   const [mounted, setMounted] = useState(false);
   const [showDemoConnect, setShowDemoConnect] = useState(false);
-  const [showMyPage, setShowMyPage] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchRef = useRef<HTMLDivElement>(null);
@@ -283,50 +282,13 @@ export function Topbar() {
           </button>
         )}
         {session || connected ? (
-          <div className="relative">
-            <button
-              className="pill h-12 w-12 justify-center text-[var(--ink-700)]"
-              type="button"
-              onClick={() => setShowMyPage((current) => !current)}
-            >
-              <UserRound className="h-5 w-5" />
-            </button>
-            {showMyPage ? (
-              <div className="absolute right-0 top-[calc(100%+0.75rem)] z-[70] w-[21rem] rounded-[1.75rem] border border-white/90 bg-white/96 p-4 shadow-[0_24px_60px_rgba(127,139,176,0.18)] backdrop-blur-xl">
-                <p className="eyebrow">My Page</p>
-                <p className="mt-3 text-sm text-[var(--ink-500)]">
-                  {session ? `Logged in as ${session.label}` : "Wallet-connected session"}
-                </p>
-                <div className="mt-4 rounded-[1.35rem] bg-[var(--surface-soft)] p-4 text-sm leading-6 text-[var(--ink-600)]">
-                  <p>Account mode: {connected ? "Wallet enabled" : "Demo session only"}</p>
-                  <p className="mt-2">Wallet: {connected ? wallet?.adapter.name ?? "Unknown wallet" : "Not connected"}</p>
-                  <p className="mt-2">Role: {session?.role === "institution" ? "Institution" : "Investor"}</p>
-                  <p className="mt-2">You can explore the platform after login. Real on-chain actions still require a Solana wallet signature.</p>
-                </div>
-                {!connected ? (
-                  mounted ? (
-                    <WalletModalButton className="btn-secondary mt-4 w-full justify-center">
-                      Enable Wallet
-                    </WalletModalButton>
-                  ) : (
-                    <button className="btn-secondary mt-4 w-full justify-center">Enable Wallet</button>
-                  )
-                ) : (
-                  <WalletMultiButton className="!mt-4 !h-12 !w-full !justify-center !rounded-full !bg-[linear-gradient(135deg,#5f72dd,#7287ff)] !px-5 !font-semibold !shadow-[0_18px_32px_rgba(114,135,255,0.24)]" />
-                )}
-                <button
-                  className="mt-4 text-sm font-medium text-[var(--ink-500)] transition hover:text-[var(--ink-900)]"
-                  onClick={() => {
-                    disconnect();
-                    setShowMyPage(false);
-                  }}
-                  type="button"
-                >
-                  Log out
-                </button>
-              </div>
-            ) : null}
-          </div>
+          <button
+            className="pill h-12 w-12 justify-center text-[var(--ink-700)]"
+            type="button"
+            onClick={() => router.push("/my-page")}
+          >
+            <UserRound className="h-5 w-5" />
+          </button>
         ) : (
           <button
             className="!h-12 !rounded-full !bg-[linear-gradient(135deg,#5f72dd,#7287ff)] !px-5 !font-semibold !shadow-[0_18px_32px_rgba(114,135,255,0.24)] text-white"
