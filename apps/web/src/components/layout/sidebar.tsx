@@ -29,9 +29,7 @@ export function Sidebar() {
             className="h-9 w-auto object-contain"
             priority
           />
-          <p className="text-xs text-[var(--ink-500)]">
-            Invoice investment protocol
-          </p>
+          <p className="text-xs text-[var(--ink-500)]">Invoice investment protocol</p>
         </div>
       </Link>
 
