@@ -6,7 +6,9 @@ import { demoPools } from "@/lib/mock-data";
 import { formatCurrency } from "@/lib/format";
 
 export default function MarketplacePage() {
-  const featuredPools = demoPools.slice(0, 3);
+  const featuredPools = demoPools.filter(
+    (pool) => pool.status === "Funding" && pool.fundedPct < 100,
+  );
 
   return (
     <div className="space-y-6">
