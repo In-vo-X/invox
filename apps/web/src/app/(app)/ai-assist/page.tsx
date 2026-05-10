@@ -102,9 +102,27 @@ const compactFaq = [
   "What changed after servicing updates?",
 ];
 
+const quickAnswerReplies: Record<string, string> = {
+  "What exactly am I investing in?":
+    "You are participating in an invoice investment pool. The pool groups multiple invoice cashflows, and your return depends on how those repayments come back over time.",
+  "When can I get distributions?":
+    "Distributions appear only after underlying payers actually repay and the cashflow is reflected in the pool. Short duration does not mean instant payout.",
+  "Why is the yield different across pools?":
+    "Yield differs because timing risk, payer concentration, servicing quality, and repayment history are not the same across pools. Higher yield usually means more uncertainty.",
+  "What does late exposure mean?":
+    "Late exposure measures how much of the pool is tied to repayments that are running behind schedule. Higher late exposure can delay claims.",
+  "What are the biggest risks?":
+    "The main risks are delayed repayment, payer concentration, servicing weakness, and documentation or collection issues — not just price volatility.",
+  "What changed after servicing updates?":
+    "Servicing updates can change how reliable repayment timing looks. A weaker servicing update should make users more cautious about when distributions may arrive.",
+};
+
 export default function AiAssistPage() {
   const [activePromptId, setActivePromptId] = useState(guidedPrompts[0].id);
   const [chatInput, setChatInput] = useState("");
+  const [selectedQuickAnswer, setSelectedQuickAnswer] = useState<string | null>(
+    compactFaq[0],
+  );
   const [messages, setMessages] = useState<Array<{ role: "assistant" | "user"; text: string }>>([
     {
       role: "assistant",
@@ -332,12 +350,27 @@ export default function AiAssistPage() {
                 key={item}
                 className="rounded-[1.3rem] border border-[var(--line)] bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(247,249,255,0.8))] px-4 py-4 text-left text-sm font-medium text-[var(--ink-700)] shadow-[0_12px_24px_rgba(126,136,170,0.06)] transition hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(126,136,170,0.12)]"
                 type="button"
-                onClick={() => sendPrompt(item)}
+                onClick={() => {
+                  setSelectedQuickAnswer(item);
+                  sendPrompt(item);
+                }}
               >
                 {item}
               </button>
             ))}
           </div>
+          {selectedQuickAnswer ? (
+            <div className="mt-5 rounded-[1.4rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(247,249,255,0.82))] p-5 shadow-[0_16px_34px_rgba(126,136,170,0.08)]">
+              <div className="flex items-center gap-2 text-[var(--brand-700)]">
+                <BrainCircuit className="h-4 w-4" />
+                <p className="eyebrow text-[var(--brand-700)]">AI answer</p>
+              </div>
+              <p className="mt-3 text-sm font-semibold text-[var(--ink-900)]">{selectedQuickAnswer}</p>
+              <p className="mt-3 text-sm leading-7 text-[var(--ink-600)]">
+                {quickAnswerReplies[selectedQuickAnswer]}
+              </p>
+            </div>
+          ) : null}
         </div>
 
         <div className="soft-card p-6">
