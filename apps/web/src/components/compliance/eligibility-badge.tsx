@@ -7,12 +7,12 @@ type EligibilityStatus =
   | "not_whitelisted";
 
 const LABELS: Record<EligibilityStatus, string> = {
-  not_connected: "Connect Wallet",
-  kyc_required: "KYC Required",
-  pending_review: "Pending Review",
-  approved: "Approved",
-  restricted_region: "Restricted Region",
-  not_whitelisted: "Whitelist Required",
+  not_connected: "지갑 연결 필요",
+  kyc_required: "추가 확인 필요",
+  pending_review: "검토 중",
+  approved: "참여 가능",
+  restricted_region: "참여 제한",
+  not_whitelisted: "사전 승인 필요",
 };
 
 const CLASSES: Record<EligibilityStatus, string> = {
