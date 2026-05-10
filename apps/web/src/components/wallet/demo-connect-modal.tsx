@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Mail, Sparkles } from "lucide-react";
 import { useDemoSession } from "@/components/providers/demo-session-provider";
 
@@ -14,8 +15,13 @@ export function DemoConnectModal({
   const { connectWithEmail, connectWithProvider } = useDemoSession();
   const [email, setEmail] = useState("demo@invox.ai");
   const [role, setRole] = useState<"investor" | "institution">("investor");
+  const [mounted, setMounted] = useState(false);
 
-  if (!open) {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!open || !mounted) {
     return null;
   }
 
@@ -26,7 +32,7 @@ export function DemoConnectModal({
     onClose();
   }
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[140] flex items-center justify-center overflow-y-auto bg-[rgba(17,24,39,0.48)] px-6 py-8">
       <div className="glass-panel w-full max-w-lg p-6">
         <div className="flex items-center gap-2 text-[var(--brand-700)]">
@@ -126,6 +132,7 @@ export function DemoConnectModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
