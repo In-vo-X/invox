@@ -9,6 +9,7 @@ import {
   DatabaseZap,
   FileCheck2,
   Layers3,
+  Sparkles,
   ShieldCheck,
   WalletCards,
 } from "lucide-react";
@@ -130,8 +131,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="grid gap-6 border-t border-[var(--line)] px-6 py-12 sm:px-8 lg:px-10">
-          <div className="max-w-3xl">
+        <section className="relative grid gap-6 border-t border-[var(--line)] px-6 py-12 sm:px-8 lg:px-10">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(114,135,255,0.14),transparent_22%),radial-gradient(circle_at_82%_16%,rgba(94,215,198,0.14),transparent_20%),radial-gradient(circle_at_35%_78%,rgba(255,184,124,0.12),transparent_24%)]" />
+          <div className="relative max-w-3xl">
             <p className="eyebrow">How InvoX works</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
               A clearer operating layer for invoice investing.
@@ -139,9 +141,24 @@ export default function Home() {
             <p className="mt-4 text-base leading-8 text-[var(--ink-600)]">
               InvoX works alongside verified and experienced invoice investment operators. By pairing their real-world sourcing and servicing expertise with transparent pool data, on-chain repayment records, and claim visibility, the platform makes invoice investing easier to monitor and understand.
             </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <div className="metric-chip px-4 py-3 text-sm">
+                <Sparkles className="h-4 w-4 text-[var(--brand-600)]" />
+                On-chain settlement flow
+              </div>
+              <div className="metric-chip px-4 py-3 text-sm">
+                <ShieldCheck className="h-4 w-4 text-[var(--mint-600)]" />
+                Verified operator workflow
+              </div>
+              <div className="metric-chip px-4 py-3 text-sm">
+                <DatabaseZap className="h-4 w-4 text-[var(--coral-600)]" />
+                Claim visibility built in
+              </div>
+            </div>
           </div>
 
-          <div className="grid gap-4 lg:grid-cols-3">
+          <div className="relative grid gap-4 lg:grid-cols-3">
+            <div className="pointer-events-none absolute left-[16%] right-[16%] top-[5.3rem] hidden h-[2px] bg-[linear-gradient(90deg,rgba(255,214,120,0.22),rgba(114,135,255,0.4),rgba(94,215,198,0.28))] lg:block" />
             {[
               {
                 title: "1. Verified pool setup",
@@ -160,34 +177,54 @@ export default function Home() {
               },
             ].map(({ title, copy, Icon }) => (
               <div key={title} className="glass-panel relative overflow-hidden p-6">
-                <div className="pointer-events-none absolute right-0 top-0 h-20 w-20 rounded-bl-[2rem] bg-[linear-gradient(135deg,rgba(114,135,255,0.12),rgba(255,255,255,0))]" />
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--brand-100)] text-[var(--brand-600)]">
+                <div className="pointer-events-none absolute right-0 top-0 h-24 w-24 rounded-bl-[2rem] bg-[linear-gradient(135deg,rgba(114,135,255,0.14),rgba(255,255,255,0))]" />
+                <div className="pointer-events-none absolute -right-6 -bottom-6 h-24 w-24 rounded-full bg-[radial-gradient(circle,rgba(114,135,255,0.18),transparent_60%)] blur-2xl" />
+                <div className="flex h-14 w-14 items-center justify-center rounded-[1.35rem] bg-[linear-gradient(135deg,rgba(114,135,255,0.18),rgba(94,215,198,0.16))] text-[var(--brand-600)] shadow-[0_14px_28px_rgba(114,135,255,0.16)]">
                   <Icon className="h-6 w-6" />
                 </div>
-                <h3 className="mt-5 text-xl font-semibold">{title}</h3>
+                <div className="mt-5 flex items-center justify-between gap-3">
+                  <h3 className="text-xl font-semibold">{title}</h3>
+                  <span className="rounded-full bg-white/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--ink-500)] shadow-[0_8px_18px_rgba(126,136,170,0.08)]">
+                    Live flow
+                  </span>
+                </div>
                 <p className="mt-3 text-sm leading-7 text-[var(--ink-500)]">{copy}</p>
+                <div className="mt-5 h-16 rounded-[1.2rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.86),rgba(242,246,255,0.76))] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                  <div className="flex h-full items-end gap-2">
+                    <span className="h-4 w-4 rounded-full bg-[rgba(114,135,255,0.26)]" />
+                    <span className="h-6 w-4 rounded-full bg-[rgba(114,135,255,0.36)]" />
+                    <span className="h-8 w-4 rounded-full bg-[rgba(94,215,198,0.34)]" />
+                    <span className="h-10 w-4 rounded-full bg-[rgba(94,215,198,0.46)]" />
+                    <span className="ml-auto h-2.5 w-14 rounded-full bg-[linear-gradient(135deg,#5f72dd,#7287ff)]" />
+                  </div>
+                </div>
               </div>
             ))}
           </div>
 
           <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="soft-card p-6">
+            <div className="soft-card relative overflow-hidden p-6">
+              <div className="pointer-events-none absolute -left-8 -top-10 h-28 w-28 rounded-full bg-[radial-gradient(circle,rgba(255,214,120,0.18),transparent_60%)] blur-2xl" />
               <p className="eyebrow">Why operators use it</p>
-              <div className="mt-5 space-y-4">
+              <div className="mt-5 grid gap-4">
                 {[
-                  ["Working-capital speed", "Operators can release funding immediately after pool targets are reached instead of waiting on off-chain reconciliation cycles."],
-                  ["Repayment visibility", "Repayment events, claimable distributions, and vault balances become easier to explain to participants and partners."],
-                  ["Pool-level reporting", "Servicing status, payer mix, maturity buckets, and historical repayment quality can be presented in a structured investor-facing format."],
-                ].map(([title, copy]) => (
-                    <div key={title} className="rounded-[1.3rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.85),rgba(245,248,255,0.78))] p-4 shadow-[0_12px_28px_rgba(126,136,170,0.08)]">
-                    <p className="text-sm font-semibold text-[var(--ink-900)]">{title}</p>
-                    <p className="mt-2 text-sm leading-6 text-[var(--ink-500)]">{copy}</p>
+                  ["Working-capital speed", "자금 집행까지 걸리는 시간을 줄입니다.", "$0.8M faster cycle"],
+                  ["Repayment visibility", "상환과 claim 흐름을 하나의 기준으로 봅니다.", "Shared settlement view"],
+                  ["Pool-level reporting", "투자자 설명과 내부 보고를 동시에 단순화합니다.", "Structured reporting"],
+                ].map(([title, copy, metric]) => (
+                  <div key={title} className="rounded-[1.35rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.86),rgba(245,248,255,0.78))] p-5 shadow-[0_14px_30px_rgba(126,136,170,0.08)]">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-base font-semibold text-[var(--ink-900)]">{title}</p>
+                      <span className="metric-chip">{metric}</span>
+                    </div>
+                    <p className="mt-3 text-sm leading-6 text-[var(--ink-500)]">{copy}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="soft-card p-6">
+            <div className="soft-card relative overflow-hidden p-6">
+              <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-[radial-gradient(circle,rgba(94,215,198,0.18),transparent_60%)] blur-2xl" />
               <p className="eyebrow">What participants should understand</p>
               <div className="mt-5 grid gap-4 sm:grid-cols-2">
                 {[
@@ -213,11 +250,14 @@ export default function Home() {
                   },
                 ].map(({ title, copy, Icon }) => (
                   <div key={title} className="rounded-[1.3rem] border border-[var(--line)] bg-[linear-gradient(180deg,rgba(255,255,255,0.88),rgba(247,249,255,0.78))] p-5 shadow-[0_16px_34px_rgba(126,136,170,0.08)]">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--brand-100)] text-[var(--brand-600)]">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,rgba(114,135,255,0.18),rgba(94,215,198,0.16))] text-[var(--brand-600)] shadow-[0_12px_22px_rgba(114,135,255,0.12)]">
                       <Icon className="h-5 w-5" />
                     </div>
                     <p className="mt-4 text-base font-semibold text-[var(--ink-900)]">{title}</p>
                     <p className="mt-2 text-sm leading-6 text-[var(--ink-500)]">{copy}</p>
+                    <div className="mt-4 h-1.5 rounded-full bg-white/80">
+                      <div className="h-full w-2/3 rounded-full bg-[linear-gradient(135deg,#5f72dd,#7287ff)]" />
+                    </div>
                   </div>
                 ))}
               </div>
