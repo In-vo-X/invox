@@ -6,7 +6,7 @@ import { formatCurrency, formatPercent } from "@/lib/format";
 
 export default function MarketplaceMorePage() {
   const rankedPools = [...demoPools]
-    .sort((left, right) => right.annualizedYieldPct - left.annualizedYieldPct)
+    .sort((left, right) => right.fundedAmount - left.fundedAmount)
     .slice(0, 3);
 
   return (
@@ -31,9 +31,9 @@ export default function MarketplaceMorePage() {
           <section className="rounded-[1.6rem] bg-[linear-gradient(160deg,rgba(244,247,255,0.96),rgba(255,247,236,0.92))] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="eyebrow">Top 3 estimated yield pools</p>
+                <p className="eyebrow">Top 3 most participated pools</p>
                 <h3 className="mt-2 text-xl font-semibold tracking-tight">
-                  Highest estimated annualized pool yield
+                  Most selected invoice investment pools
                 </h3>
               </div>
               <p className="text-sm text-[var(--ink-500)]">
@@ -63,12 +63,12 @@ export default function MarketplaceMorePage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="eyebrow">Est. Annualized Yield</p>
+                      <p className="eyebrow">Participation Volume</p>
                       <p className="mt-2 text-xl font-semibold">
-                        {formatPercent(pool.annualizedYieldPct)}
+                        {formatCurrency(pool.fundedAmount)}
                       </p>
                       <p className="mt-1 text-sm text-[var(--ink-500)]">
-                        Gross {formatPercent(pool.grossYieldPct)}
+                        {pool.fundedPct}% of target funded
                       </p>
                     </div>
                   </div>
