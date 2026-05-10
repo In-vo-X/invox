@@ -4,12 +4,14 @@ import { RiskBadge } from "@/components/ui/risk-badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { demoPools } from "@/lib/mock-data";
 import { formatCurrency, formatPercent } from "@/lib/format";
+import { getRegisteredPools } from "@/lib/registered-pools";
 
 export default async function PoolDetailPage(
   props: PageProps<"/pools/[poolId]">,
 ) {
   const { poolId } = await props.params;
-  const pool = demoPools.find((entry) => entry.id === poolId);
+  const registeredPools = await getRegisteredPools();
+  const pool = [...demoPools, ...registeredPools].find((entry) => entry.id === poolId);
 
   if (!pool) {
     notFound();

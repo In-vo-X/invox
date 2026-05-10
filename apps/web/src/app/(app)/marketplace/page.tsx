@@ -4,9 +4,11 @@ import { RiskBadge } from "@/components/ui/risk-badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { demoPools } from "@/lib/mock-data";
 import { formatCurrency } from "@/lib/format";
+import { getRegisteredPools } from "@/lib/registered-pools";
 
-export default function MarketplacePage() {
-  const featuredPools = demoPools.filter(
+export default async function MarketplacePage() {
+  const registeredPools = await getRegisteredPools();
+  const featuredPools = [...demoPools, ...registeredPools].filter(
     (pool) => pool.status === "Funding" && pool.fundedPct < 100,
   );
 

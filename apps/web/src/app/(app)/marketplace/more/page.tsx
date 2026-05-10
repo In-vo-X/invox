@@ -3,10 +3,17 @@ import { RiskBadge } from "@/components/ui/risk-badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { demoPools } from "@/lib/mock-data";
 import { formatCurrency, formatPercent } from "@/lib/format";
+import { getRegisteredPools } from "@/lib/registered-pools";
 
-export default function MarketplaceMorePage() {
-  const activePools = demoPools.filter(
+export default async function MarketplaceMorePage() {
+  const registeredPools = await getRegisteredPools();
+  const activePools = [...demoPools, ...registeredPools].filter(
     (pool) => pool.status === "Funding" && pool.fundedPct < 100,
+  );
+
+  const maxParticipationVolume = Math.max(
+    ...activePools.map((pool) => pool.fundedAmount),
+    1,
   );
 
   const rankedPools = [...activePools]
@@ -99,16 +106,16 @@ export default function MarketplaceMorePage() {
                   <div className="mt-5 rounded-[1.3rem] bg-white/70 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
                     <div className="flex items-center justify-between text-sm text-[var(--ink-600)]">
                       <span>Popularity score</span>
-                      <span className="font-semibold text-[var(--ink-900)]">
-                        {Math.round((pool.fundedAmount / pool.advanceAmount) * 100)}
-                      </span>
-                    </div>
-                    <div className="mt-3 h-2.5 rounded-full bg-white/85">
-                      <div
-                        className="h-full rounded-full bg-[linear-gradient(135deg,#5f72dd,#7287ff)]"
-                        style={{ width: `${Math.min(100, Math.round((pool.fundedAmount / pool.advanceAmount) * 100))}%` }}
-                      />
-                    </div>
+                        <span className="font-semibold text-[var(--ink-900)]">
+                          {Math.round((pool.fundedAmount / maxParticipationVolume) * 100)}
+                        </span>
+                      </div>
+                      <div className="mt-3 h-2.5 rounded-full bg-white/85">
+                        <div
+                          className="h-full rounded-full bg-[linear-gradient(135deg,#5f72dd,#7287ff)]"
+                        style={{ width: `${Math.min(100, Math.round((pool.fundedAmount / maxParticipationVolume) * 100))}%` }}
+                        />
+                      </div>
                   </div>
                   <div className="mt-4 flex flex-wrap items-center gap-2">
                     <RiskBadge grade={pool.riskGrade} />
