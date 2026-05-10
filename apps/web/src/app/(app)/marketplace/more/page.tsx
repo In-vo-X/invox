@@ -19,7 +19,7 @@ export default function MarketplaceMorePage() {
               Pool discovery board
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--ink-500)]">
-              Browse verified receivable pools by estimated yield, duration, repayment history, and risk profile.
+              Browse verified invoice investment pools by estimated yield, duration, repayment history, and risk profile.
             </p>
           </div>
           <Link className="btn-secondary" href="/marketplace">
@@ -37,7 +37,7 @@ export default function MarketplaceMorePage() {
                 </h3>
               </div>
               <p className="text-sm text-[var(--ink-500)]">
-                Updated from demo receivable pools
+                Updated from invoice investment pools
               </p>
             </div>
 
@@ -84,7 +84,7 @@ export default function MarketplaceMorePage() {
           <section className="rounded-[1.6rem] border border-[var(--line)] bg-[var(--surface-soft)] p-4">
             <div className="flex items-end justify-between gap-4 px-2 pb-4">
               <div>
-                <p className="eyebrow">Additional receivable pools</p>
+                <p className="eyebrow">Additional invoice investment pools</p>
               </div>
               <p className="text-sm text-[var(--ink-500)]">
                 {demoPools.length} pools

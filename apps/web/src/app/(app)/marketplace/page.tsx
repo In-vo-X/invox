@@ -14,7 +14,7 @@ export default function MarketplacePage() {
         <KpiCard
           eyebrow="Active Financing Volume"
           value="$38.0M"
-          note="Currently deployed across active receivable pools"
+          note="Currently deployed across active invoice investment pools"
           accent="linear-gradient(180deg,#7287ff,#5f72dd)"
           chart={[45, 32, 40, 72, 54]}
         />
@@ -39,10 +39,10 @@ export default function MarketplacePage() {
           <div>
             <p className="eyebrow">Pool Marketplace</p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-              Browse verified receivable pools
+              Browse verified invoice investment pools
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--ink-500)]">
-              Explore verified short-duration receivable pools by estimated yield, duration, funding progress, and repayment quality.
+              Explore verified short-duration invoice investment pools by estimated yield, duration, funding progress, and repayment quality.
             </p>
           </div>
           <Link className="btn-primary" href="/marketplace/more">

@@ -5,6 +5,60 @@ import { formatCurrency } from "@/lib/format";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { demoPools, portfolioRows } from "@/lib/mock-data";
 
+function DonutChart({
+  slices,
+}: {
+  slices: Array<{ label: string; value: number; color: string }>;
+}) {
+  const radius = 56;
+  const circumference = 2 * Math.PI * radius;
+  let cumulative = 0;
+  return (
+    <div className="flex flex-col items-center gap-6">
+      <div className="relative h-64 w-64">
+        <div className="absolute inset-4 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.96),rgba(245,248,255,0.82))] shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_20px_40px_rgba(126,136,170,0.14)]" />
+        <svg viewBox="0 0 140 140" className="relative h-full w-full -rotate-90 drop-shadow-[0_12px_24px_rgba(114,135,255,0.18)]">
+          <circle cx="70" cy="70" r={radius} fill="none" stroke="rgba(116,135,255,0.12)" strokeWidth="18" />
+          {slices.map((slice) => {
+            const dash = (slice.value / 100) * circumference;
+            const offset = circumference - (cumulative / 100) * circumference;
+            cumulative += slice.value;
+            return (
+              <circle
+                key={slice.label}
+                cx="70"
+                cy="70"
+                r={radius}
+                fill="none"
+                stroke={slice.color}
+                strokeWidth="18"
+                strokeDasharray={`${dash} ${circumference - dash}`}
+                strokeDashoffset={offset}
+                strokeLinecap="round"
+              />
+            );
+          })}
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <p className="text-xs uppercase tracking-[0.18em] text-[var(--ink-500)]">Exposure</p>
+          <p className="mt-1 text-4xl font-semibold text-[var(--ink-900)]">100%</p>
+        </div>
+      </div>
+      <div className="grid w-full gap-3 rounded-[1.4rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.76),rgba(247,249,255,0.66))] p-4 shadow-[0_14px_30px_rgba(126,136,170,0.08)]">
+        {slices.map((slice) => (
+          <div key={slice.label} className="flex items-center justify-between text-sm">
+            <div className="flex items-center gap-2 text-[var(--ink-600)]">
+              <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: slice.color }} />
+              <span>{slice.label}</span>
+            </div>
+            <span className="font-semibold text-[var(--ink-900)]">{slice.value}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function PortfolioPage() {
   const positions = portfolioRows
     .map((row) => {
@@ -115,7 +169,7 @@ export default function PortfolioPage() {
               Pool positions
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--ink-500)]">
-              A cleaner view of your deployed capital, active receivable pool exposure, and claimable distributions.
+              A cleaner view of your deployed capital, active invoice investment exposure, and claimable distributions.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 text-sm text-[var(--ink-500)]">
@@ -211,34 +265,20 @@ export default function PortfolioPage() {
               <h2 className="mt-2 text-xl font-semibold tracking-tight">
                 Capital allocation by pool
               </h2>
-              <div className="mt-5 space-y-3">
-                {positions.map((position) => {
-                  const weight = totalInvested
-                    ? (position.invested / totalInvested) * 100
-                    : 0;
-
-                  return (
-                    <div
-                      key={position.pool.id}
-                      className="rounded-[1.3rem] bg-white/84 p-4"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <p className="text-sm font-semibold text-[var(--ink-900)]">
-                          {position.pool.name}
-                        </p>
-                        <p className="text-sm text-[var(--ink-500)]">
-                          {weight.toFixed(0)}%
-                        </p>
-                      </div>
-                      <div className="mt-3 h-2.5 rounded-full bg-[rgba(116,135,255,0.12)]">
-                        <div
-                          className="h-full rounded-full bg-[linear-gradient(135deg,#5f72dd,#7287ff)]"
-                          style={{ width: `${weight}%` }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="mt-5">
+                <DonutChart
+                  slices={positions.map((position, index) => ({
+                    label: position.pool.name,
+                    value: Number(
+                      (
+                        totalInvested
+                          ? (position.invested / totalInvested) * 100
+                          : 0
+                      ).toFixed(0),
+                    ),
+                    color: ["#7287ff", "#5ed7c6", "#ff8e7e", "#c59bff", "#9cc3ff"][index % 5],
+                  }))}
+                />
               </div>
             </div>
 

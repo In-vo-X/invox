@@ -21,7 +21,7 @@ export default async function PoolDetailPage(
         <div className="soft-card p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="eyebrow">Receivable Pool</p>
+              <p className="eyebrow">Invoice Investment Pool</p>
               <h1 className="mt-2 text-2xl font-semibold tracking-tight">
                 {pool.name}
               </h1>
@@ -95,7 +95,7 @@ export default async function PoolDetailPage(
               </p>
             </div>
             <div>
-              <p className="eyebrow">Receivables in Pool</p>
+              <p className="eyebrow">Invoices in Pool</p>
               <p className="mt-2 text-sm font-semibold text-[var(--ink-700)]">
                 {pool.receivablesCount}
               </p>
