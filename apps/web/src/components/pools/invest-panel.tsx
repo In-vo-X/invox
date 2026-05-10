@@ -539,6 +539,7 @@ export function InvestPanel({
   const fundingLabel = chainSnapshot
     ? `${chainSnapshot.pool.fundedAmount.mul(new BN(100)).div(chainSnapshot.pool.advanceAmount).toString()}%`
     : `${fundedPct}%`;
+  const claimLocked = !chainSnapshot?.investment || chainSnapshot.claimable.lte(new BN(0));
 
   return (
     <div className="space-y-6">
@@ -554,16 +555,7 @@ export function InvestPanel({
             style={{ width: fundingLabel }}
           />
         </div>
-        <div className="mt-6 space-y-4">
-          {eligibilityStatus === "kyc_required" ? (
-            <KycRequiredCard onAction={completeKyc} />
-          ) : (
-            <EligibilityGate
-              status={eligibilityStatus}
-              actionLabel={eligibilityStatus === "not_whitelisted" ? "Join Whitelist" : undefined}
-              onAction={eligibilityStatus === "not_whitelisted" ? completeKyc : undefined}
-            />
-          )}
+        <div className="mt-6">
           <RiskDisclosure />
         </div>
         <form className="mt-6 rounded-[1.5rem] bg-white/74 p-4" onSubmit={handleInvest}>
@@ -580,13 +572,6 @@ export function InvestPanel({
           <div className="mt-3 flex items-center justify-between text-xs text-[var(--ink-500)]">
             <span>Funding target</span>
             <span>${advanceAmount.toLocaleString()} USDC</span>
-          </div>
-          <div className="mt-3 grid gap-2 rounded-[1.25rem] bg-[var(--surface-soft)] p-3 text-xs text-[var(--ink-500)] sm:grid-cols-3">
-            <span>
-              Wallet status: {hasRealWallet ? "Connected" : session ? "Demo session only" : "Connect wallet"}
-            </span>
-            <span>Eligibility: {eligibilityStatus.replaceAll("_", " ")}</span>
-            <span>Estimated pool share: {advanceAmount ? `${((Number(amount || 0) / advanceAmount) * 100 || 0).toFixed(1)}%` : "0%"}</span>
           </div>
           <button
             className={`mt-4 w-full ${!hasRealWallet ? "inline-flex items-center justify-center rounded-full bg-[rgba(163,173,194,0.42)] px-5 py-3 font-semibold text-[rgba(86,98,127,1)] cursor-not-allowed" : "btn-primary"}`}
@@ -613,7 +598,14 @@ export function InvestPanel({
 
       <div className="soft-card p-6">
         <p className="eyebrow">Claim Distribution</p>
-        <div className="mt-4 rounded-[1.5rem] bg-[var(--surface-soft)] p-4">
+        <div className="relative mt-4 rounded-[1.5rem] bg-[var(--surface-soft)] p-4">
+          {claimLocked ? (
+            <div className="absolute inset-0 z-10 flex items-start justify-center rounded-[1.5rem] bg-[rgba(15,23,42,0.26)] p-5">
+              <div className="rounded-[1rem] bg-white px-5 py-3 text-sm font-semibold text-[var(--ink-900)] shadow-[0_14px_30px_rgba(17,24,39,0.14)]">
+                온체인에서 정산된 후 청구하세요
+              </div>
+            </div>
+          ) : null}
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-[var(--ink-500)]">Claimable now</p>
@@ -626,7 +618,7 @@ export function InvestPanel({
             </div>
             <button
               className="btn-secondary"
-              disabled={submittingAction !== null}
+              disabled={submittingAction !== null || claimLocked}
               onClick={handleClaim}
             >
               {submittingAction === "청구" ? "Claiming..." : "Claim"}
