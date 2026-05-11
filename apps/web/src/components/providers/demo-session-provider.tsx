@@ -29,6 +29,10 @@ type DemoSessionContextValue = {
 
 const SESSION_KEY = "invox-demo-session";
 const ACCOUNTS_KEY = "invox-demo-accounts";
+const DEMO_ACCOUNT_BY_ROLE: Record<DemoRole, string> = {
+  investor: "demo@invox.ai",
+  institution: "institution@invox.ai",
+};
 
 const DemoSessionContext = createContext<DemoSessionContextValue | null>(null);
 
@@ -87,6 +91,10 @@ export function DemoSessionProvider({ children }: PropsWithChildren) {
         const normalizedEmail = email.trim().toLowerCase();
         const account = accounts[normalizedEmail];
 
+        if (!Object.values(DEMO_ACCOUNT_BY_ROLE).includes(normalizedEmail)) {
+          return { ok: false, error: "현재는 제공된 데모 계정으로만 로그인할 수 있습니다." };
+        }
+
         if (!account) {
           return { ok: false, error: "가입된 계정을 찾을 수 없습니다." };
         }
@@ -100,8 +108,13 @@ export function DemoSessionProvider({ children }: PropsWithChildren) {
       },
       signupWithEmail(email, password, role) {
         const normalizedEmail = email.trim().toLowerCase();
-        if (accounts[normalizedEmail]) {
-          return { ok: false, error: "이미 가입된 이메일입니다." };
+        const allowedEmail = DEMO_ACCOUNT_BY_ROLE[role];
+
+        if (normalizedEmail !== allowedEmail) {
+          return {
+            ok: false,
+            error: `현재 데모에서는 ${allowedEmail} 계정만 사용할 수 있습니다.`,
+          };
         }
 
         const nextAccounts = {
@@ -115,9 +128,9 @@ export function DemoSessionProvider({ children }: PropsWithChildren) {
       },
       connectWithProvider(provider, role) {
         const labelMap: Record<DemoAuthMethod, string> = {
-          email: "demo@invox.ai",
-          google: "Google account",
-          apple: "Apple ID",
+          email: DEMO_ACCOUNT_BY_ROLE[role],
+          google: DEMO_ACCOUNT_BY_ROLE[role],
+          apple: DEMO_ACCOUNT_BY_ROLE[role],
         };
         saveSession(createSession(provider, labelMap[provider], role));
       },

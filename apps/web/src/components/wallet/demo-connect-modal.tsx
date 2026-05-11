@@ -6,6 +6,11 @@ import { Mail, Sparkles, WalletCards } from "lucide-react";
 import { WalletModalButton } from "@solana/wallet-adapter-react-ui";
 import { useDemoSession } from "@/components/providers/demo-session-provider";
 
+const DEMO_EMAIL_BY_ROLE = {
+  investor: "demo@invox.ai",
+  institution: "institution@invox.ai",
+} as const;
+
 export function DemoConnectModal({
   open,
   onClose,
@@ -30,8 +35,16 @@ export function DemoConnectModal({
   useEffect(() => {
     if (!open) return;
     setMode("login");
+    setRole("investor");
+    setEmail(DEMO_EMAIL_BY_ROLE.investor);
+    setPassword("demo1234");
     setError(null);
   }, [open, initialView]);
+
+  useEffect(() => {
+    setEmail(DEMO_EMAIL_BY_ROLE[role]);
+    setPassword("demo1234");
+  }, [role]);
 
   if (!open || !mounted) {
     return null;
@@ -111,7 +124,7 @@ export function DemoConnectModal({
                 className="w-full bg-transparent text-sm text-[var(--ink-800)] outline-none"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                placeholder="you@company.com"
+                placeholder="demo@invox.ai"
                 type="email"
               />
             </div>
@@ -124,7 +137,7 @@ export function DemoConnectModal({
                 className="w-full bg-transparent text-sm text-[var(--ink-800)] outline-none"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                placeholder="••••••••"
+                placeholder="demo1234"
                 type="password"
               />
             </div>
@@ -145,6 +158,10 @@ export function DemoConnectModal({
         >
           {mode === "login" ? "회원가입" : "로그인으로 돌아가기"}
         </button>
+
+        <p className="mt-3 text-xs leading-6 text-[var(--ink-500)]">
+          데모 계정: 투자자 <span className="font-semibold text-[var(--ink-700)]">demo@invox.ai / demo1234</span>, 기관 <span className="font-semibold text-[var(--ink-700)]">institution@invox.ai / demo1234</span>
+        </p>
 
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <button
